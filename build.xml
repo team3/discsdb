@@ -1,0 +1,59 @@
+<?xml version = "1.0" ?>
+<project name = "AlbumsStorage" basedir = "." default = "deploy">
+
+    <property environment = "env" />
+    <property name = "src" location = "src" />
+    <property name = "dist" location = "dist" />
+    <property name = "classes" location = "${src}/web/WEB-INF/classes" />
+    <property name = "build" location = "${dist}/build" />
+    <property name = "webapps" location = "${env.CATALINA_HOME}" />
+    <property name = "libs" location = "${src}/web/WEB-INF/lib" />
+
+    <target name = "clear">
+        <echo message = "Clearing the temperary files ... " />
+        <delete >
+            <fileset dir="${classes}">
+                <include name="**/*.class" />
+            </fileset>
+            <fileset dir="${dist}">
+                <include name = "**/*.war" />
+            </fileset>
+        </delete>
+    </target>
+    
+    <target name = "compile" depends = "clear">
+        <echo message = "Compiling the project ... " />
+        <echo message = "${libs}" />
+        <echo message = "${classes}" />
+        <javac srcdir = "${src}/java" destdir = "${classes}" source="1.4" target="1.4">
+            <classpath>
+                <pathelement path = "${libs}/ojdbc14.jar"></pathelement>
+                <pathelement path = "${libs}/jdom.jar"></pathelement>
+                <pathelement path = "${libs}/servlet.jar"></pathelement>
+                <pathelement path = "${libs}/log4j-1.2.15.jar"></pathelement>
+            </classpath>
+        </javac>
+    </target>
+    
+    <target name = "pack" depends = "compile">
+        <echo message = "Packing the project ... " />
+        <copy todir = "${build}">
+           <fileset dir = "${src}/web" />
+        </copy>
+        <copy todir = "${classes}" file = "${src}/web/log4j/log4j.xml" />
+        <copy todir = "${classes}" file = "${src}/web/log4j/log4j.dtd" />
+        <jar destfile = "${dist}/discs.war">
+            <fileset dir = "$build" />
+        </jar>
+    </target>
+    
+    <target name = "deploy" depends ="pack">
+
+        <delete file = "${depPath}/discs.war" />
+        <copy todir="${depPath}">
+            <fileset dir = "${dist}">
+                <include name = "*.war" />
+            </fileset>
+        </copy>
+    </target>
+</project>
