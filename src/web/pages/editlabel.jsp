@@ -27,18 +27,55 @@
         
         <script type="text/javascript">    
             $(document).ready(function(){
-                $("edit_label_form").validate({
-                    rules : {
-                        labelname : {required : true },
-                        labelinfo : {required : true },
-                        labellogo : {required : true }
+                $.ajax({
+                    type: 'GET',
+                    url: '/discs/showlabels',
+                    success: function(data){
+                        labellist = createList(data, 'labelslist');
+                        $('div.labelfields').append(labellist);
                     },
-                    
-                    labelname : {
-                        required : "Enter name of the label",
-                    }
+                    dataType: 'text'
+                });
+            });
+            
+            
+            function createList(data, name) {
+                var array = data.split('\n');
+                var result = '<select name = ' + name + ' class = ' + name + '>';
+                for (i = 0; i < array.length-1; i++){
+                    result += '<option value="'+array[i]+'">'+array[i]+'</option>';
+                }
+                result += '<option value = "none"> none </option>';
+                result += '</select>';
+                return result;
+            }
+            
+            function addLabel() {
+                var name = $('.labelname').getValue();
+                var info = $('.labelinfo').getValue();
+                var logo = $('.labellogo').getValue();
+                var major = $(".labelslist").getValue();
+                 
+                var url = '/discs/addlabel?name=' + name + 
+                        '&info=' + info + 
+                        '&logo=' + logo +
+                        '&major=' + major;
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    success: function(data){
+                        if (data == '1') {
+                            $("div#editlabel_main").
+                                    append('<div class = acceptmessage>Label was added</div>');
+                        } else {
+                            $("div#editlabel_main").
+                                    append('<div class = denymessage>Label was not added</div>');
+                        }   
+                    },
+                dataType: 'text'
                 });
             }
+            
         </script>
     </head>
 <body>
@@ -55,6 +92,10 @@
         Logo: <br />
         <input type = "text" class = "labellogo" name = "labellogo" value = "<c:out value="${label.logo}" />" />
         <br />
+        <br />
+         <div class = "labelfields">
+        Major: 
+        </div>
         <input type = "hidden" name = "labelid" value = <c:out value="${label.id}" /> />
         <input type = "hidden" name = "majorid" value = <c:out value="${label.major}" /> />
         <br />

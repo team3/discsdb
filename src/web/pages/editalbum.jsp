@@ -94,7 +94,7 @@
         
     </head>
 <body>
-
+<%@include file="menu.jsp" %>
 <div id = "editalbum_main">
     <div id = "form">
         <form action = "editalbum" method = "post" id = "albumForm">

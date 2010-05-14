@@ -6,7 +6,7 @@
 
 <appender name="logfile" class="org.apache.log4j.RollingFileAppender">
 
-<param name="File" value="trace.log" />
+<param name="File" value="/home/akl/lab3/disksdb.1.0/trace.log" />
 
 <param name="Append" value="true" />
 

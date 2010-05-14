@@ -14,7 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.*;
-import javax.sql.DataSource;
+import javax.sql.*;
 import javax.naming.*;
 
 import org.apache.log4j.Logger;
@@ -25,6 +25,7 @@ public class OracleDAO implements OperableDAO {
     private static final int ALBUM = 0;
     private static final int ARTIST = 1;
     private static final int LABEL = 2;
+    
     private static final String ADD_NEW_ALBUM = 
             "INSERT INTO ALBUM VALUES (SQ_ALBUM.nextval, ?, ?, ?, ?, ?, ?, ?, ?)";
             
@@ -133,6 +134,16 @@ public class OracleDAO implements OperableDAO {
     private static final String DELETE_LABEL = 
             "DELETE FROM label WHERE lid = ?";
     
+    private static final String GET_CHILD_LABELS_NOTNULL = 
+            "SELECT b.lid,b.major,b.name,b.logo,b.info,b.major_name FROM (SELECT a.*, rownum rnum FROM (SELECT d.lid,d.major,d.name,d.logo,d.info,e.name as major_name FROM label d, label e WHERE d.major = e.lid UNION SELECT d.lid,d.major,d.name,d.logo,info,null as major_name FROM label d WHERE d.major IS NULL) a where rownum <= ?) b where rnum >=? AND b.major = ?";
+    
+    private static final String GET_CHILD_LABELS_NULL = 
+            "SELECT b.lid,b.major,b.name,b.logo,b.info,b.major_name FROM (SELECT a.*, rownum rnum FROM (SELECT d.lid,d.major,d.name,d.logo,d.info,e.name as major_name FROM label d, label e WHERE d.major = e.lid UNION SELECT d.lid,d.major,d.name,d.logo,info,null as major_name FROM label d WHERE d.major IS NULL) a where rownum <= ?) b where rnum >=? AND b.major IS NULL";
+    
+    private static final String LABEL_GET_PATH = 
+            "SELECT SYS_CONNECT_BY_PATH(name, '--') AS path FROM label  WHERE lid = ?  START WITH major is null  CONNECT BY PRIOR lid = major";
+    
+                    
     private Connection connection = null;
     private PreparedStatement statement = null;
     
@@ -175,34 +186,16 @@ public class OracleDAO implements OperableDAO {
     }
     
     /**
-     * Initialize variables.
-     * @param db_url url of the database to connect to. 
-     * @param db_username username of the database to connect to.
-     * @param db_password password of the database to connect to.
-     */ 
-    public void init(String db_url, String db_username, 
-            String db_password) {
-        this.db_url = "jdbc:oracle:thin:@" + db_url + ":1521:xe";
-        this.db_username = db_username;
-        this.db_password = db_password;
-    }
-    
-    /**
      * Setups the connection with database by specified parameters.
      */ 
     private void getConnection() throws ConnectionException {
         try {
             InitialContext iContext = new InitialContext();
-            Context context = (Context) iContext.lookup("java:/comp/env");
+            Context context = (Context) iContext.lookup("java:comp/env");
             DataSource datasource = (DataSource)context.lookup("jdbc/DiscsDB");
             log.info(datasource);
             
             connection = datasource.getConnection();
-            /*
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            connection = DriverManager.getConnection(this.db_url, 
-                    this.db_username, this.db_password);
-                    * */
         } catch (javax.naming.NamingException e){
             throw new ConnectionException(e);
         } catch (SQLException e) {
@@ -378,8 +371,13 @@ public class OracleDAO implements OperableDAO {
             if (this.connection != null) {
                 this.statement = this.connection.prepareStatement(
                         ADD_NEW_LABEL);
-                        
-                this.statement.setInt(1, label.getMajor());
+                
+                int major = label.getMajor();
+                if (major == 0) {       
+                    this.statement.setNull(1, label.getMajor());
+                } else {
+                    this.statement.setInt(1, label.getMajor());
+                }
                 this.statement.setString(2, label.getName());
                 this.statement.setString(3, label.getLogo());
                 this.statement.setString(4, label.getInfo());
@@ -866,7 +864,8 @@ public class OracleDAO implements OperableDAO {
     * @return list of artists of the specified country.
     * @throws GetDataException if problems while getting data.
     */
-    public List getArtists(String country, int firstRow, int lastRow) throws GetDataException {
+    public List getArtists(String country, int firstRow, int lastRow) 
+            throws GetDataException {
         List artists = null;
         try {
             artists = new ArrayList();
@@ -1791,7 +1790,7 @@ public class OracleDAO implements OperableDAO {
     /**
      * Removes album from the storage.
      * @param id album's id.
-     * @throws EditDataException if problems while getting data.
+     * @throws EditDataException if problems while editing data.
      */ 
     public void deleteAlbum(int id) throws EditDataException {
         try {
@@ -1835,7 +1834,7 @@ public class OracleDAO implements OperableDAO {
     /**
      * Removes artist from the storage.
      * @param id artist's id.
-     * @throws EditDataException if problems while getting data.
+     * @throws EditDataException if problems while editing data.
      */
     public void deleteArtist(int id) throws EditDataException {
         try {
@@ -1880,7 +1879,7 @@ public class OracleDAO implements OperableDAO {
     /**
      * Removes label from the storage.
      * @param id label's id.
-     * @throws EditDataException if problems while getting data.
+     * @throws EditDataException if problems while editing data.
      */
     public void deleteLabel(int id) throws EditDataException {
             try {
@@ -1920,4 +1919,135 @@ public class OracleDAO implements OperableDAO {
             }
         }
     }
+    
+    /**
+     * Returns list with child labels of the label with specified id.
+     * @param id id of the label.
+     * @return list with child labels of the label with specified id.
+     * @throws GetDataException if problems while getting data.
+     */ 
+    public List getChildLabels(int id, int firstRow, int lastRow) 
+            throws GetDataException {
+        List labels = null;
+        
+        if (id < -1) {
+            throw new GetDataException(
+                    new IllegalArgumentException("id must be >= -1"));
+        }
+        try {
+            labels = new ArrayList();
+            Label currLabel;
+                        
+            this.getConnection();
+            
+            if (this.connection == null){
+                throw new GetDataException("Connection is not created");
+            }
+
+            if (id == -1) {
+                this.statement = 
+                    this.connection.prepareStatement(
+                            GET_CHILD_LABELS_NULL);
+                this.statement.setInt(1, lastRow);
+                this.statement.setInt(2, firstRow);
+            } else {
+                this.statement = 
+                    this.connection.prepareStatement(
+                            GET_CHILD_LABELS_NOTNULL);
+                this.statement.setInt(1, lastRow);
+                this.statement.setInt(2, firstRow);
+                this.statement.setInt(3, id);
+            }
+            
+            this.connection.setAutoCommit(false);
+
+            ResultSet set = this.executeResultQuery();
+            
+            while(set.next()){
+                currLabel = (Label)fillBean(set, LABEL);
+                labels.add(currLabel);
+            }
+            this.connection.commit();
+            
+            return labels;
+            
+        } catch (ConnectionException e) {
+            throw new GetDataException(e);
+        } catch (ExecuteQueryException e) {
+            throw new GetDataException(e);
+        } catch (SQLException e) {
+            try {
+                this.connection.rollback();
+            } catch (SQLException exc) {
+                throw new GetDataException(exc);
+            }
+            throw new GetDataException(e);
+        } finally {
+            try {
+                this.connection.setAutoCommit(true);
+                closeConnection();
+            } catch (SQLException e) {
+                throw new GetDataException(e);
+            } catch (ConnectionException e) {
+                throw new GetDataException(e);
+            }
+        }
+    }
+    
+    /**
+     * Returns the path to the specified label in the hierarchy of labels.
+     * @param id id of the label.
+     * @return path to the specified label in the hierarchy of labels.
+     * @throws GetDataException if problems while getting data.
+     */ 
+    public String getLabelPath(int id) throws GetDataException {
+        String path = null;
+        
+        try {
+            this.getConnection();
+            
+            if (this.connection == null){
+                throw new GetDataException("Connection is not created");
+            }
+
+            this.statement = 
+                this.connection.prepareStatement(
+                        LABEL_GET_PATH);
+            this.statement.setInt(1, id);
+
+            this.connection.setAutoCommit(false);
+
+            ResultSet set = this.executeResultQuery();
+            
+            while(set.next()){
+                path = set.getString("path");
+                log.info(path);
+            }
+            this.connection.commit();
+            
+            return path;
+            
+        } catch (ConnectionException e) {
+            throw new GetDataException(e);
+        } catch (ExecuteQueryException e) {
+            throw new GetDataException(e);
+        } catch (SQLException e) {
+            try {
+                this.connection.rollback();
+            } catch (SQLException exc) {
+                throw new GetDataException(exc);
+            }
+            throw new GetDataException(e);
+        } finally {
+            try {
+                this.connection.setAutoCommit(true);
+                closeConnection();
+            } catch (SQLException e) {
+                throw new GetDataException(e);
+            } catch (ConnectionException e) {
+                throw new GetDataException(e);
+            }
+        }
+    }
+
 }

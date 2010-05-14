@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="pages/css/style.css" type="text/css" />        
     </head>
 <body>
-
+<%@include file="menu.jsp" %>
 <div id = "search_main">
     <div id = "form">
         <form action = "search" method = "get" id = "albumForm">

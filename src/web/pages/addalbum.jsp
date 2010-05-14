@@ -1,6 +1,8 @@
 <%@ page import="java.util.*" %>
 <%@ page import="ua.edu.sumdu.lab3.model.*" %>
     
+<%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
+    
 <html>
     <head>
         <title>Add album</title>
@@ -118,6 +120,7 @@
                 $("#labaddnew").change(function(){
                     $("#lablistall").attr("checked", false);
                     if ($(this).attr("checked")) {
+                        
                         window.open ("pages/addlabel.jsp",
                         "mywindow",
                         "menubar=1, resizable=1, width=800, height=600"); 
@@ -132,7 +135,9 @@
     </head>
 <body>
 
+<%@include file="menu.jsp" %>
 <div id = "addalbum_main">
+
     <div id = "form">
         <form action = "addalbum" method = "post" id = "albumForm">
             Name: <br />

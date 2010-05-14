@@ -41,6 +41,7 @@
                 for (i = 0; i < array.length-1; i++){
                     result += '<option value="'+array[i]+'">'+array[i]+'</option>';
                 }
+                result += '<option value = "none"> none </option>';
                 result += '</select>';
                 return result;
             }
@@ -61,10 +62,10 @@
                     success: function(data){
                         if (data == '1') {
                             $("div#editlabel_main").
-                                    append('<div class = acceptmessage>Artist was added</div>');
+                                    append('<div class = acceptmessage>Label was added</div>');
                         } else {
                             $("div#editlabel_main").
-                                    append('<div class = denymessage>Artist was not added</div>');
+                                    append('<div class = denymessage>Label was not added</div>');
                         }   
                     },
                 dataType: 'text'
@@ -91,7 +92,7 @@
         <div class = "labelfields">
         Major: 
         </div>
-        <input type = "button" onclick = "addLabel()" value = "Add"
+        <input type = "button" onclick = "addLabel()" value = "Add" />
     </form>
 </div>
 

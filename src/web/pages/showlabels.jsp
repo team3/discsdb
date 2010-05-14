@@ -30,11 +30,13 @@
     <div class="allpage">
         <%@include file="menu.jsp" %>
         <div class="labelslistcontent">
-            <h2>Labels</h2>
+            <h2><%=(String)request.getAttribute("path") %></h2>
+            
             <table width = "100%">
             <tr>
                 <td>Logo</td>
                 <td>Label name</td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -42,7 +44,8 @@
             <c:forEach var="lbl" begin="0" items="${labels}">
                 <tr>
                     <td><img src=<c:out value="${lbl.logo}" /> width="50" height="50" align="left" alt="cover"/></td>
-                    <td><a href=<c:out value="${pageContext.request.contextPath}${lblpath}${lbl.id}" /> ><c:out value="${lbl.name}" /></a></td>
+                    <td><a href=<c:out value="${pageContext.request.contextPath}/label/all?id=${lbl.id}" /> ><c:out value="${lbl.name}" /></a></td>
+                    <td><a href=<c:out value="${pageContext.request.contextPath}${lblpath}${lbl.id}" /> >Info</a></td>
                     <td>
                         <a href =<c:out value="${pageContext.request.contextPath}${edit_label}" /><c:out value="${lbl.id}" /> > Edit</a>
                     </td>

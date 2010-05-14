@@ -298,4 +298,21 @@ public interface OperableDAO {
      * @throws EditDataException if problems while getting data.
      */
     public void deleteLabel(int id) throws EditDataException;
+     
+     /**
+     * Returns list with child labels of the label with specified id.
+     * @param id id of the label.
+     * @return list with child labels of the label with specified id.
+     * @throws GetDataException if problems while getting data.
+     */ 
+    public List getChildLabels(int id, int firstRow, int lastRow) 
+            throws GetDataException;
+            
+    /**
+     * Returns the path to the specified label in the hierarchy of labels.
+     * @param id id of the label.
+     * @return path to the specified label in the hierarchy of labels.
+     * @throws GetDataException if problems while getting data.
+     */ 
+    public String getLabelPath(int id) throws GetDataException;        
 }

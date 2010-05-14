@@ -14,10 +14,10 @@
 <body>    
     <div class="allpage">
         <%@include file="menu.jsp" %>
-        <p style = "margin-left: 200px">
-        <a href = "<c:out value= "${pageContext.request.contextPath}" /> ">Main</a>&rarr;
-        <a href = <c:out value= "${pageContext.request.contextPath}/label/all"/> >Labels </a>&rarr;
-        <font color = "red"><c:out value="${label.name}" /></font>
+        <p style = "margin-left: 200px; color: black; font-weight: bold">
+            
+                <%=(String)request.getAttribute("path") %>
+            
         </p>
         
         <div class="labelslistcontent">
