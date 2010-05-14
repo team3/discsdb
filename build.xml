@@ -12,16 +12,23 @@
     <target name = "clear">
         <echo message = "Clearing the temperary files ... " />
         <delete >
-            <fileset dir="${classes}">
+            <fileset dir = "${classes}">
                 <include name="**/*.class" />
-            </fileset>
-            <fileset dir="${dist}">
-                <include name = "**/*.war" />
             </fileset>
         </delete>
     </target>
     
-    <target name = "compile" depends = "clear">
+    <target name = "prepare" depends = "clear">
+        <delete quiet = "true">
+            <fileset dir = "${dist}">
+                <include name = "**/*.war" />
+            </fileset>
+        </delete>
+        <mkdir dir = "${dist}" />
+        <mkdir dir = "${build}" />
+    </target>
+    
+    <target name = "compile" depends = "prepare">
         <echo message = "Compiling the project ... " />
         <echo message = "${libs}" />
         <echo message = "${classes}" />
