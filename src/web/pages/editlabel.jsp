@@ -50,39 +50,13 @@
                 return result;
             }
             
-            function addLabel() {
-                var name = $('.labelname').getValue();
-                var info = $('.labelinfo').getValue();
-                var logo = $('.labellogo').getValue();
-                var major = $(".labelslist").getValue();
-                 
-                var url = '/discs/addlabel?name=' + name + 
-                        '&info=' + info + 
-                        '&logo=' + logo +
-                        '&major=' + major;
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    success: function(data){
-                        if (data == '1') {
-                            $("div#editlabel_main").
-                                    append('<div class = acceptmessage>Label was added</div>');
-                        } else {
-                            $("div#editlabel_main").
-                                    append('<div class = denymessage>Label was not added</div>');
-                        }   
-                    },
-                dataType: 'text'
-                });
-            }
-            
         </script>
     </head>
 <body>
 
 <div id = "editlabel_main">
     <h1>Try to edit label: <font color = "red"><c:out value="${label.name}" /> </font></h1>
-    <form action = "editlabel" name = "edit_label_form" method = "POST">
+    <form action = "editlabel" name = "edit_label_form" class = "edit_label_form" method = "POST">
         Name: <br />
         <input type = "text" class = "labelname" name= "labelname" value = "<c:out value="${label.name}"  />" />
         <br />
@@ -99,7 +73,7 @@
         <input type = "hidden" name = "labelid" value = <c:out value="${label.id}" /> />
         <input type = "hidden" name = "majorid" value = <c:out value="${label.major}" /> />
         <br />
-        <Input type = "submit" value = "ok" />
+        <input type = "submit" value = "ok" />
     </form>
 </div>
 

@@ -346,8 +346,8 @@ public class Linker extends HttpServlet {
                 String name = request.getParameter("labelname");
                 String info = request.getParameter("labelinfo");
                 String logo = request.getParameter("labellogo");
-                String major = request.getParameter("major");
-                
+                String major = request.getParameter("labelslist");
+               
                 int majorId = 0;
                 if (!("none".equals(major))){
                     majorId = dao.findLabel(major);
@@ -359,6 +359,7 @@ public class Linker extends HttpServlet {
                 label.setInfo(info);
                 label.setLogo(logo);
                 label.setMajorName(major);
+                
                 dao.editLabel(label);
                 
                 response.sendRedirect("label?id=" + id);
@@ -454,10 +455,8 @@ public class Linker extends HttpServlet {
 
         if (path == null) {
             path = "<a href = /discs/label/all>Labels</a>";
-            log.info("null = " + path);
         } else {
             String[] pathelements = path.split("--");
-            log.info("pathelements = " + pathelements[0]);
             StringBuffer buffer = new StringBuffer();
             buffer.append("<a href = /discs/label/all>Labels</a> &rarr; ");
             for (int i = 1; i < pathelements.length; i++){
