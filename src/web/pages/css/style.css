@@ -274,3 +274,10 @@ div.denymessage {
     font-size: 24px;
     height: auto;
 }
+
+div.error {
+    margin: 150px auto;
+    width: 200px;
+    height: auto;
+    border: 2px solid red;
+}

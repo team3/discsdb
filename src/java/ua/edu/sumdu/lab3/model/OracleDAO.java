@@ -158,8 +158,6 @@ public class OracleDAO implements OperableDAO {
     
     protected OracleDAO() {
         log = Logger.getLogger(OracleDAO.class);
-
-        log.info("Logged");
     }
     
     /**
@@ -193,8 +191,6 @@ public class OracleDAO implements OperableDAO {
             InitialContext iContext = new InitialContext();
             Context context = (Context) iContext.lookup("java:comp/env");
             DataSource datasource = (DataSource)context.lookup("jdbc/DiscsDB");
-            log.info(datasource);
-            
             connection = datasource.getConnection();
         } catch (javax.naming.NamingException e){
             throw new ConnectionException(e);
