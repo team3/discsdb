@@ -45,7 +45,7 @@ public class OracleDAO implements OperableDAO {
             "UPDATE ARTIST SET aid = ?, name = ?, country = ?, info = ? where aid = ?";
     
     private static final String EDIT_LABEL = 
-            "UPDATE LABEL SET lid = ?, major = ?, name = ?, info = ?, logo = ? where lid = ?";
+            "UPDATE LABEL SET major = ?, name = ?, info = ?, logo = ? where lid = ?";
     
     private static final String SELECT_ALBUM_BY_ID = 
             "SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, album.art, album.lbl, artist.name, label.name FROM album JOIN artist ON (album.art = artist.aid) JOIN label ON (album.lbl = label.lid) WHERE album.alid = ?";
@@ -160,8 +160,6 @@ public class OracleDAO implements OperableDAO {
     
     protected OracleDAO() {
         log = Logger.getLogger(OracleDAO.class);
-
-        log.info("Logged");
     }
     
     /**
@@ -195,8 +193,6 @@ public class OracleDAO implements OperableDAO {
             InitialContext iContext = new InitialContext();
             Context context = (Context) iContext.lookup("java:comp/env");
             DataSource datasource = (DataSource)context.lookup("jdbc/DiscsDB");
-            log.info(datasource);
-            
             connection = datasource.getConnection();
         } catch (javax.naming.NamingException e){
             throw new ConnectionException(e);
@@ -1442,21 +1438,20 @@ public class OracleDAO implements OperableDAO {
             }
             
             if (lbl == null) {
-                throw new EditDataException("No artist with specified id found");
+                throw new EditDataException("No label with specified id found");
             } 
             
             this.statement = this.connection.prepareStatement(EDIT_LABEL);
-            
-            this.statement.setInt(1, label.getId());
+        
             if (label.getMajor() == 0) {
-                this.statement.setNull(2, label.getMajor());
+                this.statement.setNull(1, label.getMajor());
             } else {
-                this.statement.setInt(2, label.getMajor());
+                this.statement.setInt(1, label.getMajor());
             }
-            this.statement.setString(3, label.getName());
-            this.statement.setString(4, label.getInfo());
-            this.statement.setString(5, label.getLogo());
-            this.statement.setInt(6, label.getId());
+            this.statement.setString(2, label.getName());
+            this.statement.setString(3, label.getInfo());
+            this.statement.setString(4, label.getLogo());
+            this.statement.setInt(5, label.getId());
             
             this.connection.setAutoCommit(false);
             this.executeUpdateQuery();

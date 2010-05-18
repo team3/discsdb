@@ -54,7 +54,7 @@
 
         <delete file = "${webapps}/discs.war" />
         <delete file = "${webapps}/discs.xml" />
-        <copy todir="${webapps}">
+        <copy todir = "${webapps}" >
             <fileset dir = "${dist}">
                 <include name = "*.war" />
             </fileset>

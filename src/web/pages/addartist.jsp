@@ -47,7 +47,7 @@
                                     append('<div class = acceptmessage>Artist was added</div>');
                         } else {
                             $("div#editartist_main").
-                                    append('<div class = denymessage>Artist was not added</div>');
+                                    append('<div class = denymessage>Artist was not added<br />' + data +'</div>');
                         }                        
                     },
                 dataType: 'text'

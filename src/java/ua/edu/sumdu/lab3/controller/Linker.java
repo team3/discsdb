@@ -235,7 +235,6 @@ public class Linker extends HttpServlet {
                     out.print(((Label)itr.next()).getName() + "\n");
                 }
             } else if ("/search".equals(spath)) {
-               
                 String by = (String)request.getParameter("by");
                 if (by == null) {
                     getServletConfig().getServletContext().getRequestDispatcher(
@@ -276,9 +275,7 @@ public class Linker extends HttpServlet {
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showalbums.jsp").forward(request,response);
                 }
-
             } 
-        
         } catch (GetDataException e) {
             throw new ServletException(e);
         } catch (EditDataException e) {
@@ -330,15 +327,18 @@ public class Linker extends HttpServlet {
                 String name = request.getParameter("name");
                 String country = request.getParameter("country");
                 String info = request.getParameter("info");
-
-                Artist artist = new Artist();
-                artist.setName(name);
-                artist.setInfo(info);
-                artist.setCountry(country);
-                
-                dao.addArtist(artist);
-                out.print("1");   
-                         
+                            
+                if (artistInList(name)){
+                    out.print("Artist already exists");  
+                } else {
+                    Artist artist = new Artist();
+                    artist.setName(name);
+                    artist.setInfo(info);
+                    artist.setCountry(country);
+                    
+                    dao.addArtist(artist);
+                    out.print("1");   
+                }         
             } else if ("/addlabel".equals(spath)) {
                 String name = request.getParameter("name");
                 String info = request.getParameter("info");
@@ -368,8 +368,8 @@ public class Linker extends HttpServlet {
                 String name = request.getParameter("labelname");
                 String info = request.getParameter("labelinfo");
                 String logo = request.getParameter("labellogo");
-                String major = request.getParameter("major");
-                
+                String major = request.getParameter("labelslist");
+               
                 int majorId = 0;
                 if (!("none".equals(major))){
                     majorId = dao.findLabel(major);
@@ -381,6 +381,7 @@ public class Linker extends HttpServlet {
                 label.setInfo(info);
                 label.setLogo(logo);
                 label.setMajorName(major);
+                
                 dao.editLabel(label);
                 
                 response.sendRedirect("label?id=" + id);
@@ -393,16 +394,22 @@ public class Linker extends HttpServlet {
                 String name = request.getParameter("artistname");
                 String country = request.getParameter("artistcountry");
                 String info = request.getParameter("artistinfo");
-                
-                Artist artist = new Artist();
-                artist.setId(id);
-                artist.setName(name);
-                artist.setCountry(country);
-                artist.setInfo(info);
-                
-                dao.editArtist(artist);
-                
-                response.sendRedirect("artist?id=" + id);
+                if (artistInList(name)){
+                    request.setAttribute("error", "Artist already exists");
+                    getServletConfig().getServletContext().
+                            getRequestDispatcher("/pages/error.jsp").
+                            forward(request,response);
+                } else {
+                    Artist artist = new Artist();
+                    artist.setId(id);
+                    artist.setName(name);
+                    artist.setCountry(country);
+                    artist.setInfo(info);
+                    
+                    dao.editArtist(artist);
+                    
+                    response.sendRedirect("artist?id=" + id);
+                }
             }
             
             if ("/editalbum".equals(spath)){
@@ -442,5 +449,19 @@ public class Linker extends HttpServlet {
             throw new ServletException(e);
         }
     }
-}
 
+    /**
+     * Returns true if artist already in storage.
+     * @param name artist's name.
+     * @return true if artist already in storage.
+     */ 
+    private boolean artistInList(String name) throws GetDataException {
+        List artists = dao.getArtists(1, dao.getArtistNumber());
+        Iterator itr = artists.iterator();
+        while (itr.hasNext()){
+            String existName = ((Artist)itr.next()).getName();
+            if (name.equals(existName)) return true;
+        }
+        return false;
+    }
+}
