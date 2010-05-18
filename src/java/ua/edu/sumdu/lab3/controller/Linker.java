@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/java/ua/edu/sumdu/lab3/controller/Linker.java
 package ua.edu.sumdu.lab3.controller;
 
 import ua.edu.sumdu.lab3.model.*;

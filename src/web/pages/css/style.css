@@ -68,7 +68,7 @@ a:link, a:visited {
     font-size: 13px;
     font-family: eneva, Arial, Helvetica, sans-serif;
     width: 695px;
-    height: 250px;
+    height: auto;
     border: 1px dashed lightgray;
     margin-left: 10%;
     margin-right: 20%;
