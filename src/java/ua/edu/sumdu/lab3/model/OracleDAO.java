@@ -1953,21 +1953,30 @@ public class OracleDAO implements OperableDAO {
      * @throws EditDataException if problems while editing data.
      */
     public void deleteLabel(int id) throws EditDataException {
-            try {
+        try {
+            List labels = getLabels(id);
+            
+            Iterator itr = labels.iterator();
+            while(itr.hasNext()){
+                Label label = (Label)itr.next();
+                label.setMajor(0);
+                editLabel(label);
+            }
             
             this.getConnection();
             
             if (this.connection == null){
                 throw new EditDataException("Connection is not created");
             }
-            
             this.statement = this.connection.prepareStatement(DELETE_LABEL);
             
             this.statement.setInt(1, id);
             this.connection.setAutoCommit(false);
             this.executeUpdateQuery();
             this.connection.commit();
-            
+        
+        } catch (GetDataException e) {
+            throw new EditDataException(e);    
         } catch (ConnectionException e) {
             throw new EditDataException(e);
         } catch (ExecuteQueryException e) {
