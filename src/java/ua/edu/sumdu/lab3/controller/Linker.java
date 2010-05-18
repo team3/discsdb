@@ -52,16 +52,18 @@ public class Linker extends HttpServlet {
             if ("".equals(spath)) {
                 request.setAttribute("random",dao.getRandomAlbum());
                 request.setAttribute("latest",dao.getLatestAlbums(5));
+                
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/index.jsp").forward(request,response);
             
             } else if ("/artist".equals(spath)) {
                 String id = request.getParameter("id");
                 int aid = Integer.parseInt(id);
-                request.setAttribute("artist",dao.getArtist(aid));
+                request.setAttribute("artist", dao.getArtist(aid));
                 Artist artForGenres = new Artist();
                 artForGenres.setId(aid);
-                request.setAttribute("genres",new CollectionWrapper(dao.getGenres(artForGenres)));
+                request.setAttribute("genres",
+                        new CollectionWrapper(dao.getGenres(artForGenres)));
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/showartist.jsp").forward(request,response);
             
@@ -79,11 +81,13 @@ public class Linker extends HttpServlet {
                 int number = 0;
                 Object artists;
                 if(country != null) {
-                    number = (int)Math.ceil((double)dao.getArtistNumber(country) / 10);
-                    artists = dao.getArtists(country,first,last);
+                    number = (int)Math.ceil(
+                            (double)dao.getArtistNumber(country) / 10);
+                    artists = dao.getArtists(country, first, last);
                 } else {
-                    number = (int)Math.ceil((double)dao.getArtistNumber() / 10);
-                    artists = dao.getArtists(first,last);
+                    number = (int)Math.ceil(
+                            (double)dao.getArtistNumber() / 10);
+                    artists = dao.getArtists(first, last);
                 }
                 
                 request.setAttribute("number",new Integer(number));
@@ -93,7 +97,10 @@ public class Linker extends HttpServlet {
             
             } else if("/album".equals(spath)) {
                 String id = request.getParameter("id");
-                request.setAttribute("album",dao.getAlbum(Integer.parseInt(id)));
+                
+                request.setAttribute("album",  
+                        dao.getAlbum(Integer.parseInt(id)));
+                
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/showalbum.jsp").forward(request,response);
                         
@@ -101,6 +108,7 @@ public class Linker extends HttpServlet {
                 String page = request.getParameter("page");
                 int first = 0;
                 int last = 0;
+                
                 if(page == null) {
                     last = 10;
                 } else {
@@ -110,20 +118,27 @@ public class Linker extends HttpServlet {
                 String year = request.getParameter("year");
                 String genre = request.getParameter("genre");
                 int number = 0;
+                
                 Object albums = null;
+                
                 if(year != null){
+                
                     Date date = df.parse(year);
-                    number = (int)Math.ceil((double)dao.getAlbumNumber(date) / 10);
-                    albums = dao.getAlbums(date,first,last);
+                    number = (int)Math.ceil(
+                            (double)dao.getAlbumNumber(date) / 10);
+                    albums = dao.getAlbums(date, first, last);
+                
                 } else if(genre != null) {
-                    number = (int)Math.ceil((double)dao.getAlbumNumber(genre) / 10);
-                    albums = dao.getAlbums(genre,first,last);
+                    number = (int)Math.ceil(
+                            (double)dao.getAlbumNumber(genre) / 10);
+                    albums = dao.getAlbums(genre, first, last);
                 } else {
-                    number = (int)Math.ceil((double)dao.getAlbumNumber() / 10);
-                    albums = dao.getAlbums(first,last);
+                    number = (int)Math.ceil(    
+                        (double)dao.getAlbumNumber() / 10);
+                    albums = dao.getAlbums(first, last);
                 }
-                request.setAttribute("number",new Integer(number));
-                request.setAttribute("albums",albums);
+                request.setAttribute("number", new Integer(number));
+                request.setAttribute("albums", albums);
                 
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/showalbums.jsp").forward(request,response);
@@ -131,12 +146,22 @@ public class Linker extends HttpServlet {
             } else if("/label".equals(spath)) {
                 String id = request.getParameter("id");
                 int lid = Integer.parseInt(id);
-                request.setAttribute("label",dao.getLabel(lid));
-                request.setAttribute("path",new CollectionWrapper(dao.getLabelPath(lid)));
-                request.setAttribute("children",new CollectionWrapper(dao.getLabels(lid)));
-                getServletConfig().getServletContext().getRequestDispatcher(
-                        "/pages/showlabel.jsp").forward(request,response);
+                
+                if (!labelInList(lid)) {
+                    redirrectToErrorPage(response, 
+                            "Sorry, but this label does not exist");
+                } else {
+                    Label label = dao.getLabel(lid);
 
+                    request.setAttribute("label", label);
+                    request.setAttribute("path", 
+                            new CollectionWrapper(dao.getLabelPath(lid)));
+                    request.setAttribute("children",
+                            new CollectionWrapper(dao.getLabels(lid)));
+                    
+                    getServletConfig().getServletContext().getRequestDispatcher(
+                            "/pages/showlabel.jsp").forward(request,response);
+                }
             } else if("/label/all".equals(spath)) {
                 String page = request.getParameter("page");
                 int first = 0;
@@ -463,5 +488,25 @@ public class Linker extends HttpServlet {
             if (name.equals(existName)) return true;
         }
         return false;
+    }
+    
+    /**
+     * Returns true if label already in storage.
+     * @param name labels's name.
+     * @return true if label already in storage.
+     */ 
+    private boolean labelInList(int id) throws GetDataException {
+        List labels = dao.getLabels();
+        Iterator itr = labels.iterator();
+        while (itr.hasNext()){
+            int lid = ((Label)itr.next()).getId();
+            if (lid == id) return true;
+        }
+        return false;
+    }
+    
+    private void redirrectToErrorPage(HttpServletResponse response, 
+            String error) throws IOException {
+        response.sendRedirect("/pages/error.jsp?error=" + error);
     }
 }

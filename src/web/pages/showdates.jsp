@@ -16,10 +16,17 @@
         <%@include file="menu.jsp" %>
         <div class="maincont">
             <p>
-            <c:forEach var = "year" begin="0" items="${dates}">
-                <c:set var="truepath" value="${pageContext.request.contextPath}${albumspath}?year=${year} "/>
-                <a href=<c:out value="${truepath}"/>><c:out value="${year}"/>&nbsp;</a>
-            </c:forEach>
+                <c:forEach var = "year" begin="0" items="${dates}">
+                    <c:set 
+                        var = "truepath" 
+                        value = "${pageContext.request.contextPath}${albumspath}?year=${year} "
+                    />
+                    <a 
+                        href=<c:out value="${truepath}"/>>
+                        <c:out value="${year}"/>
+                        &nbsp;
+                    </a>
+                </c:forEach>
             </p>
         </div>
     </div>

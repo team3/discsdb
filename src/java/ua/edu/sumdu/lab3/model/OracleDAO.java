@@ -3,7 +3,7 @@
 * @author Andrey Parhomenko
 * @author Sergiy Stetsyun
 * @version 1.0
-* @date 11.05.2010
+* @date 18.05.2010
 */ 
 
 package ua.edu.sumdu.lab3.model;
@@ -149,10 +149,6 @@ public class OracleDAO implements OperableDAO {
     private Connection connection = null;
     private PreparedStatement statement = null;
     
-    /*private String db_url;
-    private String db_username;
-    private String db_password;*/
-    
     private Logger log = null;
     
     private static OracleDAO instance = null;
@@ -161,18 +157,6 @@ public class OracleDAO implements OperableDAO {
     protected OracleDAO() {
         log = Logger.getLogger(OracleDAO.class);
     }
-    
-    /**
-     * Returns parameters of the oracle database connection.
-     * @return parameters of the oracle database connection.
-     */ 
-    /*public String getParameters() {
-        StringBuffer text = new StringBuffer();
-        text.append(this.db_url).append("\n").
-                append(this.db_username).append("\n").
-                append(this.db_password);
-        return text.toString();
-    }*/
     
     /**
      * Returns new instance of this class if it does not exist.

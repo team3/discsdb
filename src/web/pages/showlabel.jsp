@@ -35,25 +35,37 @@
             </c:forEach>
         </p>
         <div class="labelslistcontent">
-        <img src=<c:out value="${label.logo}" /> width="220" height="220" align="left" alt="cover"/>
-        <h1> <c:out value="${label.name}" /></h1>
-        <c:if test="${label.majorName != null}">
-            <p><b>Major :</b><a href =<c:out value="${pageContext.request.contextPath}${lblpath}${label.major}" /> ><c:out value="${label.majorName}" /></a></p>
-        </c:if>
-        <p>Info:</p>
-        <p><i><c:out value="${label.info}" /></i></p>
-        <c:if test="${children.size != 0}">
-            <p><b>Labels:</b></p>
-            <ul>
-            <c:forEach var="child" begin="0" items="${children.collection}">
-                <li><a href =<c:out value="${pageContext.request.contextPath}${lblpath}${child.id}" /> ><c:out value="${child.name}" /></a></li>
-            </c:forEach>
-            </ul>
-        </c:if>
-        <p>
-            <a href = <c:out value= "${pageContext.request.contextPath}/editlabel?id=${label.id}" /> >Edit</a>
-        </p>
-    </div>
+            <img src=<c:out value="${label.logo}" /> width="220" height="220" align="left" alt="cover"/>
+            <h1> 
+                <u>
+                    <c:out value="${label.name}" />
+                </u>
+            </h1>
+            <c:if test="${label.majorName != null}">
+                <p><b>Major :</b>
+                <a href =<c:out value="${pageContext.request.contextPath}${lblpath}${label.major}" /> ><c:out value="${label.majorName}" /></a></p>
+            </c:if>
+            <!-- Info section -->
+            <p>
+                <b>Info:</b>
+            </p>
+            
+            <p style = "font-size: 12px;">
+                <i><c:out value="${label.info}" /></i>
+            </p>
+            <!-- Childrens labels section -->
+            <c:if test="${children.size != 0}">
+                <p style = "clear: both"><b>Labels:</b></p>
+                <ul>
+                <c:forEach var="child" begin="0" items="${children.collection}">
+                    <li><a href =<c:out value="${pageContext.request.contextPath}${lblpath}${child.id}" /> ><c:out value="${child.name}" /></a></li>
+                </c:forEach>
+                </ul>
+            </c:if>
+            <p>
+                <a href = <c:out value= "${pageContext.request.contextPath}/editlabel?id=${label.id}" /> >Edit</a>
+            </p>
+        </div>
     </div>
 </body>
 </html>

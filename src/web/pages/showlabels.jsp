@@ -16,11 +16,11 @@
             
             table {
                 border-collapse:collapse;
-                font-size: 12px;
+                font-size: 13px;
             }
             
             table,th, td {
-                border: 1px solid lightgray;
+                border: 1px solid blue;
             }
             
         </style>
@@ -37,13 +37,18 @@
                 <td>Label name</td>
                 <td></td>
                 <td></td>
-                <td></td>
             </tr>
             <c:set var="truepath" value="${pageContext.request.contextPath}${removepath}"/>
             <c:forEach var="lbl" begin="0" items="${labels}">
                 <tr>
-                    <td><img src=<c:out value="${lbl.logo}" /> width="50" height="50" align="left" alt="cover"/></td>
-                    <td><a href=<c:out value="${pageContext.request.contextPath}/label?id=${lbl.id}" /> ><c:out value="${lbl.name}" /></a></td>
+                    <td>
+                        <img src=<c:out value="${lbl.logo}" /> width="50" height="50" align="left" alt="cover"/>
+                    </td>
+                    
+                    <td>
+                        <a href=<c:out value="${pageContext.request.contextPath}/label?id=${lbl.id}" /> ><c:out value="${lbl.name}" /></a>
+                    </td>
+                    
                     <td>
                         <a href =<c:out value="${pageContext.request.contextPath}${edit_label}" /><c:out value="${lbl.id}" /> > Edit</a>
                     </td>

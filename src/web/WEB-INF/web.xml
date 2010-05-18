@@ -3,24 +3,7 @@
     <servlet>
         <servlet-name>Dispatcher</servlet-name>
         <servlet-class>ua.edu.sumdu.lab3.controller.Linker</servlet-class>
-        <init-param>
-            <param-name>dbname</param-name>
-            <param-value>oracle</param-value>
-        </init-param>
-        <init-param>
-            <param-name>dburl</param-name>
-            <param-value>localhost</param-value>
-        </init-param>
-        <init-param>
-            <param-name>dbpass</param-name>
-            <param-value>ballsofsteel</param-value>
-        </init-param>
-        <init-param>
-            <param-name>dbuser</param-name>
-            <param-value>quagmire</param-value>
-        </init-param>
     </servlet>
- 
  
     <servlet-mapping>
         <servlet-name>Dispatcher</servlet-name>

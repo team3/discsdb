@@ -13,11 +13,11 @@
             
             table {
                 border-collapse:collapse;
-                font-size: 12px;
+                font-size: 13px;
             }
             
             table,th, td {
-                border: 1px solid lightgray;
+                border: 1px solid blue;
             }
             
         </style>

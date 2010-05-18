@@ -65,9 +65,10 @@ a:link, a:visited {
 
 .albumslistcontent, .artistslistcontent, .labelslistcontent  {
     color:#2F4F4F;
-    font-size: 13px;
+    font-size: 14px;
     font-family: eneva, Arial, Helvetica, sans-serif;
     width: 695px;
+    min-height: 350px;
     height: auto;
     border: 1px dashed lightgray;
     margin-left: 10%;
