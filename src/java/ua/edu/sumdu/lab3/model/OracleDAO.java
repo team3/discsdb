@@ -1963,6 +1963,15 @@ public class OracleDAO implements OperableDAO {
                 editLabel(label);
             }
             
+            List albums = getAlbums(1, getAlbumNumber());
+            
+            itr = albums.iterator();
+            while(itr.hasNext()){
+                Album album = (Album)itr.next();
+                album.setLabel(0);
+                editAlbum(album);
+            }
+            
             this.getConnection();
             
             if (this.connection == null){

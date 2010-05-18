@@ -419,22 +419,17 @@ public class Linker extends HttpServlet {
                 String name = request.getParameter("artistname");
                 String country = request.getParameter("artistcountry");
                 String info = request.getParameter("artistinfo");
-                if (artistInList(name)){
-                    request.setAttribute("error", "Artist already exists");
-                    getServletConfig().getServletContext().
-                            getRequestDispatcher("/pages/error.jsp").
-                            forward(request,response);
-                } else {
-                    Artist artist = new Artist();
-                    artist.setId(id);
-                    artist.setName(name);
-                    artist.setCountry(country);
-                    artist.setInfo(info);
+
+                Artist artist = new Artist();
+                artist.setId(id);
+                artist.setName(name);
+                artist.setCountry(country);
+                artist.setInfo(info);
+                
+                dao.editArtist(artist);
                     
-                    dao.editArtist(artist);
-                    
-                    response.sendRedirect("artist?id=" + id);
-                }
+                response.sendRedirect("artist?id=" + id);
+                
             }
             
             if ("/editalbum".equals(spath)){
