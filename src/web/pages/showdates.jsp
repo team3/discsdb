@@ -2,7 +2,7 @@
 <%@ page import="ua.edu.sumdu.lab3.model.*" %>
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
 
-<jsp:useBean id="dates" scope="request" class="java.util.ArrayList" />
+<jsp:useBean id="dates" scope="request" class="java.util.LinkedList" />
 
 <html>
     <head>

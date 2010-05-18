@@ -5,7 +5,7 @@
 <%@ taglib uri="/WEB-INF/tags/fmt.tld" prefix="fmt" %>
 
 <jsp:useBean id="album" scope="request" class="ua.edu.sumdu.lab3.model.Album" />
-<jsp:useBean id="albums" scope="request" class="java.util.ArrayList" />
+<jsp:useBean id="albums" scope="request" class="java.util.LinkedList" />
 <jsp:useBean id="number" scope="request" class="java.lang.Integer" />
     
     <c:set var = "stylepath" value = "/pages/css/style.css" />

@@ -26,6 +26,9 @@ public class OracleDAO implements OperableDAO {
     private static final int ARTIST = 1;
     private static final int LABEL = 2;
     
+    private static final int FULL_MODE = 10;
+    private static final int SHORT_MODE = 9;
+    
     private static final String ADD_NEW_ALBUM = 
             "INSERT INTO ALBUM VALUES (SQ_ALBUM.nextval, ?, ?, ?, ?, ?, ?, ?, ?)";
             
@@ -75,13 +78,13 @@ public class OracleDAO implements OperableDAO {
             "SELECT * FROM (SELECT a.*, rownum rnum FROM(SELECT * FROM artist WHERE country like ?) a WHERE ROWNUM <=?) WHERE rnum >=?";
             
     private static final String SELECT_GENRES_BY_ARTIST = 
-            "SELECT genre FROM ALBUM WHERE art = ?"; 
+            "SELECT DISTINCT genre FROM ALBUM WHERE art = ?"; 
     
     private static final String SELECT_GENRES_BY_LABEL = 
             "SELECT DISTINCT genre FROM ALBUM WHERE lbl = ?";
     
     private static final String SELECT_ALL_LABELS = 
-            "SELECT b.lid,b.major,b.name,b.logo,b.info,b.major_name FROM (SELECT a.*, rownum rnum FROM (SELECT d.lid,d.major,d.name,d.logo,d.info,e.name as major_name FROM label d, label e WHERE d.major = e.lid UNION SELECT d.lid,d.major,d.name,d.logo,info,null as major_name FROM label d WHERE d.major IS NULL) a where rownum <= ?) b where rnum >=?";
+            "SELECT lid,name,logo from label";
     
     private static final String SELECT_ALL_DATES = 
             "SELECT DISTINCT TO_CHAR(release,'YYYY')as year FROM album order by year";
@@ -120,7 +123,7 @@ public class OracleDAO implements OperableDAO {
             "SELECT MAX(ROWNUM) FROM artist WHERE country LIKE ?";
 
     private static final String LABEL_MAX_ROW =
-            "SELECT MAX(ROWNUM) FROM label";
+            "SELECT MAX(ROWNUM) FROM label WHERE major IS NULL";
             
     private static final String ALBUM_RANDOM = 
             "SELECT a.alid, a.name, a.type, a.release, a.genre, a.cover, a.review, a.art, a.lbl, artist.name, label.name FROM ( SELECT * FROM album ORDER BY dbms_random.value ) a JOIN artist ON (a.art = artist.aid) JOIN label ON (a.lbl = label.lid) WHERE rownum = 1";
@@ -134,22 +137,21 @@ public class OracleDAO implements OperableDAO {
     private static final String DELETE_LABEL = 
             "DELETE FROM label WHERE lid = ?";
     
-    private static final String GET_CHILD_LABELS_NOTNULL = 
-            "SELECT b.lid,b.major,b.name,b.logo,b.info,b.major_name FROM (SELECT a.*, rownum rnum FROM (SELECT d.lid,d.major,d.name,d.logo,d.info,e.name as major_name FROM label d, label e WHERE d.major = e.lid UNION SELECT d.lid,d.major,d.name,d.logo,info,null as major_name FROM label d WHERE d.major IS NULL) a where rownum <= ?) b where rnum >=? AND b.major = ?";
-    
-    private static final String GET_CHILD_LABELS_NULL = 
-            "SELECT b.lid,b.major,b.name,b.logo,b.info,b.major_name FROM (SELECT a.*, rownum rnum FROM (SELECT d.lid,d.major,d.name,d.logo,d.info,e.name as major_name FROM label d, label e WHERE d.major = e.lid UNION SELECT d.lid,d.major,d.name,d.logo,info,null as major_name FROM label d WHERE d.major IS NULL) a where rownum <= ?) b where rnum >=? AND b.major IS NULL";
-    
+    private static final String GET_CHILD_LABELS = 
+            "SELECT lid,name,logo FROM label where major = ?";
+
+    private static final String GET_MAJOR_LABELS = 
+            "SELECT b.lid,b.name,b.logo FROM (SELECT a.*, rownum rnum FROM (SELECT d.lid,d.name,d.logo FROM label d WHERE d.major IS NULL ORDER BY lid) a WHERE rownum <= ?) b WHERE rnum >=?";
+
     private static final String LABEL_GET_PATH = 
-            "SELECT SYS_CONNECT_BY_PATH(name, '--') AS path FROM label  WHERE lid = ?  START WITH major is null  CONNECT BY PRIOR lid = major";
-    
+            "SELECT * FROM (SELECT lid,name,logo FROM label START WITH lid = ? CONNECT BY PRIOR major = lid) ORDER BY lid";
                     
     private Connection connection = null;
     private PreparedStatement statement = null;
     
-    private String db_url;
+    /*private String db_url;
     private String db_username;
-    private String db_password;
+    private String db_password;*/
     
     private Logger log = null;
     
@@ -166,13 +168,13 @@ public class OracleDAO implements OperableDAO {
      * Returns parameters of the oracle database connection.
      * @return parameters of the oracle database connection.
      */ 
-    public String getParameters() {
+    /*public String getParameters() {
         StringBuffer text = new StringBuffer();
         text.append(this.db_url).append("\n").
                 append(this.db_username).append("\n").
                 append(this.db_password);
         return text.toString();
-    }
+    }*/
     
     /**
      * Returns new instance of this class if it does not exist.
@@ -262,43 +264,59 @@ public class OracleDAO implements OperableDAO {
     }
     
 
-    private Object fillBean(ResultSet set,int beanType) throws GetDataException {
+    private Object fillBean(ResultSet set,int beanType,int mode) throws GetDataException {
         Object bean = null;
         try {
             switch(beanType) {
                 case ALBUM:
                     Album alb = new Album();
-                    alb.setId(set.getInt(1));
-                    alb.setName(set.getString(2));
-                    alb.setType(set.getString(3));
-                    alb.setRelease(new java.util.Date(set.getDate(4).getTime()));
-                    alb.setGenre(set.getString(5));
-                    alb.setCover(set.getString(6));
-                    alb.setReview(set.getString(7));
-                    alb.setArtist(set.getInt(8));
-                    alb.setLabel(set.getInt(9));
-                    alb.setArtistName(set.getString(10));
-                    alb.setLabelName(set.getString(11));
+                    if(mode == FULL_MODE) {
+                        alb.setId(set.getInt(1));
+                        alb.setName(set.getString(2));
+                        alb.setType(set.getString(3));
+                        alb.setRelease(new java.util.Date(set.getDate(4).getTime()));
+                        alb.setGenre(set.getString(5));
+                        alb.setCover(set.getString(6));
+                        alb.setReview(set.getString(7));
+                        alb.setArtist(set.getInt(8));
+                        alb.setLabel(set.getInt(9));
+                        alb.setArtistName(set.getString(10));
+                        alb.setLabelName(set.getString(11));
+                    } else {
+                        alb.setId(set.getInt(1));
+                        alb.setName(set.getString(2));
+                    }
                     bean = alb;
                 break;
                 
                 case ARTIST:
                     Artist art = new Artist();
-                    art.setId(set.getInt(1));
-                    art.setName(set.getString(2));
-                    art.setCountry(set.getString(3));
-                    art.setInfo(set.getString(4));
+                    if(mode == FULL_MODE) {
+                        art.setId(set.getInt(1));
+                        art.setName(set.getString(2));
+                        art.setCountry(set.getString(3));
+                        art.setInfo(set.getString(4));
+                    } else {
+                        art.setId(set.getInt(1));
+                        art.setName(set.getString(2));
+                    }
                     bean = art;
                 break;
                 
                 case LABEL:
                     Label lbl = new Label();
-                    lbl.setId(set.getInt(1));
-                    lbl.setMajor(set.getInt(2));
-                    lbl.setName(set.getString(3));
-                    lbl.setLogo(set.getString(4));
-                    lbl.setInfo(set.getString(5));
-                    lbl.setMajorName(set.getString(6));
+                    if(mode == FULL_MODE) {
+                        lbl.setId(set.getInt(1));
+                        lbl.setMajor(set.getInt(2));
+                        lbl.setName(set.getString(3));
+                        lbl.setLogo(set.getString(4));
+                        lbl.setInfo(set.getString(5));
+                        lbl.setMajorName(set.getString(6));
+                    } else {
+                        lbl.setId(set.getInt(1));
+                        lbl.setName(set.getString(2));
+                        lbl.setLogo(set.getString(3));
+                    }
                     bean = lbl;
                 break;
             }
@@ -479,7 +497,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             if(set.next()) {
-                album = (Album)fillBean(set,ALBUM);
+                album = (Album)fillBean(set,ALBUM,FULL_MODE);
             }
         } catch (ConnectionException e) {
             throw new GetDataException(e);
@@ -521,7 +539,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             if(set.next()) {
-                label = (Label)fillBean(set,LABEL);
+                label = (Label)fillBean(set,LABEL,FULL_MODE);
             }
         } catch (ConnectionException e) {
             throw new GetDataException(e);
@@ -563,7 +581,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             if(set.next()) {
-                artist = (Artist)fillBean(set,ARTIST);
+                artist = (Artist)fillBean(set,ARTIST,FULL_MODE);
             }
         } catch (ConnectionException e) {
             throw new GetDataException(e);
@@ -591,7 +609,7 @@ public class OracleDAO implements OperableDAO {
             throws GetDataException {
         List albums = null;
         try {
-            albums = new ArrayList();
+            albums = new LinkedList();
             Album currAlbum;
             this.getConnection();
             
@@ -608,7 +626,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM);
+                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (ConnectionException e) {
@@ -637,7 +655,7 @@ public class OracleDAO implements OperableDAO {
             throws GetDataException {
         List albums = null;
         try {
-            albums = new ArrayList();
+            albums = new LinkedList();
             Album currAlbum;
             this.getConnection();
             
@@ -654,7 +672,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM);
+                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (ConnectionException e) {
@@ -684,7 +702,7 @@ public class OracleDAO implements OperableDAO {
         DateFormat df = new SimpleDateFormat("yyyy");
         List albums = null;
         try {
-            albums = new ArrayList();
+            albums = new LinkedList();
             Album currAlbum;
             
             this.getConnection();
@@ -703,7 +721,7 @@ public class OracleDAO implements OperableDAO {
             ResultSet set = this.executeResultQuery();
             
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM);
+                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (ConnectionException e) {
@@ -732,7 +750,7 @@ public class OracleDAO implements OperableDAO {
             throws GetDataException {
         List albums = null;
         try {
-            albums = new ArrayList();
+            albums = new LinkedList();
             Album currAlbum;
             this.getConnection();
             
@@ -749,7 +767,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM);
+                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (ConnectionException e) {
@@ -778,7 +796,7 @@ public class OracleDAO implements OperableDAO {
             throws GetDataException {
         List albums = null;
         try {
-            albums = new ArrayList();
+            albums = new LinkedList();
             Album currAlbum;
             this.getConnection();
             
@@ -795,7 +813,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM);
+                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (ConnectionException e) {
@@ -839,7 +857,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currArtist = (Artist)fillBean(set,ARTIST);
+                currArtist = (Artist)fillBean(set,ARTIST,FULL_MODE);
                 artists.add(currArtist);
             }
         } catch (ConnectionException e) {
@@ -868,7 +886,7 @@ public class OracleDAO implements OperableDAO {
             throws GetDataException {
         List artists = null;
         try {
-            artists = new ArrayList();
+            artists = new LinkedList();
             Artist currArtist;
             this.getConnection();
             
@@ -885,7 +903,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currArtist = (Artist)fillBean(set,ARTIST);
+                currArtist = (Artist)fillBean(set,ARTIST,FULL_MODE);
                 artists.add(currArtist);
             }
         } catch (ConnectionException e) {
@@ -914,7 +932,7 @@ public class OracleDAO implements OperableDAO {
     public List getGenres(Artist artist) throws GetDataException {
         List genres = null;
         try {
-            genres = new ArrayList();
+            genres = new LinkedList();
             
             this.getConnection();
             
@@ -956,7 +974,7 @@ public class OracleDAO implements OperableDAO {
     public List getGenres(Label label) throws GetDataException {
         List genres = null;
         try {
-            genres = new ArrayList();
+            genres = new LinkedList();
             
             this.getConnection();
             
@@ -994,10 +1012,10 @@ public class OracleDAO implements OperableDAO {
     * @return list of all labels.
     * @throws GetDataException if problems while getting data.
     */
-    public List getLabels(int firstRow, int lastRow) throws GetDataException {
+    public List getLabels() throws GetDataException {
         List labels = null;
         try {
-            labels = new ArrayList();
+            labels = new LinkedList();
             Label currLabel;
             this.getConnection();
             
@@ -1007,13 +1025,11 @@ public class OracleDAO implements OperableDAO {
             
             this.statement = this.connection.prepareStatement(
                     SELECT_ALL_LABELS);
-            this.statement.setInt(1,lastRow);
-            this.statement.setInt(2,firstRow);
             
             ResultSet set = this.executeResultQuery();
             
             while(set.next()){
-                currLabel = (Label)fillBean(set,LABEL);
+                currLabel = (Label)fillBean(set,LABEL,SHORT_MODE);
                 labels.add(currLabel);
             }
         } catch (ConnectionException e) {
@@ -1029,7 +1045,83 @@ public class OracleDAO implements OperableDAO {
                 throw new GetDataException(e);
             }
         }
-        return labels;    
+        return labels;
+    }
+
+    public List getLabels(int firstRow, int lastRow)
+            throws GetDataException {
+        List labels = null;
+        try {
+            labels = new LinkedList();
+            Label currLabel;
+            this.getConnection();
+            
+            if (this.connection == null){
+                throw new GetDataException("Connection is not created");
+            }
+            
+            this.statement = this.connection.prepareStatement(
+                    GET_MAJOR_LABELS);
+            this.statement.setInt(1,lastRow);
+            this.statement.setInt(2,firstRow);
+            
+            ResultSet set = this.executeResultQuery();
+            
+            while(set.next()){
+                currLabel = (Label)fillBean(set,LABEL,SHORT_MODE);
+                labels.add(currLabel);
+            }
+        } catch (ConnectionException e) {
+            throw new GetDataException(e);
+        } catch (ExecuteQueryException e) {
+            throw new GetDataException(e);
+        } catch (SQLException e) {
+            throw new GetDataException(e);
+        } finally {
+            try {
+                closeConnection();
+            } catch (ConnectionException e) {
+                throw new GetDataException(e);
+            }
+        }
+        return labels;
+    }
+
+    public List getLabels(int id) throws GetDataException {
+        List labels = null;
+        try {
+            labels = new LinkedList();
+            Label currLabel;
+            this.getConnection();
+            
+            if (this.connection == null){
+                throw new GetDataException("Connection is not created");
+            }
+            
+            this.statement = this.connection.prepareStatement(
+                    GET_CHILD_LABELS);
+            this.statement.setInt(1,id);
+            
+            ResultSet set = this.executeResultQuery();
+            
+            while(set.next()){
+                currLabel = (Label)fillBean(set,LABEL,SHORT_MODE);
+                labels.add(currLabel);
+            }
+        } catch (ConnectionException e) {
+            throw new GetDataException(e);
+        } catch (ExecuteQueryException e) {
+            throw new GetDataException(e);
+        } catch (SQLException e) {
+            throw new GetDataException(e);
+        } finally {
+            try {
+                closeConnection();
+            } catch (ConnectionException e) {
+                throw new GetDataException(e);
+            }
+        }
+        return labels;
     }
 
     /**
@@ -1040,7 +1132,7 @@ public class OracleDAO implements OperableDAO {
     public List getDates() throws GetDataException {
         List dates = null;
         try {
-            dates = new ArrayList();
+            dates = new LinkedList();
             
             this.getConnection();
             
@@ -1079,7 +1171,7 @@ public class OracleDAO implements OperableDAO {
     public List getArtists(int firstRow, int lastRow) throws GetDataException {
         List artists = null;
         try {
-            artists = new ArrayList();
+            artists = new LinkedList();
             Artist currArtist;
             
             this.getConnection();
@@ -1095,7 +1187,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currArtist = (Artist)fillBean(set,ARTIST);
+                currArtist = (Artist)fillBean(set,ARTIST,FULL_MODE);
                 artists.add(currArtist);
             }
         } catch (ConnectionException e) {
@@ -1122,7 +1214,7 @@ public class OracleDAO implements OperableDAO {
     public List getAlbums(int firstRow, int lastRow) throws GetDataException {
         List albums = null;
         try {
-            albums = new ArrayList();
+            albums = new LinkedList();
             Album currAlbum;
             
             this.getConnection();
@@ -1138,7 +1230,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM);
+                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (ConnectionException e) {
@@ -1167,7 +1259,7 @@ public class OracleDAO implements OperableDAO {
             throws GetDataException {
         List albums = null;
         try {
-            albums = new ArrayList();
+            albums = new LinkedList();
             this.getConnection();
             
             if (this.connection == null){
@@ -1403,7 +1495,7 @@ public class OracleDAO implements OperableDAO {
     public List getLatestAlbums(int number) throws GetDataException {
         List albums = null;
         try {
-            albums = new ArrayList();
+            albums = new LinkedList();
             Album currAlbum;
             
             this.getConnection();
@@ -1417,7 +1509,7 @@ public class OracleDAO implements OperableDAO {
             
             ResultSet set = this.executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM);
+                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
                 albums.add(currAlbum);
             }
             
@@ -1769,7 +1861,7 @@ public class OracleDAO implements OperableDAO {
 
             ResultSet set = this.executeResultQuery();
             if(set.next()) {
-                album = (Album)fillBean(set,ALBUM);
+                album = (Album)fillBean(set,ALBUM,FULL_MODE);
             }
         } catch (ConnectionException e) {
             throw new GetDataException(e);
@@ -1921,90 +2013,19 @@ public class OracleDAO implements OperableDAO {
     }
     
     /**
-     * Returns list with child labels of the label with specified id.
-     * @param id id of the label.
-     * @return list with child labels of the label with specified id.
-     * @throws GetDataException if problems while getting data.
-     */ 
-    public List getChildLabels(int id, int firstRow, int lastRow) 
-            throws GetDataException {
-        List labels = null;
-        
-        if (id < -1) {
-            throw new GetDataException(
-                    new IllegalArgumentException("id must be >= -1"));
-        }
-        try {
-            labels = new ArrayList();
-            Label currLabel;
-                        
-            this.getConnection();
-            
-            if (this.connection == null){
-                throw new GetDataException("Connection is not created");
-            }
-
-            if (id == -1) {
-                this.statement = 
-                    this.connection.prepareStatement(
-                            GET_CHILD_LABELS_NULL);
-                this.statement.setInt(1, lastRow);
-                this.statement.setInt(2, firstRow);
-            } else {
-                this.statement = 
-                    this.connection.prepareStatement(
-                            GET_CHILD_LABELS_NOTNULL);
-                this.statement.setInt(1, lastRow);
-                this.statement.setInt(2, firstRow);
-                this.statement.setInt(3, id);
-            }
-            
-            this.connection.setAutoCommit(false);
-
-            ResultSet set = this.executeResultQuery();
-            
-            while(set.next()){
-                currLabel = (Label)fillBean(set, LABEL);
-                labels.add(currLabel);
-            }
-            this.connection.commit();
-            
-            return labels;
-            
-        } catch (ConnectionException e) {
-            throw new GetDataException(e);
-        } catch (ExecuteQueryException e) {
-            throw new GetDataException(e);
-        } catch (SQLException e) {
-            try {
-                this.connection.rollback();
-            } catch (SQLException exc) {
-                throw new GetDataException(exc);
-            }
-            throw new GetDataException(e);
-        } finally {
-            try {
-                this.connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new GetDataException(e);
-            } catch (ConnectionException e) {
-                throw new GetDataException(e);
-            }
-        }
-    }
-    
-    /**
      * Returns the path to the specified label in the hierarchy of labels.
      * @param id id of the label.
      * @return path to the specified label in the hierarchy of labels.
      * @throws GetDataException if problems while getting data.
      */ 
-    public String getLabelPath(int id) throws GetDataException {
-        String path = null;
+    public List getLabelPath(int id) throws GetDataException {
+        
+        List labels = null;
         
         try {
+            Label currLabel;
             this.getConnection();
+            labels = new LinkedList();
             
             if (this.connection == null){
                 throw new GetDataException("Connection is not created");
@@ -2015,39 +2036,25 @@ public class OracleDAO implements OperableDAO {
                         LABEL_GET_PATH);
             this.statement.setInt(1, id);
 
-            this.connection.setAutoCommit(false);
-
             ResultSet set = this.executeResultQuery();
             
             while(set.next()){
-                path = set.getString("path");
-                log.info(path);
+                currLabel = (Label)fillBean(set,LABEL,SHORT_MODE);
+                labels.add(currLabel);
             }
-            this.connection.commit();
-            
-            return path;
-            
         } catch (ConnectionException e) {
             throw new GetDataException(e);
         } catch (ExecuteQueryException e) {
             throw new GetDataException(e);
         } catch (SQLException e) {
-            try {
-                this.connection.rollback();
-            } catch (SQLException exc) {
-                throw new GetDataException(exc);
-            }
             throw new GetDataException(e);
         } finally {
             try {
-                this.connection.setAutoCommit(true);
                 closeConnection();
-            } catch (SQLException e) {
-                throw new GetDataException(e);
             } catch (ConnectionException e) {
                 throw new GetDataException(e);
             }
         }
+    return labels;
     }
-
 }

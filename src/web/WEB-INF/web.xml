@@ -13,11 +13,11 @@
         </init-param>
         <init-param>
             <param-name>dbpass</param-name>
-            <param-value>student</param-value>
+            <param-value>ballsofsteel</param-value>
         </init-param>
         <init-param>
             <param-name>dbuser</param-name>
-            <param-value>student</param-value>
+            <param-value>quagmire</param-value>
         </init-param>
     </servlet>
  

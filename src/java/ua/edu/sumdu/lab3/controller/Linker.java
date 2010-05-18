@@ -3,6 +3,7 @@ package ua.edu.sumdu.lab3.controller;
 import ua.edu.sumdu.lab3.model.*;
 import ua.edu.sumdu.lab3.model.exceptions.GetDataException;
 import ua.edu.sumdu.lab3.model.exceptions.EditDataException;
+import ua.edu.sumdu.lab3.CollectionWrapper;
 
 import javax.servlet.http.*;
 import javax.servlet.*;
@@ -10,11 +11,6 @@ import javax.servlet.*;
 import java.io.*;
 import java.text.*;
 import java.util.*;
-
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.Document;
-import org.jdom.Element;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,7 +57,11 @@ public class Linker extends HttpServlet {
             
             } else if ("/artist".equals(spath)) {
                 String id = request.getParameter("id");
-                request.setAttribute("artist",dao.getArtist(Integer.parseInt(id)));
+                int aid = Integer.parseInt(id);
+                request.setAttribute("artist",dao.getArtist(aid));
+                Artist artForGenres = new Artist();
+                artForGenres.setId(aid);
+                request.setAttribute("genres",new CollectionWrapper(dao.getGenres(artForGenres)));
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/showartist.jsp").forward(request,response);
             
@@ -129,11 +129,33 @@ public class Linker extends HttpServlet {
                         "/pages/showalbums.jsp").forward(request,response);
                         
             } else if("/label".equals(spath)) {
-                showLabel(request, response);
-            
+                String id = request.getParameter("id");
+                int lid = Integer.parseInt(id);
+                request.setAttribute("label",dao.getLabel(lid));
+                request.setAttribute("path",new CollectionWrapper(dao.getLabelPath(lid)));
+                request.setAttribute("children",new CollectionWrapper(dao.getLabels(lid)));
+                getServletConfig().getServletContext().getRequestDispatcher(
+                        "/pages/showlabel.jsp").forward(request,response);
+
             } else if("/label/all".equals(spath)) {
-                showLabels(request, response);
+                String page = request.getParameter("page");
+                int first = 0;
+                int last = 0;
+                if(page == null) {
+                    last = 10;
+                } else {
+                    last = Integer.parseInt(page)*10;
+                    first = last - 9;
+                }
+                int number = (int)Math.ceil((double)dao.getAlbumNumber() / 10);
+                Object labels = null;
+                labels = dao.getLabels(first,last);
+                request.setAttribute("number",new Integer(number));
+                request.setAttribute("labels",labels);
                 
+                getServletConfig().getServletContext().getRequestDispatcher(
+                    "/pages/showlabels.jsp").forward(request,response);
+
             } else if("/remove".equals(spath)) {
                 String what = request.getParameter("obj");
                 String id = request.getParameter("id");
@@ -207,7 +229,7 @@ public class Linker extends HttpServlet {
                     out.print(((Artist)itr.next()).getName() + "\n");
                 }
             } else if ("/showlabels".equals(spath)) {
-                List labels = dao.getLabels(1, 9999);
+                List labels = dao.getLabels();
                 Iterator itr = labels.iterator();
                 while(itr.hasNext()){
                     out.print(((Label)itr.next()).getName() + "\n");
@@ -419,122 +441,6 @@ public class Linker extends HttpServlet {
         } catch (Exception e) {
             throw new ServletException(e);
         }
-    }
-
-    private void showLabels(HttpServletRequest request,
-            HttpServletResponse response) 
-            throws ServletException, IOException, GetDataException {
-        
-        String page = request.getParameter("page");
-        int first = 0;
-        int last = 0;
-        if(page == null) {
-            last = 10;
-        } else {
-            last = Integer.parseInt(page)*10;
-            first = last - 9;
-        }
-        request.setAttribute("number", 
-                new Integer((int)Math.ceil(
-                        (double)dao.getLabelNumber() / 10)
-                )
-        );
-        
-        int lid;
-        String id = request.getParameter("id");
-        
-        if ((id == null) || ("".equals(id))) {
-            lid = -1;
-        } else {
-            lid = Integer.parseInt(id); 
-        }
-        
-        String path = dao.getLabelPath(lid);
-        List labels = dao.getChildLabels(lid, first, last);
-
-        if (path == null) {
-            path = "<a href = /discs/label/all>Labels</a>";
-            log.info("null = " + path);
-        } else {
-            String[] pathelements = path.split("--");
-            log.info("pathelements = " + pathelements[0]);
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("<a href = /discs/label/all>Labels</a> &rarr; ");
-            for (int i = 1; i < pathelements.length; i++){
-                int label = dao.findLabel(pathelements[i]);
-                if (i != (pathelements.length - 1)) {
-                    pathelements[i] = "<a href = /discs/label/all?id=" + 
-                        label + ">" + 
-                        pathelements[i] + 
-                        "</a>";
-                    buffer.append(pathelements[i]).append(" &rarr; ");
-                } else {
-                    buffer.append(pathelements[i]);
-                }
-                
-            }
-            path = buffer.toString();
-        }
-        
-        request.setAttribute("path", path);
-        if (labels.size() == 0) {
-            
-            request.setAttribute("label", dao.getLabel(lid));
-                
-            getServletConfig().getServletContext().getRequestDispatcher(
-                    "/label").forward(request,response);
-                
-        } else {
-            request.setAttribute("labels", labels);
-            getServletConfig().getServletContext().getRequestDispatcher(
-                    "/pages/showlabels.jsp").forward(request,response);
-        }    
-    }
-    
-    private void showLabel(HttpServletRequest request,
-            HttpServletResponse response) 
-            throws ServletException, IOException, GetDataException {
-        int lid;
-        String id = request.getParameter("id");
-        
-        if ((id == null) || ("".equals(id))) {
-            lid = -1;
-        } else {
-            lid = Integer.parseInt(id); 
-        }
-        
-        String path = dao.getLabelPath(lid);
-        if (path == null) {
-            path = "<a href = /discs/label/all>Labels</a>";
-        } else {
-            String[] pathelements = path.split("--");
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("<a href = /discs/label/all>Labels</a> &rarr; ");
-            for (int i = 1; i < pathelements.length; i++){
-                int label = dao.findLabel(pathelements[i]);
-                if (i != (pathelements.length - 1)) {
-                    pathelements[i] = "<a href = /discs/label/all?id=" + 
-                        label + ">" + 
-                        pathelements[i] + 
-                        "</a>";
-                    buffer.append(pathelements[i]).append(" &rarr; ");
-                } else {
-                    buffer.append(pathelements[i]);
-                }
-                
-            }
-            path = buffer.toString();
-        }
-        
-        request.setAttribute("path", path);
-        
-        String label = request.getParameter("id");
-        
-        request.setAttribute("label", 
-                dao.getLabel(Integer.parseInt(label)));
-                
-        getServletConfig().getServletContext().getRequestDispatcher(
-                "/pages/showlabel.jsp").forward(request,response);
     }
 }
 

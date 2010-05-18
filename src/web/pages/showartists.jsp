@@ -3,7 +3,7 @@
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
 
 <jsp:useBean id="artist" scope="request" class="ua.edu.sumdu.lab3.model.Artist" />
-<jsp:useBean id="artists" scope="request" class="java.util.ArrayList" />
+<jsp:useBean id="artists" scope="request" class="java.util.LinkedList" />
 <jsp:useBean id="number" scope="request" class="java.lang.Integer" />
 
 <html>

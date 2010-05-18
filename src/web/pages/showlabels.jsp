@@ -3,7 +3,7 @@
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
 
 <jsp:useBean id="label" scope="request" class="ua.edu.sumdu.lab3.model.Label" />
-<jsp:useBean id="labels" scope="request" class="java.util.ArrayList" />
+<jsp:useBean id="labels" scope="request" class="java.util.LinkedList" />
 <jsp:useBean id="number" scope="request" class="java.lang.Integer" />
 
 <html>
@@ -30,7 +30,6 @@
     <div class="allpage">
         <%@include file="menu.jsp" %>
         <div class="labelslistcontent">
-            <h2><%=(String)request.getAttribute("path") %></h2>
             
             <table width = "100%">
             <tr>
@@ -44,8 +43,7 @@
             <c:forEach var="lbl" begin="0" items="${labels}">
                 <tr>
                     <td><img src=<c:out value="${lbl.logo}" /> width="50" height="50" align="left" alt="cover"/></td>
-                    <td><a href=<c:out value="${pageContext.request.contextPath}/label/all?id=${lbl.id}" /> ><c:out value="${lbl.name}" /></a></td>
-                    <td><a href=<c:out value="${pageContext.request.contextPath}${lblpath}${lbl.id}" /> >Info</a></td>
+                    <td><a href=<c:out value="${pageContext.request.contextPath}/label?id=${lbl.id}" /> ><c:out value="${lbl.name}" /></a></td>
                     <td>
                         <a href =<c:out value="${pageContext.request.contextPath}${edit_label}" /><c:out value="${lbl.id}" /> > Edit</a>
                     </td>
@@ -60,7 +58,7 @@
                 </tr>
             </c:forEach>
             </table>
-    </div>
+        </div>
     </div>
     <c:set var="pagepath" value="/label/all?page=" />
     <c:set var="truepath" value="${pageContext.request.contextPath}${pagepath}"/>

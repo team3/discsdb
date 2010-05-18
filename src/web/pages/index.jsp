@@ -8,7 +8,7 @@
 
 
 <jsp:useBean id="random" scope="request" class="ua.edu.sumdu.lab3.model.Album" />
-<jsp:useBean id="latest" scope="request" class="java.util.ArrayList" />
+<jsp:useBean id="latest" scope="request" class="java.util.LinkedList" />
 
 <html>
 <head>

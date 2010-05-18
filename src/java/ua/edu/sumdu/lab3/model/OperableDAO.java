@@ -147,9 +147,14 @@ public interface OperableDAO {
     * @return list of all labels.
     * @throws GetDataException if problems while getting data.
     */
-    public List getLabels(int firstRow, int lastRow) 
+    public List getLabels() 
             throws GetDataException;
 
+    public List getLabels(int firstRow, int lastRow)
+            throws GetDataException;
+    
+    public List getLabels(int id) throws GetDataException;
+    
     /**
     * Returns list of all dates.
     * @return list of all dates.
@@ -298,21 +303,12 @@ public interface OperableDAO {
      * @throws EditDataException if problems while getting data.
      */
     public void deleteLabel(int id) throws EditDataException;
-     
-     /**
-     * Returns list with child labels of the label with specified id.
-     * @param id id of the label.
-     * @return list with child labels of the label with specified id.
-     * @throws GetDataException if problems while getting data.
-     */ 
-    public List getChildLabels(int id, int firstRow, int lastRow) 
-            throws GetDataException;
-            
+
     /**
      * Returns the path to the specified label in the hierarchy of labels.
      * @param id id of the label.
      * @return path to the specified label in the hierarchy of labels.
      * @throws GetDataException if problems while getting data.
      */ 
-    public String getLabelPath(int id) throws GetDataException;        
+    public List getLabelPath(int id) throws GetDataException;        
 }
