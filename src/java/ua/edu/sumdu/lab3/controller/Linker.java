@@ -1,8 +1,7 @@
 package ua.edu.sumdu.lab3.controller;
 
 import ua.edu.sumdu.lab3.model.*;
-import ua.edu.sumdu.lab3.model.exceptions.GetDataException;
-import ua.edu.sumdu.lab3.model.exceptions.EditDataException;
+import ua.edu.sumdu.lab3.model.exceptions.*;
 import ua.edu.sumdu.lab3.CollectionWrapper;
 
 import javax.servlet.http.*;
@@ -157,7 +156,7 @@ public class Linker extends HttpServlet {
                     request.setAttribute("path", 
                             new CollectionWrapper(dao.getLabelPath(lid)));
                     request.setAttribute("children",
-                            new CollectionWrapper(dao.getLabels(lid)));
+                            new CollectionWrapper(dao.getChildLabels(lid)));
                     
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showlabel.jsp").forward(request,response);
@@ -174,7 +173,7 @@ public class Linker extends HttpServlet {
                 }
                 int number = (int)Math.ceil((double)dao.getAlbumNumber() / 10);
                 Object labels = null;
-                labels = dao.getLabels(first,last);
+                labels = dao.getMajorLabels(first,last);
                 request.setAttribute("number",new Integer(number));
                 request.setAttribute("labels",labels);
                 
@@ -307,9 +306,7 @@ public class Linker extends HttpServlet {
                             "/pages/showalbums.jsp").forward(request,response);
                 }
             } 
-        } catch (GetDataException e) {
-            throw new ServletException(e);
-        } catch (EditDataException e) {
+        } catch (OracleDataAccessObjectException e) {
             throw new ServletException(e);
         } catch (ParseException e) {
             throw new ServletException(e);
@@ -481,7 +478,8 @@ public class Linker extends HttpServlet {
      * @param name artist's name.
      * @return true if artist already in storage.
      */ 
-    private boolean artistInList(String name) throws GetDataException {
+    private boolean artistInList(String name) 
+            throws OracleDataAccessObjectException {
         List artists = dao.getArtists(1, dao.getArtistNumber());
         Iterator itr = artists.iterator();
         while (itr.hasNext()){
@@ -496,7 +494,8 @@ public class Linker extends HttpServlet {
      * @param name labels's name.
      * @return true if label already in storage.
      */ 
-    private boolean labelInList(int id) throws GetDataException {
+    private boolean labelInList(int id) 
+            throws OracleDataAccessObjectException {
         List labels = dao.getLabels();
         Iterator itr = labels.iterator();
         while (itr.hasNext()){
