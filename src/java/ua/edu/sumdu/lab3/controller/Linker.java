@@ -203,6 +203,12 @@ public class Linker extends HttpServlet {
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/addalbum.jsp").forward(request,response);
             
+            } else if ("/addartist".equals(spath)) {
+                getServletConfig().getServletContext().getRequestDispatcher(
+                        "/pages/addartist.jsp").forward(request,response);
+            } else if ("/addlabel".equals(spath)) {
+                getServletConfig().getServletContext().getRequestDispatcher(
+                        "/pages/addlabel.jsp").forward(request,response);
             } else if ("/editlabel".equals(spath)) {
                 int id = Integer.parseInt(
                         request.getParameter("id"));

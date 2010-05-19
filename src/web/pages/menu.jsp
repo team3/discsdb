@@ -23,11 +23,18 @@
             <img src = <c:out value="${pageContext.request.contextPath}${picpath}" /> alt= "logo" />
         </a>
     </div>
-    <div class="menu"><a href=<c:out value= "${pageContext.request.contextPath}${aboutpath}" />>ABOUT</a></div>
-    <div class="menu"><a href=<c:out value= "${pageContext.request.contextPath}${albumspath}" />>ALBUMS</a></div> 
-    <div class="menu"><a href=<c:out value= "${pageContext.request.contextPath}${labelspath}" />>LABELS</a></div> 
-    <div class="menu"><a href=<c:out value= "${pageContext.request.contextPath}${artistspath}" />>ARTISTS</a></div> 
-    <div class="menu"><a href=<c:out value= "${pageContext.request.contextPath}${datestspath}" />>DATES</a></div>
-    <div class="menu"><a href=<c:out value= "${pageContext.request.contextPath}${searchpath}" />>SEARCH</a></div>
-    <div class="menu"><a href=<c:out value= "${pageContext.request.contextPath}${addpath}" />>ADD</a></div>
+    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${aboutpath}" />>ABOUT</a></div>
+    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${albumspath}" />>ALBUMS</a></div> 
+    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${labelspath}" />>LABELS</a></div> 
+    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${artistspath}" />>ARTISTS</a></div> 
+    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${datestspath}" />>DATES</a></div>
+    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${searchpath}" />>SEARCH</a></div>
+    <div class = "menu">ADD</div>
+    <div class = "menu">
+    <select onchange = "location.href=this.options[this.selectedIndex].value">
+    <option value=<c:out value= "${pageContext.request.contextPath}/addalbum" />>album</option>
+    <option value=<c:out value= "${pageContext.request.contextPath}/addartist" />>artist</option>
+    <option value=<c:out value= "${pageContext.request.contextPath}/addlabel" />>label</option>
+    </select>
+    </div>
 </div>
