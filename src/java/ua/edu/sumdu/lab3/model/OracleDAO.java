@@ -48,7 +48,7 @@ public class OracleDAO implements OperableDAO {
             "UPDATE LABEL SET major = ?, name = ?, info = ?, logo = ? where lid = ?";
     
     private static final String SELECT_ALBUM_BY_ID = 
-            "SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, album.art, album.lbl, artist.name, label.name FROM album JOIN artist ON (album.art = artist.aid) JOIN label ON (album.lbl = label.lid) WHERE album.alid = ?";
+            "SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, NVL(album.art,-1), NVL(album.lbl,-1), NVL(artist.name,'unknown'), NVL(label.name,'unknown') FROM album FULL JOIN artist ON (album.art = artist.aid) FULL JOIN label ON (album.lbl = label.lid) WHERE album.alid = ?";
     
     private static final String SELECT_LABEL_BY_ID = 
             "SELECT a.lid,a.major,a.name,a.logo,a.info,a.major_name FROM (SELECT d.lid,d.major,d.name,d.logo,d.info,e.name as major_name FROM label d, label e WHERE d.major = e.lid UNION SELECT d.lid,d.major,d.name,d.logo,info,null as major_name FROM label d WHERE d.major IS NULL) a where a.lid = ?";
@@ -93,8 +93,8 @@ public class OracleDAO implements OperableDAO {
             "SELECT c.aid,c.name,c.country,c.info FROM (SELECT a.*, rownum rnum FROM (SELECT * FROM artist ORDER BY aid) a WHERE rownum <= ?) c where rnum >= ?";
     
     private static final String SELECT_ALL_ALBUMS = 
-            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art,b.lbl,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.*,artist.name as artist_name, label.name as label_name from album join artist on (album.art = artist.aid) join label on (album.lbl = label.lid) order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
-            
+            "SELECT b.alid, b.name, b.type, b.release, b.genre, b.cover, b.review, b.ch_art ,b.ch_lbl, b.artist_name, b.label_name FROM ( SELECT a.*, rownum rnum FROM (SELECT album.alid, album.name,album.type,album.release,album.genre,album.cover,album.review,NVL(album.art,-1) as ch_art,NVL(album.lbl,-1) as ch_lbl ,NVL(artist.name,'unknown') as artist_name, NVL(label.name,'unknown') as label_name from album full join artist on (album.art = artist.aid) full join label on (album.lbl = label.lid) where album.alid is not null order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
+    
     private static String FIND_ALBUMS = 
             "SELECT alid FROM ALBUM WHERE ";
     
@@ -1954,23 +1954,6 @@ public class OracleDAO implements OperableDAO {
      */
     public void deleteLabel(int id) throws EditDataException {
         try {
-            List labels = getLabels(id);
-            
-            Iterator itr = labels.iterator();
-            while(itr.hasNext()){
-                Label label = (Label)itr.next();
-                label.setMajor(0);
-                editLabel(label);
-            }
-            
-            List albums = getAlbums(1, getAlbumNumber());
-            
-            itr = albums.iterator();
-            while(itr.hasNext()){
-                Album album = (Album)itr.next();
-                album.setLabel(0);
-                editAlbum(album);
-            }
             
             this.getConnection();
             
@@ -1984,8 +1967,6 @@ public class OracleDAO implements OperableDAO {
             this.executeUpdateQuery();
             this.connection.commit();
         
-        } catch (GetDataException e) {
-            throw new EditDataException(e);    
         } catch (ConnectionException e) {
             throw new EditDataException(e);
         } catch (ExecuteQueryException e) {

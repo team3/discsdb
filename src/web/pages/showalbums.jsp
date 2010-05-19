@@ -57,7 +57,14 @@
                     <c:set var="truepath" value="${pageContext.request.contextPath}${artpath}${alb.artist} "/>
                     
                     <td>
-                        <a href=<c:out value="${truepath}" /> ><c:out value="${alb.artistName}" /></a>
+                        <c:choose>
+                            <c:when test="${alb.artist > 0}">
+                                <a href=<c:out value="${truepath}" /> ><c:out value="${alb.artistName}" /></a>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${alb.artistName}" />
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                     
                     <td>
@@ -79,8 +86,15 @@
                     </td>
                     
                     <td>
-                        <a href =<c:out value="${pageContext.request.contextPath}${lblpath}${alb.label}" /> >
-                        <c:out value="${alb.labelName}" /></a>
+                        <c:choose>
+                            <c:when test="${alb.label > 0}">
+                                <a href =<c:out value="${pageContext.request.contextPath}${lblpath}${alb.label}" /> >
+                                <c:out value="${alb.labelName}" /></a>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${alb.labelName}" />
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                     
                     <td>
