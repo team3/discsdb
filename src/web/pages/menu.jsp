@@ -32,6 +32,7 @@
     <div class = "menu">ADD</div>
     <div class = "menu">
     <select onchange = "location.href=this.options[this.selectedIndex].value">
+    <option selected velue = ""></option>
     <option value=<c:out value= "${pageContext.request.contextPath}/addalbum" />>album</option>
     <option value=<c:out value= "${pageContext.request.contextPath}/addartist" />>artist</option>
     <option value=<c:out value= "${pageContext.request.contextPath}/addlabel" />>label</option>
