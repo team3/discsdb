@@ -135,7 +135,7 @@
   </taglib>
   
   <resource-ref>
-    <description>Oracle Datasource example</description>
+    <description>DataSource</description>
     <res-ref-name>jdbc/DiscsDB</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
