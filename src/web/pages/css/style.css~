@@ -1,0 +1,283 @@
+html, body {
+    margin:0px; 
+    padding:0px; 
+}
+
+a:link, a:visited { 
+    color: blue; 
+}
+
+.allpage {
+    min-height:100%;
+    position:relative;
+    height: 100%;
+    height: auto; 
+}
+
+.header {
+    position:relative;
+    min-height:150px;
+    width:100%;
+    display:table;
+    padding-bottom:3%;
+}
+
+.logotext {
+    color:#000000;
+    font-size: 43px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    position:relative;
+    float:left;
+}
+
+.logopic {
+    position:relative;
+    float:left;
+    padding-right:2%;
+    padding-left:2%;
+}
+
+.menu {
+    color:#000000;
+    font-size: 13px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    position:relative;
+    vertical-align:bottom;
+    letter-spacing:-1px;
+    display:table-cell;
+    text-align: left;
+    padding-right:1%;
+    padding-left:1%;
+}
+
+.maincont {
+    color:#2F4F4F;
+    font-size: 13px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    height: auto;
+    min-height:230px;
+    border: 1px dashed lightgray;
+    margin-left: 10%;
+    margin-right: 20%;
+    padding: 1% 2% 1% 2%;
+    background-color:#F5F5F5;
+}
+
+.albumslistcontent, .artistslistcontent, .labelslistcontent  {
+    color:#2F4F4F;
+    font-size: 13px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    width: 695px;
+    height: auto;
+    border: 1px dashed lightgray;
+    margin-left: 10%;
+    margin-right: 20%;
+    padding: 1% 2% 1% 2%;
+    background-color:#F5F5F5;
+}
+
+.maincont p {
+    margin-right: 7px;
+}
+
+.latest {
+    margin-top:2%;
+    color:#2F4F4F;
+    font-size: 12px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    border: 1px dashed lightgray;
+    height: 130px;
+    background-color:#F5F5F5;
+    margin-left: 10%;
+    margin-right: 20%;
+    text-align: left;
+}
+
+div.smallalbum {
+    width: 110px;
+    height: 120px;
+    padding: 5px 5px;
+    display: block;
+    clear: none;
+    float: left;
+    margin-left: 30px;
+}
+
+#main {
+    width: 90%;
+    margin: 30px auto;
+    height: 400px;
+}
+
+#addalbum_main, #search_main, #search_main {
+    width: 45%;
+    margin: 30px auto;
+    background-color: #F9E3FD;
+    padding-left: 20px; 
+}
+
+#logo {
+    text-align:left;
+    width: 120px;
+    height: auto;
+    
+}
+
+#left {
+    float:left;
+    width: 40%;
+    height: 100%;
+    text-align: right;
+}
+
+#right {
+    float:right;
+    width: 40%;
+    height: 100%;
+    text-align: left;
+}
+
+#genres {
+    width: 100%;
+    clear: both;
+    border: 1px solid black;
+    font-size: 36px;
+    color: green;
+    text-align: center;
+}
+
+p.title {
+    font-family: Helvetica, sans-serif;
+    font-size: 48px;
+}
+
+p.item {
+    font-family: Helvetica, sans-serif;
+    font-size: 36px;
+    color: blue;
+}
+
+
+div#album {
+    border: 1px solid black;
+    width: 350px;
+    heigth: 400px;
+    margin-left: 15px;
+    margin-top: 15px;
+    padding: 5px 5px;
+}
+
+div#form {
+    width: 90%;
+    text-align: left;
+    font-family: Helvetica, sans-serif;
+    font-size: 24px;
+    color: gray;
+}
+
+form input[type="text"],select{
+    background-color: rgb(255, 255, 255);
+    padding-left: 18px;
+    width: 400px;
+    height: 40px;
+    border: 1px solid #e0e0e0;
+    font-family: Helvetica, sans-serif;
+    font-size: 24px;
+    color: green;
+}
+
+form textarea{
+    background-color: rgb(255, 255, 255);
+    width: 400px;
+    height: 100px;
+    border: 1px solid #e0e0e0;
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    color: green;
+}
+
+form input[type="submit"]{
+    background-color: #e0e0e0;
+    width: 100px;
+    height: 40px;
+    border: 1px solid gray;
+    font-family: Helvetica, sans-serif;
+    font-size: 24px;
+    color: green;
+}
+
+label.error {
+    color: red;
+    font-style: italic;
+}
+
+input.error {
+    border: 1px dotted #f00;
+}
+
+div#album_full {
+    border: 1px solid black;
+    width: 600px;
+    heigth: auto;
+    margin-left: 15px;
+    margin-top: 15px;
+    padding: 5px 5px;
+}
+
+p#menu {
+    font-family: Helvetica, sans-serif;
+    font-size: 24px;
+    color: green;
+    padding: 5px 5px;
+}
+p.a_info {
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    color: green;
+    text-align: right;
+}
+
+p.a_info_review {
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+div.artistfields {
+    height: auto;
+    width: 100%;
+    font-size: 18px;
+}
+
+div.labelfields {
+    height: auto;
+    width: 100%;
+    font-size: 18px;
+}
+
+p.selector {
+    font-family: Helvetica, sans-serif;
+    color: gray;
+}
+div#editlabel_main, div#editartist_main, div#editalbum_main{
+    width: 50%;
+    margin-left: 10%;
+}
+
+div.acceptmessage {
+    color: green;
+    font-size: 24px;
+    height: auto;
+}
+
+div.denymessage {
+    color: red;
+    font-size: 24px;
+    height: auto;
+}
+
+div.error {
+    margin: 150px auto;
+    width: 200px;
+    height: auto;
+    border: 2px solid red;
+}

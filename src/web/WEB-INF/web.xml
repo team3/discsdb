@@ -94,6 +94,11 @@
         <location>/pages/error.jsp</location>
     </error-page>   
     
+    <error-page>
+        <error-code>404</error-code>
+        <location>/pages/404.html</location>
+    </error-page> 
+    
   <taglib>
     <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
     <taglib-location>/WEB-INF/tags/fmt.tld</taglib-location>
