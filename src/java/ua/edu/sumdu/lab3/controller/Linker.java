@@ -215,10 +215,14 @@ public class Linker extends HttpServlet {
                         "/pages/addlabel.jsp").forward(request,response);
             } else if ("/editlabel".equals(spath)) {
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM,id)) {
+                if(checkParam(NUMERIC_PARAM, id)) {
                     int lid = Integer.parseInt(id);
-                        
-                    Label label = (Label)dao.getLabel(lid);
+                    Label label = null;
+                    if (lid == -1) {
+                        label = new Label();
+                    } else {   
+                        label = (Label)dao.getLabel(lid);
+                    }
                     request.setAttribute("label", label);
                     
                     getServletConfig().getServletContext().getRequestDispatcher(
@@ -228,10 +232,14 @@ public class Linker extends HttpServlet {
                 }
             } else if ("/editartist".equals(spath)) {
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM,id)) {
+                if(checkParam(NUMERIC_PARAM, id)) {
                     int aid = Integer.parseInt(id);
-
-                    Artist artist = (Artist)dao.getArtist(aid);
+                    Artist artist = null;
+                    if (aid == -1) {
+                        artist = new Artist();
+                    } else {
+                        artist = (Artist)dao.getArtist(aid);
+                    }
                     request.setAttribute("artist", artist);
                     
                     getServletConfig().getServletContext().getRequestDispatcher(
@@ -518,20 +526,26 @@ public class Linker extends HttpServlet {
     }
     
     private void showErrorPage(HttpServletRequest request,
-            HttpServletResponse response, Throwable e) throws ServletException, IOException {
+            HttpServletResponse response, Throwable e) 
+            throws ServletException, IOException {
                 
         request.setAttribute ("javax.servlet.jsp.jspException", e);
         getServletConfig().getServletContext().
-                getRequestDispatcher("/pages/error.jsp").forward(request,response);
+                getRequestDispatcher("/pages/error.jsp").
+                forward(request,response);
     }
     
-    private boolean checkParam(int type,String paramValue) {
+    private boolean checkParam(int type, String paramValue) {
         String regexp;
-        if((paramValue == null) || " ".equals(paramValue) || "".equals(paramValue)) {
+        if((paramValue == null) || 
+                " ".equals(paramValue) ||
+                "".equals(paramValue))
+        {
             return false;
         }
-        if(type == NUMERIC_PARAM) {
+        if (type == NUMERIC_PARAM) {
             regexp = "[0-9]+";
+           
         } else  if(type == ALPHA_PARAM) {
             regexp = "[a-zA-Z]+";
         } else {

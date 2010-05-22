@@ -126,12 +126,16 @@
             <input type = "text" name = "cover" value = "<c:out value = "${album.cover}" />" />
             <br />
             Artist:  <c:out value = "${album.artistName}" />&nbsp;&nbsp;
-            <a href = "editartist?id=<c:out value = "${album.artist}" />" target="_blank" >Edit</a>
+            <c:if test = "${album.artistName != 'unknown'}">
+                <a href = "editartist?id=<c:out value = "${album.artist}" />" target="_blank" >Edit</a>
+            </c:if>
             <br />
             <div class = "artistfields">
             </div>    
             Label: <c:out value = "${album.labelName}" />&nbsp;&nbsp;
-            <a href = "editlabel?id=<c:out value = "${album.label}" />" target="_blank">Edit</a>            
+            <c:if test = "${album.labelName != 'unknown'}">
+                <a href = "editlabel?id=<c:out value = "${album.label}" />" target="_blank">Edit</a> 
+            </c:if>
             <br />
             <div class = "labelfields">
             </div>    
