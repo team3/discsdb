@@ -22,7 +22,9 @@
 <body>
 <div class="allpage">
     <%@include file="menu.jsp" %>
-
+    <c:set var = "artpath" value = "/artist?id=" />
+    <c:set var="albumspath" value = "/album/all" />
+    <c:set var="genrepath" value = "?genre=" />
     <c:set var="truepath" value="${pageContext.request.contextPath}${albumspath}${genrepath}"/>
     <div class="maincont">
         <img src=<c:out value="${random.cover}" /> width="220" height="220" align="left" alt="cover" style= "margin-right: 15px;"/>

@@ -533,7 +533,7 @@ public class Linker extends HttpServlet {
         if(type == NUMERIC_PARAM) {
             regexp = "[0-9]+";
         } else  if(type == ALPHA_PARAM) {
-            regexp = "[a-z]+";
+            regexp = "[a-zA-Z]+";
         } else {
             regexp = ".+";
         }
