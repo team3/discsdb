@@ -22,19 +22,16 @@ public class AlbumsOperator extends MainOperator {
             "SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, NVL(album.art,-1), NVL(album.lbl,-1), NVL(artist.name,'unknown'), NVL(label.name,'unknown') FROM album FULL JOIN artist ON (album.art = artist.aid) FULL JOIN label ON (album.lbl = label.lid) WHERE album.alid = ?";
 
     private static final String SELECT_ALBUMS_BY_GENRE =
-            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art,b.lbl,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.*,artist.name as artist_name, label.name as label_name from album join artist on (album.art = artist.aid) join label on (album.lbl = label.lid) WHERE INSTR(LOWER(album.genre),LOWER(?)) != 0 order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
+            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art_id,b.lbl_id,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, NVL(album.art,-1) as art_id, NVL(album.lbl,-1) as lbl_id, NVL(artist.name,'unknown') as artist_name, NVL(label.name,'unknown') as label_name from album full join artist on (album.art = artist.aid) full join label on (album.lbl = label.lid) WHERE INSTR(LOWER(album.genre),LOWER(?)) != 0 order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
 
     private static final String SELECT_ALBUMS_BY_NAME =
-            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art,b.lbl,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.*,artist.name as artist_name, label.name as label_name from album join artist on (album.art = artist.aid) join label on (album.lbl = label.lid) WHERE INSTR(LOWER(album.name),LOWER(?)) != 0 order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
+            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art_id,b.lbl_id,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, NVL(album.art,-1) as art_id, NVL(album.lbl,-1) as lbl_id ,NVL(artist.name,'unknown') as artist_name, NVL(label.name,'unknown') as label_name from album full join artist on (album.art = artist.aid) full join label on (album.lbl = label.lid) WHERE INSTR(LOWER(album.name),LOWER(?)) != 0 order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
 
     private static final String SELECT_ALBUMS_BY_DATE =
-            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art,b.lbl,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.*,artist.name as artist_name, label.name as label_name from album join artist on (album.art = artist.aid) join label on (album.lbl = label.lid) WHERE TO_CHAR(album.release,'YYYY') LIKE ? order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
+            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art_id,b.lbl_id,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, NVL(album.art,-1) as art_id, NVL(album.lbl,-1) as lbl_id ,NVL(artist.name,'unknown') as artist_name, NVL(label.name,'unknown') as label_name from album full join artist on (album.art = artist.aid) full join label on (album.lbl = label.lid) WHERE TO_CHAR(album.release,'YYYY') LIKE ? order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
 
     private static final String SELECT_ALBUMS_BY_ARTIST =
-            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art,b.lbl,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.*,artist.name as artist_name, label.name as label_name from album join artist on (album.art = artist.aid) join label on (album.lbl = label.lid) where album.art = ? order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
-
-    private static final String SELECT_ALBUMS_BY_LABEL =
-            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art,b.lbl,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.*,artist.name as artist_name, label.name as label_name from album join artist on (album.art = artist.aid) join label on (album.lbl = label.lid) where album.lbl = ? order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
+            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art_id,b.lbl_id,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, NVL(album.art,-1) as art_id, NVL(album.lbl,-1) as lbl_id ,NVL(artist.name,'unknown') as artist_name, NVL(label.name,'unknown') as label_name from album full join artist on (album.art = artist.aid) full join label on (album.lbl = label.lid) where album.art = ? order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
 
     private static final String SELECT_ALL_ALBUMS =
             "SELECT b.alid, b.name, b.type, b.release, b.genre, b.cover, b.review, b.ch_art ,b.ch_lbl, b.artist_name, b.label_name FROM ( SELECT a.*, rownum rnum FROM (SELECT album.alid, album.name,album.type,album.release,album.genre,album.cover,album.review,NVL(album.art,-1) as ch_art,NVL(album.lbl,-1) as ch_lbl ,NVL(artist.name,'unknown') as artist_name, NVL(label.name,'unknown') as label_name from album full join artist on (album.art = artist.aid) full join label on (album.lbl = label.lid) where album.alid is not null order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
@@ -43,7 +40,10 @@ public class AlbumsOperator extends MainOperator {
             "SELECT alid FROM ALBUM WHERE ";
 
     private static final String LATEST_ALBUMS =
-            "select a.alid, a.name, a.type, a.release, a.genre, a.cover, a.review, a.art, a.lbl, artist.name, label.name from (select * from album order by alid desc) a JOIN artist ON (a.art = artist.aid) JOIN label ON (a.lbl = label.lid) where ROWNUM <= ?";
+            "select a.alid, a.name, a.type, a.release, a.genre, a.cover, a.review, NVL(a.art,-1), NVL(a.lbl,-1), NVL(artist.name,'unknown'), NVL(label.name,'unknown') from (select * from album order by alid desc) a FULL JOIN artist ON (a.art = artist.aid) FULL JOIN label ON (a.lbl = label.lid) where a.alid IS NOT NULL AND ROWNUM <= ?";
+
+    private static final String SELECT_ALBUMS_BY_LABEL =
+            "SELECT b.alid,b.name,b.type,b.release,b.genre,b.cover,b.review,b.art_id,b.lbl_id,b.artist_name,b.label_name FROM (SELECT a.*, rownum rnum FROM (SELECT album.alid, album.name, album.type, album.release, album.genre, album.cover, album.review, NVL(album.art,-1) as art_id, NVL(album.lbl,-1) as lbl_id ,NVL(artist.name,'unknown') as artist_name, NVL(label.name,'unknown') as label_name from album full join artist on (album.art = artist.aid) full join label on (album.lbl = label.lid) where album.lbl = ? order by album.alid) a WHERE rownum <= ?) b where rnum >= ?";
 
     private static final String ALBUM_BY_DATE_MAX_ROW =
             "SELECT MAX(ROWNUM) from album  WHERE TO_CHAR(release,'YYYY') LIKE ?";
@@ -52,13 +52,13 @@ public class AlbumsOperator extends MainOperator {
             "SELECT MAX(ROWNUM) from album  WHERE INSTR(LOWER(genre),LOWER(?)) != 0";
 
     private static final String ALBUM_RANDOM =
-            "SELECT a.alid, a.name, a.type, a.release, a.genre, a.cover, a.review, a.art, a.lbl, artist.name, label.name FROM ( SELECT * FROM album ORDER BY dbms_random.value ) a JOIN artist ON (a.art = artist.aid) JOIN label ON (a.lbl = label.lid) WHERE rownum = 1";
+            "SELECT a.alid, a.name, a.type, a.release, a.genre, a.cover, a.review, NVL(a.art,-1), NVL(a.lbl,-1), NVL(artist.name,'unknown'), NVL(label.name,'unknown') FROM ( SELECT * FROM album ORDER BY dbms_random.value ) a FULL JOIN artist ON (a.art = artist.aid) FULL JOIN label ON (a.lbl = label.lid) WHERE rownum = 1";
 
     private static final String DELETE_ALBUM =
             "DELETE FROM album WHERE alid = ?";
             
     private static final String ALBUM_MAX_ROW =
-            "SELECT MAX(ROWNUM) FROM album";        
+            "SELECT MAX(ROWNUM) FROM album";
             
     /**
      * Adds new album to the specified storage.
@@ -125,7 +125,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = executeResultQuery();
             if(set.next()) {
-                album = (Album)fillBean(set,ALBUM,FULL_MODE);
+                album = fillAlbumBean(set,FULL_MODE);
             }
         }   catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
@@ -162,7 +162,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
+                currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (SQLException e){
@@ -200,7 +200,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
+                currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (SQLException e){
@@ -241,7 +241,7 @@ public class AlbumsOperator extends MainOperator {
             ResultSet set = executeResultQuery();
 
             while(set.next()){
-                currAlbum = (Album)fillBean(set, ALBUM, FULL_MODE);
+                currAlbum = fillAlbumBean(set, FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (SQLException e){
@@ -279,7 +279,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
+                currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (SQLException e){
@@ -317,7 +317,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
+                currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (SQLException e){
@@ -352,7 +352,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
+                currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
         } catch (SQLException e) {
@@ -494,7 +494,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currAlbum = (Album)fillBean(set,ALBUM,FULL_MODE);
+                currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
 
@@ -623,7 +623,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = executeResultQuery();
             if(set.next()) {
-                album = (Album)fillBean(set,ALBUM,FULL_MODE);
+                album = fillAlbumBean(set,FULL_MODE);
             }
         }   catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);

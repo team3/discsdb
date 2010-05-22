@@ -115,7 +115,7 @@ public class LabelsOperator extends MainOperator {
             
             ResultSet set = executeResultQuery();
             if(set.next()) {
-                label = (Label)fillBean(set,LABEL,FULL_MODE);
+                label = fillLabelBean(set,FULL_MODE);
             }
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
@@ -148,7 +148,7 @@ public class LabelsOperator extends MainOperator {
             ResultSet set = executeResultQuery();
             
             while(set.next()){
-                currLabel = (Label)fillBean(set,LABEL,SHORT_MODE);
+                currLabel = fillLabelBean(set,SHORT_MODE);
                 labels.add(currLabel);
             }
         } catch (SQLException e) {
@@ -310,7 +310,7 @@ public class LabelsOperator extends MainOperator {
             ResultSet set = executeResultQuery();
             
             while(set.next()){
-                currLabel = (Label)fillBean(set,LABEL,SHORT_MODE);
+                currLabel = fillLabelBean(set,SHORT_MODE);
                 labels.add(currLabel);
             }
         } catch (SQLException e) {
@@ -346,7 +346,7 @@ public class LabelsOperator extends MainOperator {
             ResultSet set = executeResultQuery();
             
             while(set.next()){
-                currLabel = (Label)fillBean(set, LABEL, SHORT_MODE);
+                currLabel = fillLabelBean(set, SHORT_MODE);
                 labels.add(currLabel);
             }
         } catch (SQLException e) {
@@ -385,7 +385,7 @@ public class LabelsOperator extends MainOperator {
             ResultSet set = executeResultQuery();
             
             while(set.next()){
-                currLabel = (Label)fillBean(set,LABEL,SHORT_MODE);
+                currLabel = fillLabelBean(set,SHORT_MODE);
                 labels.add(currLabel);
             }
             

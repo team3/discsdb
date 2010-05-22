@@ -19,6 +19,9 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
 public class Linker extends HttpServlet {
+    
+    private static int NUMERIC_PARAM = 0;
+    private static int ALPHA_PARAM = 1;
     DateFormat df = null;
     private OperableDAO dao = null;
     private boolean datachanged = true;
@@ -57,21 +60,24 @@ public class Linker extends HttpServlet {
             
             } else if ("/artist".equals(spath)) {
                 String id = request.getParameter("id");
-                int aid = Integer.parseInt(id);
-                request.setAttribute("artist", dao.getArtist(aid));
-                Artist artForGenres = new Artist();
-                artForGenres.setId(aid);
-                request.setAttribute("genres",
-                        new CollectionWrapper(dao.getGenres(artForGenres)));
-                getServletConfig().getServletContext().getRequestDispatcher(
-                        "/pages/showartist.jsp").forward(request,response);
-            
+                if(checkParam(NUMERIC_PARAM,id)) {
+                    int aid = Integer.parseInt(id);
+                    request.setAttribute("artist", dao.getArtist(aid));
+                    Artist artForGenres = new Artist();
+                    artForGenres.setId(aid);
+                    request.setAttribute("genres",
+                            new CollectionWrapper(dao.getGenres(artForGenres)));
+                    getServletConfig().getServletContext().getRequestDispatcher(
+                            "/pages/showartist.jsp").forward(request,response);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
             } else if("/artist/all".equals(spath)) {
                 String page = request.getParameter("page");
                 String country = request.getParameter("country");
                 int first = 0;
                 int last = 0;
-                if(page == null) {
+                if(!checkParam(NUMERIC_PARAM,page)) {
                     last = 10;
                 } else {
                     last = Integer.parseInt(page)*10;
@@ -79,7 +85,7 @@ public class Linker extends HttpServlet {
                 }
                 int number = 0;
                 Object artists;
-                if(country != null) {
+                if(checkParam(ALPHA_PARAM,country)) {
                     number = (int)Math.ceil(
                             (double)dao.getArtistNumber(country) / 10);
                     artists = dao.getArtists(country, first, last);
@@ -96,19 +102,21 @@ public class Linker extends HttpServlet {
             
             } else if("/album".equals(spath)) {
                 String id = request.getParameter("id");
+                if(checkParam(NUMERIC_PARAM,id)) {
+                    request.setAttribute("album",  
+                            dao.getAlbum(Integer.parseInt(id)));
                 
-                request.setAttribute("album",  
-                        dao.getAlbum(Integer.parseInt(id)));
-                
-                getServletConfig().getServletContext().getRequestDispatcher(
-                        "/pages/showalbum.jsp").forward(request,response);
-                        
+                    getServletConfig().getServletContext().getRequestDispatcher(
+                            "/pages/showalbum.jsp").forward(request,response);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
             } else if("/album/all".equals(spath)) {
                 String page = request.getParameter("page");
                 int first = 0;
                 int last = 0;
                 
-                if(page == null) {
+                if(!checkParam(NUMERIC_PARAM,page)) {
                     last = 10;
                 } else {
                     last = Integer.parseInt(page)*10;
@@ -120,14 +128,14 @@ public class Linker extends HttpServlet {
                 
                 Object albums = null;
                 
-                if(year != null){
+                if(checkParam(NUMERIC_PARAM,year)){
                 
                     Date date = df.parse(year);
                     number = (int)Math.ceil(
                             (double)dao.getAlbumNumber(date) / 10);
                     albums = dao.getAlbums(date, first, last);
                 
-                } else if(genre != null) {
+                } else if(checkParam(ALPHA_PARAM,genre)) {
                     number = (int)Math.ceil(
                             (double)dao.getAlbumNumber(genre) / 10);
                     albums = dao.getAlbums(genre, first, last);
@@ -144,28 +152,24 @@ public class Linker extends HttpServlet {
                         
             } else if("/label".equals(spath)) {
                 String id = request.getParameter("id");
-                int lid = Integer.parseInt(id);
-                
-                if (!labelInList(lid)) {
-                    redirrectToErrorPage(response, 
-                            "Sorry, but this label does not exist");
-                } else {
+                if(checkParam(NUMERIC_PARAM,id)) {
+                    int lid = Integer.parseInt(id);
                     Label label = dao.getLabel(lid);
-
                     request.setAttribute("label", label);
                     request.setAttribute("path", 
                             new CollectionWrapper(dao.getLabelPath(lid)));
                     request.setAttribute("children",
                             new CollectionWrapper(dao.getChildLabels(lid)));
-                    
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showlabel.jsp").forward(request,response);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }
             } else if("/label/all".equals(spath)) {
                 String page = request.getParameter("page");
                 int first = 0;
                 int last = 0;
-                if(page == null) {
+                if(!checkParam(NUMERIC_PARAM,page)) {
                     last = 10;
                 } else {
                     last = Integer.parseInt(page)*10;
@@ -183,16 +187,18 @@ public class Linker extends HttpServlet {
             } else if("/remove".equals(spath)) {
                 String what = request.getParameter("obj");
                 String id = request.getParameter("id");
-                if("album".equals(what)) {
-                    dao.deleteAlbum(Integer.parseInt(id));
-                } else if("artist".equals(what)) {
-                    dao.deleteArtist(Integer.parseInt(id));
-                } else if("label".equals(what)) {
-                    dao.deleteLabel(Integer.parseInt(id));
+                if(checkParam(NUMERIC_PARAM,id)) {
+                    if("album".equals(what)) {
+                        dao.deleteAlbum(Integer.parseInt(id));
+                    } else if("artist".equals(what)) {
+                        dao.deleteArtist(Integer.parseInt(id));
+                    } else if("label".equals(what)) {
+                        dao.deleteLabel(Integer.parseInt(id));
+                    }
+                    response.sendRedirect(request.getHeader("Referer"));
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }
-                
-                response.sendRedirect(request.getHeader("Referer"));
-                
             } else if("/date/all".equals(spath)) {
                 request.setAttribute("dates",dao.getDates());
                 getServletConfig().getServletContext().getRequestDispatcher(
@@ -201,7 +207,6 @@ public class Linker extends HttpServlet {
             } else if ("/addalbum".equals(spath)) {
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/addalbum.jsp").forward(request,response);
-            
             } else if ("/addartist".equals(spath)) {
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/addartist.jsp").forward(request,response);
@@ -209,41 +214,46 @@ public class Linker extends HttpServlet {
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/addlabel.jsp").forward(request,response);
             } else if ("/editlabel".equals(spath)) {
-                int id = Integer.parseInt(
-                        request.getParameter("id"));
+                String id = request.getParameter("id");
+                if(checkParam(NUMERIC_PARAM,id)) {
+                    int lid = Integer.parseInt(id);
                         
-                Label label = (Label)dao.getLabel(id);
-                request.setAttribute("label", label);
+                    Label label = (Label)dao.getLabel(lid);
+                    request.setAttribute("label", label);
                     
-                getServletConfig().getServletContext().getRequestDispatcher(
-                        "/pages/editlabel.jsp").forward(request,response);
-            
+                    getServletConfig().getServletContext().getRequestDispatcher(
+                            "/pages/editlabel.jsp").forward(request,response);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
             } else if ("/editartist".equals(spath)) {
-                
-                int id = Integer.parseInt(
-                        request.getParameter("id"));
+                String id = request.getParameter("id");
+                if(checkParam(NUMERIC_PARAM,id)) {
+                    int aid = Integer.parseInt(id);
 
-                Artist artist = (Artist)dao.getArtist(id);
-                request.setAttribute("artist", artist);
+                    Artist artist = (Artist)dao.getArtist(aid);
+                    request.setAttribute("artist", artist);
                     
-                getServletConfig().getServletContext().getRequestDispatcher(
-                        "/pages/editartist.jsp").forward(request,response);
-            
+                    getServletConfig().getServletContext().getRequestDispatcher(
+                            "/pages/editartist.jsp").forward(request,response);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
             } else if ("/editalbum".equals(spath)) {
-                
-                int id = Integer.parseInt(
-                        request.getParameter("id"));
+                String id = request.getParameter("id");
+                if(checkParam(NUMERIC_PARAM,id)) {
+                    int alid = Integer.parseInt(id);
 
-                Album album = (Album)dao.getAlbum(id);
-                request.setAttribute("album", album);
+                    Album album = (Album)dao.getAlbum(alid);
+                    request.setAttribute("album", album);
                 
-                getServletConfig().getServletContext().getRequestDispatcher(
-                        "/pages/editalbum.jsp").forward(request,response);
+                    getServletConfig().getServletContext().getRequestDispatcher(
+                            "/pages/editalbum.jsp").forward(request,response);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
             } else if ("/check".equals(spath)) {
                 
-                /* check?object=artist&artist=SomeName
-                 * check?object=label&label=SomeName
-                 * */
                 String artist = request.getParameter("artist");
                 if (artist != null) {
                     out.print(dao.findArtist(artist));
@@ -305,16 +315,18 @@ public class Linker extends HttpServlet {
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showalbums.jsp").forward(request,response);
                 }
-            } 
-        } catch (OracleDataAccessObjectException e) {
-            throw new ServletException(e);
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
         } catch (ParseException e) {
-            throw new ServletException(e);
+            showErrorPage(request,response,e);
+        } catch (OracleDataAccessObjectException e) {
+            showErrorPage(request,response,e);
         }
     }
     
     /**
-     * Realization of the doPot method.
+     * Realization of the doPost method.
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) 
@@ -505,8 +517,26 @@ public class Linker extends HttpServlet {
         return false;
     }
     
-    private void redirrectToErrorPage(HttpServletResponse response, 
-            String error) throws IOException {
-        response.sendRedirect("/pages/error.jsp?error=" + error);
+    private void showErrorPage(HttpServletRequest request,
+            HttpServletResponse response, Throwable e) throws ServletException, IOException {
+                
+        request.setAttribute ("javax.servlet.jsp.jspException", e);
+        getServletConfig().getServletContext().
+                getRequestDispatcher("/pages/error.jsp").forward(request,response);
+    }
+    
+    private boolean checkParam(int type,String paramValue) {
+        String regexp;
+        if((paramValue == null) || " ".equals(paramValue) || "".equals(paramValue)) {
+            return false;
+        }
+        if(type == NUMERIC_PARAM) {
+            regexp = "[0-9]+";
+        } else  if(type == ALPHA_PARAM) {
+            regexp = "[a-z]+";
+        } else {
+            regexp = ".+";
+        }
+        return paramValue.matches(regexp);
     }
 }

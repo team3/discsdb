@@ -229,7 +229,7 @@ public class ArtistsOperator extends MainOperator {
             
             ResultSet set = executeResultQuery();
             if(set.next()) {
-                artist = (Artist)fillBean(set,ARTIST,FULL_MODE);
+                artist = fillArtistBean(set,FULL_MODE);
             }
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
@@ -265,7 +265,7 @@ public class ArtistsOperator extends MainOperator {
             
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currArtist = (Artist)fillBean(set,ARTIST,FULL_MODE);
+                currArtist = fillArtistBean(set,FULL_MODE);
                 artists.add(currArtist);
             }
         } catch (SQLException e){
@@ -303,7 +303,7 @@ public class ArtistsOperator extends MainOperator {
             
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currArtist = (Artist)fillBean(set, ARTIST, FULL_MODE);
+                currArtist = fillArtistBean(set, FULL_MODE);
                 artists.add(currArtist);
             }
         } catch (SQLException e){
@@ -403,7 +403,7 @@ public class ArtistsOperator extends MainOperator {
             
             ResultSet set = executeResultQuery();
             while(set.next()){
-                currArtist = (Artist)fillBean(set,ARTIST,FULL_MODE);
+                currArtist = fillArtistBean(set,FULL_MODE);
                 artists.add(currArtist);
             }
         } catch (SQLException e) {
@@ -413,7 +413,4 @@ public class ArtistsOperator extends MainOperator {
         }
         return artists; 
     }
-
-
-
 }

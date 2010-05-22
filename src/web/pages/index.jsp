@@ -26,7 +26,16 @@
     <c:set var="truepath" value="${pageContext.request.contextPath}${albumspath}${genrepath}"/>
     <div class="maincont">
         <img src=<c:out value="${random.cover}" /> width="220" height="220" align="left" alt="cover" style= "margin-right: 15px;"/>
-        <h1> <c:out value="${random.name}" /> by <a href=<c:out value= "${pageContext.request.contextPath}${artpath}${random.artist}" />><c:out value="${random.artistName}" /></a> </h1>
+        <h1> <c:out value="${random.name}" /> by
+        <c:choose>
+            <c:when test = "${random.artist >=0}"> 
+                <a href=<c:out value= "${pageContext.request.contextPath}${artpath}${random.artist}" />><c:out value="${random.artistName}" /></a> 
+            </c:when>
+            <c:otherwise>
+                <c:out value="${random.artistName}" />
+            </c:otherwise>
+        </c:choose>
+        </h1>
         <%
             DateFormat dfone = new SimpleDateFormat("dd.MM.yyyy");
             DateFormat dftwo = new SimpleDateFormat("yyyy");
@@ -35,7 +44,16 @@
             String countryPath = "/album/all?year="+formatedYears;
         %>
         <p><b>Release:</b> <a href=<%=request.getContextPath() %><%=countryPath %>><%=formatedMonthsYears %></a></p>
-        <p><b>Label:</b><a href=<c:out value= "${pageContext.request.contextPath}${lblpath}${random.label}" />> <c:out value="${random.labelName}" /></a></p>
+        <p><b>Label:</b>
+        <c:choose>
+            <c:when test = "${random.label >= 0}">
+                <a href=<c:out value= "${pageContext.request.contextPath}${lblpath}${random.label}" />> <c:out value="${random.labelName}" /></a>
+            </c:when>
+            <c:otherwise>
+                <c:out value="${random.labelName}" />
+            </c:otherwise>
+        </c:choose>
+        </p>
         <p><b>Genre:</b> <a href=<c:out value="${truepath}${random.genre}" /> ><c:out value="${random.genre}" /></a></p>
         <p>
             <b>Review:</b> <br /> 
@@ -48,10 +66,16 @@
             <c:forEach var="lalbum" begin="0" items="${latest}">
                 <div class = "smallalbum">
                     <img src = <c:out value="${lalbum.cover}" /> width = "100" height = "100" alt= "" />
-                    
-                    <a href=<c:out value="${pageContext.request.contextPath}${artpath}${lalbum.artist}"/>>
-                        <c:out value="${lalbum.artistName}"/>
-                    </a>
+                    <c:choose>
+                        <c:when test = "${lalbum.artist >= 0}">
+                            <a href=<c:out value="${pageContext.request.contextPath}${artpath}${lalbum.artist}"/>>
+                                <c:out value="${lalbum.artistName}"/>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${lalbum.artistName}"/>
+                        </c:otherwise>
+                    </c:choose>
                     <a href=<c:out value="${pageContext.request.contextPath}${albpath}${lalbum.id}"/> >
                         <c:out value="${lalbum.name}"/>
                     </a>

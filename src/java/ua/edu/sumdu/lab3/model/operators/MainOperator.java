@@ -15,12 +15,9 @@ public class MainOperator {
     protected Connection connection = null;
     protected PreparedStatement statement = null;
     
-    protected static final int ALBUM = 0;
-    protected static final int ARTIST = 1;
-    protected static final int LABEL = 2;
-        
-    protected static final int FULL_MODE = 10;
-    protected static final int SHORT_MODE = 9;
+    protected static final int FULL_MODE = 2;
+    protected static final int SHORT_MODE = 1;
+    protected static final int NORMAL_MODE = 0;
     
         
     private static final String SELECT_GENRES_BY_ARTIST =
@@ -111,67 +108,92 @@ public class MainOperator {
         }
     }
     
-    protected Object fillBean(ResultSet set,int beanType,int mode) 
+    protected Artist fillArtistBean(ResultSet set,int mode)
             throws OracleDataAccessObjectException {
-        Object bean = null;
+        Artist art = new Artist();
         try {
-            switch(beanType) {
-                case ALBUM:
-                    Album alb = new Album();
-                    if(mode == FULL_MODE) {
-                        alb.setId(set.getInt(1));
-                        alb.setName(set.getString(2));
-                        alb.setType(set.getString(3));
-                        alb.setRelease(new java.util.Date(set.getDate(4).getTime()));
-                        alb.setGenre(set.getString(5));
-                        alb.setCover(set.getString(6));
-                        alb.setReview(set.getString(7));
-                        alb.setArtist(set.getInt(8));
-                        alb.setLabel(set.getInt(9));
-                        alb.setArtistName(set.getString(10));
-                        alb.setLabelName(set.getString(11));
-                    } else {
-                        alb.setId(set.getInt(1));
-                        alb.setName(set.getString(2));
-                    }
-                    bean = alb;
+            switch(mode) {
+                case FULL_MODE :
+                art.setId(set.getInt(1));
+                art.setName(set.getString(2));
+                art.setCountry(set.getString(3));
+                art.setInfo(set.getString(4));
                 break;
-                
-                case ARTIST:
-                    Artist art = new Artist();
-                    if(mode == FULL_MODE) {
-                        art.setId(set.getInt(1));
-                        art.setName(set.getString(2));
-                        art.setCountry(set.getString(3));
-                        art.setInfo(set.getString(4));
-                    } else {
-                        art.setId(set.getInt(1));
-                        art.setName(set.getString(2));
-                    }
-                    bean = art;
+            
+                case SHORT_MODE:
+                art.setId(set.getInt(1));
+                art.setName(set.getString(2));
                 break;
-                
-                case LABEL:
-                    Label lbl = new Label();
-                    if(mode == FULL_MODE) {
-                        lbl.setId(set.getInt(1));
-                        lbl.setMajor(set.getInt(2));
-                        lbl.setName(set.getString(3));
-                        lbl.setLogo(set.getString(4));
-                        lbl.setInfo(set.getString(5));
-                        lbl.setMajorName(set.getString(6));
-                    } else {
-                        lbl.setId(set.getInt(1));
-                        lbl.setName(set.getString(2));
-                        lbl.setLogo(set.getString(3));
-                    }
-                    bean = lbl;
+        
+                case NORMAL_MODE:
                 break;
             }
         } catch (SQLException e) {
-            throw new OracleDataAccessObjectException(e + "sql error");
+            throw new OracleDataAccessObjectException(e);
         }
-        return bean;
+        return art;
+    }
+    
+    protected Label fillLabelBean(ResultSet set,int mode) 
+            throws OracleDataAccessObjectException {
+        Label lbl = new Label();
+        try {
+            switch (mode) {
+                case FULL_MODE :
+                lbl.setId(set.getInt(1));
+                lbl.setMajor(set.getInt(2));
+                lbl.setName(set.getString(3));
+                lbl.setLogo(set.getString(4));
+                lbl.setInfo(set.getString(5));
+                lbl.setMajorName(set.getString(6));
+                break;
+            
+                case SHORT_MODE:
+                lbl.setId(set.getInt(1));
+                lbl.setName(set.getString(2));
+                lbl.setLogo(set.getString(3));
+                break;
+            
+                case NORMAL_MODE:
+                break;
+            }
+        } catch (SQLException e) {
+            throw new OracleDataAccessObjectException(e);
+        } 
+        return lbl;
+    }
+    
+    protected Album fillAlbumBean(ResultSet set,int mode) 
+            throws OracleDataAccessObjectException {
+        Album alb = new Album();
+        try {
+            switch(mode) {
+                case FULL_MODE:
+                alb.setId(set.getInt(1));
+                alb.setName(set.getString(2));
+                alb.setType(set.getString(3));
+                alb.setRelease(new java.util.Date(set.getDate(4).getTime()));
+                alb.setGenre(set.getString(5));
+                alb.setCover(set.getString(6));
+                alb.setReview(set.getString(7));
+                alb.setArtist(set.getInt(8));
+                alb.setLabel(set.getInt(9));
+                alb.setArtistName(set.getString(10));
+                alb.setLabelName(set.getString(11));
+                break;
+                
+                case SHORT_MODE:
+                alb.setId(set.getInt(1));
+                alb.setName(set.getString(2));
+                break;
+                
+                case NORMAL_MODE:
+                break;
+            }
+        } catch (SQLException e) {
+            throw new OracleDataAccessObjectException(e);
+        }
+        return alb;
     }
 
             
