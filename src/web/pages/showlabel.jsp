@@ -71,7 +71,7 @@
                         <a href = <c:out value= "${pageContext.request.contextPath}/editlabel?id=${label.id}" /> >Edit</a>
                     </p>
                     <p>
-                        <a href = <c:out value= "${pageContext.request.contextPath}/remove?obj=label&id=${label.id}" /> >Remove</a>
+                        <a href = <c:out value= "${pageContext.request.contextPath}/remove?obj=label&id=${label.id}&mode=self" /> >Remove</a>
                     </p>
                 </c:otherwise>
             </c:choose>

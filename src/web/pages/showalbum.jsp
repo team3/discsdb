@@ -45,7 +45,12 @@
                 </c:choose>
             </h1>
             <p><b>Type: </b><c:out value="${album.type}" /></p>
-            <p><b>Release: </b> <fmt:formatDate pattern="dd.MM.yyyy" value="${album.release}" /> </p>
+            <p><b>Release: </b> 
+                <a 
+                    href =<c:out value="${pageContext.request.contextPath}" />/album/all?year=<fmt:formatDate pattern="yyyy" value="${album.release}" /> >
+                    <fmt:formatDate pattern="dd.MM.yyyy" value="${album.release}" /> 
+                </a>
+            </p>
             <p><b>Label: </b>
                 <c:choose>
                     <c:when test = "${album.label > 0}">
@@ -64,6 +69,9 @@
             </p>
             <p>
                 <a href = <c:out value= "${pageContext.request.contextPath}/editalbum?id=${album.id}" /> >Edit</a>
+            </p>
+            <p>
+                <a href = <c:out value= "${pageContext.request.contextPath}/remove?obj=album&id=${album.id}&mode=self" /> >Remove</a>
             </p>
         </c:when>
         <c:otherwise>

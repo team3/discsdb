@@ -187,15 +187,24 @@ public class Linker extends HttpServlet {
             } else if("/remove".equals(spath)) {
                 String what = request.getParameter("obj");
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM,id)) {
+                String mode = request.getParameter("mode");
+                StringBuffer redirPath = new StringBuffer(request.getContextPath());
+                if(checkParam(NUMERIC_PARAM,id) && checkParam(ALPHA_PARAM,what)) {
                     if("album".equals(what)) {
                         dao.deleteAlbum(Integer.parseInt(id));
+                        redirPath.append("/album/all");
                     } else if("artist".equals(what)) {
                         dao.deleteArtist(Integer.parseInt(id));
+                        redirPath.append("/artist/all");
                     } else if("label".equals(what)) {
                         dao.deleteLabel(Integer.parseInt(id));
+                        redirPath.append("/label/all");
                     }
-                    response.sendRedirect(request.getHeader("Referer"));
+                    if("self".equals(mode)) {
+                        response.sendRedirect(redirPath.toString());
+                    } else {
+                        response.sendRedirect(request.getHeader("Referer"));
+                    }
                 } else {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }

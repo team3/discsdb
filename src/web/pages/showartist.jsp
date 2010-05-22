@@ -55,6 +55,9 @@
             <p>
                 <a href = <c:out value= "${pageContext.request.contextPath}/editartist?id=${artist.id}" /> >Edit</a>
             </p>
+            <p>
+                <a href = <c:out value= "${pageContext.request.contextPath}/remove?obj=artist&id=${artist.id}&mode=self" /> >Remove</a>
+            </p>
         </div>
         </c:if>
     </div>
