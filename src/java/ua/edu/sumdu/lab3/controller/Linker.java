@@ -217,14 +217,8 @@ public class Linker extends HttpServlet {
                 String id = request.getParameter("id");
                 if(checkParam(NUMERIC_PARAM, id)) {
                     int lid = Integer.parseInt(id);
-                    Label label = null;
-                    if (lid == -1) {
-                        label = new Label();
-                    } else {   
-                        label = (Label)dao.getLabel(lid);
-                    }
+                    Label label = (Label)dao.getLabel(lid);
                     request.setAttribute("label", label);
-                    
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/editlabel.jsp").forward(request,response);
                 } else {
@@ -234,14 +228,8 @@ public class Linker extends HttpServlet {
                 String id = request.getParameter("id");
                 if(checkParam(NUMERIC_PARAM, id)) {
                     int aid = Integer.parseInt(id);
-                    Artist artist = null;
-                    if (aid == -1) {
-                        artist = new Artist();
-                    } else {
-                        artist = (Artist)dao.getArtist(aid);
-                    }
+                    Artist artist = (Artist)dao.getArtist(aid);
                     request.setAttribute("artist", artist);
-                    
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/editartist.jsp").forward(request,response);
                 } else {
