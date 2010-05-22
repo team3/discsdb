@@ -22,8 +22,7 @@
         <script src = <c:out value= "${pageContext.request.contextPath}" />/pages/js/jquery.field.min.js type="text/javascript"></script>
         
         <script type="text/javascript">    
-            
-            function addArtist() {
+            $("document").ready(function(){
                 $("artist_edit_form").validate({
                     rules : {
                         artistname : {required : true },
@@ -31,6 +30,8 @@
                         artistinfo : {required : true }
                     }
                 });
+            });
+            function addArtist() {
                 var name = $('.artistname').getValue();
                 var country = $('.artistcountry').getValue();
                 var info = $('.artistinfo').getValue();

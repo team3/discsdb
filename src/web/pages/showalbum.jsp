@@ -31,39 +31,45 @@
     </p>
     
     <div class="maincont">
-        
-        <img src=<c:out value="${album.cover}" /> width="220" height="220" align="left" alt="cover" style = "margin-right: 15px;" />
-        <h1> <c:out value="${album.name}" /> by 
-            <c:choose>
-                <c:when test = "${album.artist > 0}">
-                    <a href=<c:out value= "${pageContext.request.contextPath}${artpath}${album.artist}" />><c:out value="${album.artistName}" /></a> 
-                </c:when>
-                <c:otherwise>
-                    <c:out value="${album.artistName}" />
-                </c:otherwise>
-            </c:choose>
-        </h1>
-        <p><b>Type: </b><c:out value="${album.type}" /></p>
-        <p><b>Release: </b> <fmt:formatDate pattern="dd.MM.yyyy" value="${album.release}" /> </p>
-        <p><b>Label: </b>
-            <c:choose>
-                <c:when test = "${album.label > 0}">
-                    <a href=<c:out value= "${pageContext.request.contextPath}${lblpath}${album.label}" />> <c:out value="${album.labelName}" /></a>
-                </c:when>
-                <c:otherwise>
-                     <c:out value="${album.labelName}" />
-                </c:otherwise>
-            </c:choose>
-        </p>
-        <p><b>Genre: </b> <a href=<c:out value="${truepath}${album.genre}" /> ><c:out value="${album.genre}" /></a></p>
-        
-        <p>
-            <b>Review: </b> <br /> 
-            <i><c:out value="${album.review}" /></i>
-        </p>
-        <p>
-            <a href = <c:out value= "${pageContext.request.contextPath}/editalbum?id=${album.id}" /> >Edit</a>
-        </p>
+        <c:choose>
+        <c:when test = "${album.name != null}">
+            <img src=<c:out value="${album.cover}" /> width="220" height="220" align="left" alt="cover" style = "margin-right: 15px;" />
+            <h1> <c:out value="${album.name}" /> by 
+                <c:choose>
+                    <c:when test = "${album.artist > 0}">
+                        <a href=<c:out value= "${pageContext.request.contextPath}${artpath}${album.artist}" />><c:out value="${album.artistName}" /></a> 
+                    </c:when>
+                    <c:otherwise>
+                        <c:out value="${album.artistName}" />
+                    </c:otherwise>
+                </c:choose>
+            </h1>
+            <p><b>Type: </b><c:out value="${album.type}" /></p>
+            <p><b>Release: </b> <fmt:formatDate pattern="dd.MM.yyyy" value="${album.release}" /> </p>
+            <p><b>Label: </b>
+                <c:choose>
+                    <c:when test = "${album.label > 0}">
+                        <a href=<c:out value= "${pageContext.request.contextPath}${lblpath}${album.label}" />> <c:out value="${album.labelName}" /></a>
+                    </c:when>
+                    <c:otherwise>
+                         <c:out value="${album.labelName}" />
+                    </c:otherwise>
+                </c:choose>
+            </p>
+            <p><b>Genre: </b> <a href=<c:out value="${truepath}${album.genre}" /> ><c:out value="${album.genre}" /></a></p>
+            
+            <p>
+                <b>Review: </b> <br /> 
+                <i><c:out value="${album.review}" /></i>
+            </p>
+            <p>
+                <a href = <c:out value= "${pageContext.request.contextPath}/editalbum?id=${album.id}" /> >Edit</a>
+            </p>
+        </c:when>
+        <c:otherwise>
+            Sorry, but no album found.
+        </c:otherwise>
+        </c:choose>
     </div>
 </div>
 </body>
