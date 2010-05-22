@@ -24,8 +24,8 @@
                     <a 
                         href=<c:out value="${truepath}"/>>
                         <c:out value="${year}"/>
-                        &nbsp;
                     </a>
+                    &nbsp;
                 </c:forEach>
             </p>
         </div>
