@@ -38,6 +38,8 @@
     
     <target name = "pack" depends = "compile">
         <echo message = "Packing the project ... " />
+        <mkdir dir="${dist}" />
+        <mkdir dir="${build}" />
         <copy todir = "${build}">
            <fileset dir = "${src}/web" />
         </copy>
