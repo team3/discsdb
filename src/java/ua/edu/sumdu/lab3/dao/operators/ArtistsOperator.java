@@ -1,6 +1,6 @@
-package ua.edu.sumdu.lab3.model.operators;
+package ua.edu.sumdu.lab3.dao.operators;
 
-import ua.edu.sumdu.lab3.model.exceptions.*;
+import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
 import java.util.Date;
 import java.text.DateFormat;
@@ -63,7 +63,7 @@ public class ArtistsOperator extends MainOperator {
             statement.setString(2, artist.getCountry());
             statement.setString(3, artist.getInfo());
             connection.setAutoCommit(false);
-            executeUpdateQuery();
+            statement.executeUpdate();
             connection.commit();
             
         } catch (SQLException e) {
@@ -102,7 +102,7 @@ public class ArtistsOperator extends MainOperator {
             
             statement.setInt(1, id);
             connection.setAutoCommit(false);
-            executeUpdateQuery();
+            statement.executeUpdate();
             connection.commit();
             
         }   catch (SQLException e) {
@@ -152,7 +152,7 @@ public class ArtistsOperator extends MainOperator {
             statement.setString(4, artist.getInfo());
             statement.setInt(5, artist.getId());
             connection.setAutoCommit(false);
-            executeUpdateQuery();
+            statement.executeUpdate();
             connection.commit();
             
         } catch (SQLException e) {
@@ -191,7 +191,7 @@ public class ArtistsOperator extends MainOperator {
             statement = connection.prepareStatement(FIND_ARTIST);
             statement.setString(1, name);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             while(set.next()){
                 aid = set.getInt(1);
             }
@@ -227,7 +227,7 @@ public class ArtistsOperator extends MainOperator {
             
             statement.setInt(1, id);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             if(set.next()) {
                 artist = fillArtistBean(set,FULL_MODE);
             }
@@ -263,7 +263,7 @@ public class ArtistsOperator extends MainOperator {
             
             statement.setInt(1,label.getId());
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             while(set.next()){
                 currArtist = fillArtistBean(set,FULL_MODE);
                 artists.add(currArtist);
@@ -301,7 +301,7 @@ public class ArtistsOperator extends MainOperator {
             statement.setInt(2,lastRow);
             statement.setInt(3,firstRow);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             while(set.next()){
                 currArtist = fillArtistBean(set, FULL_MODE);
                 artists.add(currArtist);
@@ -332,7 +332,7 @@ public class ArtistsOperator extends MainOperator {
             
             statement = connection.prepareStatement(ARTIST_MAX_ROW);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             set.next();
             
             result = set.getInt(1);
@@ -365,7 +365,7 @@ public class ArtistsOperator extends MainOperator {
             
             statement.setString(1,country);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             set.next();
             
             result = set.getInt(1);
@@ -401,7 +401,7 @@ public class ArtistsOperator extends MainOperator {
             statement.setInt(1,lastRow);
             statement.setInt(2,firstRow);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             while(set.next()){
                 currArtist = fillArtistBean(set,FULL_MODE);
                 artists.add(currArtist);

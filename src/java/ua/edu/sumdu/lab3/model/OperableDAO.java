@@ -8,7 +8,7 @@
 
 package ua.edu.sumdu.lab3.model;
 
-import ua.edu.sumdu.lab3.model.exceptions.*;
+import ua.edu.sumdu.lab3.exceptions.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

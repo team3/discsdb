@@ -1,6 +1,6 @@
-package ua.edu.sumdu.lab3.model.operators;
+package ua.edu.sumdu.lab3.dao.operators;
 
-import ua.edu.sumdu.lab3.model.exceptions.*;
+import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
 import java.util.Date;
 import java.text.DateFormat;
@@ -85,7 +85,7 @@ public class AlbumsOperator extends MainOperator {
                 statement.setInt(7,album.getArtist());
                 statement.setInt(8,album.getLabel());
                 connection.setAutoCommit(false);
-                executeUpdateQuery();
+                statement.executeUpdate();
                 connection.commit();
             } else {
                 throw new OracleDataAccessObjectException("Unable to add album");
@@ -114,16 +114,12 @@ public class AlbumsOperator extends MainOperator {
         try {
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(
                     SELECT_ALBUM_BY_ID);
 
             statement.setInt(1, id);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             if(set.next()) {
                 album = fillAlbumBean(set,FULL_MODE);
             }
@@ -149,10 +145,6 @@ public class AlbumsOperator extends MainOperator {
             Album currAlbum;
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(
                     SELECT_ALBUMS_BY_GENRE);
 
@@ -160,7 +152,7 @@ public class AlbumsOperator extends MainOperator {
             statement.setInt(2,lastRow);
             statement.setInt(3,firstRow);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
@@ -187,10 +179,6 @@ public class AlbumsOperator extends MainOperator {
             Album currAlbum;
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(
                     SELECT_ALBUMS_BY_NAME);
 
@@ -198,7 +186,7 @@ public class AlbumsOperator extends MainOperator {
             statement.setInt(2,lastRow);
             statement.setInt(3,firstRow);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
@@ -227,10 +215,6 @@ public class AlbumsOperator extends MainOperator {
 
             getConnection();
 
-            if (connection == null) {
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(
                     SELECT_ALBUMS_BY_DATE);
 
@@ -238,7 +222,7 @@ public class AlbumsOperator extends MainOperator {
             statement.setInt(2,lastRow);
             statement.setInt(3,firstRow);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
 
             while(set.next()){
                 currAlbum = fillAlbumBean(set, FULL_MODE);
@@ -266,10 +250,6 @@ public class AlbumsOperator extends MainOperator {
             Album currAlbum;
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(
                     SELECT_ALBUMS_BY_ARTIST);
 
@@ -277,7 +257,7 @@ public class AlbumsOperator extends MainOperator {
             statement.setInt(2,lastRow);
             statement.setInt(3,firstRow);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
@@ -304,10 +284,6 @@ public class AlbumsOperator extends MainOperator {
             Album currAlbum;
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(
                     SELECT_ALBUMS_BY_LABEL);
 
@@ -315,7 +291,7 @@ public class AlbumsOperator extends MainOperator {
             statement.setInt(2,lastRow);
             statement.setInt(3,firstRow);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
@@ -341,16 +317,12 @@ public class AlbumsOperator extends MainOperator {
 
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(
                     SELECT_ALL_ALBUMS);
             statement.setInt(1,lastRow);
             statement.setInt(2,firstRow);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
@@ -378,10 +350,6 @@ public class AlbumsOperator extends MainOperator {
             albums = new LinkedList();
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             Set s = params.entrySet();
             Iterator it = s.iterator();
             StringBuffer query = new StringBuffer();
@@ -403,7 +371,7 @@ public class AlbumsOperator extends MainOperator {
 
             statement =
                     connection.prepareStatement(FIND_ALBUMS);
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 albums.add(getAlbum(set.getInt(1)));
             }
@@ -428,12 +396,9 @@ public class AlbumsOperator extends MainOperator {
 
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             if (alb == null) {
-                throw new OracleDataAccessObjectException("No album with specified id found");
+                throw new OracleDataAccessObjectException(
+                        "No album with specified id found");
             }
 
             statement = connection.prepareStatement(EDIT_ALBUM);
@@ -450,7 +415,7 @@ public class AlbumsOperator extends MainOperator {
             statement.setInt(9, album.getLabel());
             statement.setInt(10, album.getId());
             connection.setAutoCommit(false);
-            executeUpdateQuery();
+            statement.executeUpdate();
             connection.commit();
 
         } catch (SQLException e) {
@@ -485,14 +450,10 @@ public class AlbumsOperator extends MainOperator {
 
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(LATEST_ALBUMS);
             statement.setInt(1,number);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
@@ -517,13 +478,9 @@ public class AlbumsOperator extends MainOperator {
         try {
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(ALBUM_MAX_ROW);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             set.next();
 
             result = set.getInt(1);
@@ -548,15 +505,11 @@ public class AlbumsOperator extends MainOperator {
             DateFormat df = new SimpleDateFormat("yyyy");
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(ALBUM_BY_DATE_MAX_ROW);
 
             statement.setString(1,df.format(date));
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             set.next();
 
             result = set.getInt(1);
@@ -580,15 +533,11 @@ public class AlbumsOperator extends MainOperator {
         try {
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(ALBUM_BY_GENRE_MAX_ROW);
 
             statement.setString(1,genre);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             set.next();
 
             result = set.getInt(1);
@@ -614,14 +563,10 @@ public class AlbumsOperator extends MainOperator {
 
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(
                     ALBUM_RANDOM);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             if(set.next()) {
                 album = fillAlbumBean(set,FULL_MODE);
             }
@@ -643,15 +588,11 @@ public class AlbumsOperator extends MainOperator {
         try {
             getConnection();
 
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             statement = connection.prepareStatement(DELETE_ALBUM);
 
             statement.setInt(1, id);
             connection.setAutoCommit(false);
-            executeUpdateQuery();
+            statement.executeUpdate();
             connection.commit();
 
         }   catch (SQLException e) {

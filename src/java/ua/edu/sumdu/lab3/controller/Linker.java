@@ -1,7 +1,8 @@
 package ua.edu.sumdu.lab3.controller;
 
 import ua.edu.sumdu.lab3.model.*;
-import ua.edu.sumdu.lab3.model.exceptions.*;
+import ua.edu.sumdu.lab3.dao.*;
+import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.CollectionWrapper;
 
 import javax.servlet.http.*;

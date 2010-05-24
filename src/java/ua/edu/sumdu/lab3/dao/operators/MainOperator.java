@@ -1,6 +1,6 @@
-package ua.edu.sumdu.lab3.model.operators;
+package ua.edu.sumdu.lab3.dao.operators;
 
-import ua.edu.sumdu.lab3.model.exceptions.*;
+import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
 import java.util.Date;
 import java.text.DateFormat;
@@ -40,6 +40,10 @@ public class MainOperator {
             Context context = (Context) iContext.lookup("java:comp/env");
             DataSource datasource = (DataSource)context.lookup("jdbc/DiscsDB");
             connection = datasource.getConnection();
+            if (connection == null) {
+                    throw new OracleDataAccessObjectException(
+                            "Connection has not created");
+            }
         } catch (javax.naming.NamingException e){
             throw new OracleDataAccessObjectException(e);
         } catch (SQLException e) {
@@ -72,10 +76,6 @@ public class MainOperator {
             throws OracleDataAccessObjectException {
         int result = -1;
         try {
-            if (this.connection == null) {
-                throw new OracleDataAccessObjectException(
-                        "Connection is not created");                
-            } 
             if (this.statement == null) {
                 throw new OracleDataAccessObjectException("Statement is null"); 
             }
@@ -114,15 +114,15 @@ public class MainOperator {
         try {
             switch(mode) {
                 case FULL_MODE :
-                art.setId(set.getInt(1));
-                art.setName(set.getString(2));
-                art.setCountry(set.getString(3));
-                art.setInfo(set.getString(4));
+                    art.setId(set.getInt(1));
+                    art.setName(set.getString(2));
+                    art.setCountry(set.getString(3));
+                    art.setInfo(set.getString(4));
                 break;
             
                 case SHORT_MODE:
-                art.setId(set.getInt(1));
-                art.setName(set.getString(2));
+                    art.setId(set.getInt(1));
+                    art.setName(set.getString(2));
                 break;
         
                 case NORMAL_MODE:
@@ -140,18 +140,18 @@ public class MainOperator {
         try {
             switch (mode) {
                 case FULL_MODE :
-                lbl.setId(set.getInt(1));
-                lbl.setMajor(set.getInt(2));
-                lbl.setName(set.getString(3));
-                lbl.setLogo(set.getString(4));
-                lbl.setInfo(set.getString(5));
-                lbl.setMajorName(set.getString(6));
+                    lbl.setId(set.getInt(1));
+                    lbl.setMajor(set.getInt(2));
+                    lbl.setName(set.getString(3));
+                    lbl.setLogo(set.getString(4));
+                    lbl.setInfo(set.getString(5));
+                    lbl.setMajorName(set.getString(6));
                 break;
             
                 case SHORT_MODE:
-                lbl.setId(set.getInt(1));
-                lbl.setName(set.getString(2));
-                lbl.setLogo(set.getString(3));
+                    lbl.setId(set.getInt(1));
+                    lbl.setName(set.getString(2));
+                    lbl.setLogo(set.getString(3));
                 break;
             
                 case NORMAL_MODE:
@@ -169,22 +169,22 @@ public class MainOperator {
         try {
             switch(mode) {
                 case FULL_MODE:
-                alb.setId(set.getInt(1));
-                alb.setName(set.getString(2));
-                alb.setType(set.getString(3));
-                alb.setRelease(new java.util.Date(set.getDate(4).getTime()));
-                alb.setGenre(set.getString(5));
-                alb.setCover(set.getString(6));
-                alb.setReview(set.getString(7));
-                alb.setArtist(set.getInt(8));
-                alb.setLabel(set.getInt(9));
-                alb.setArtistName(set.getString(10));
-                alb.setLabelName(set.getString(11));
+                    alb.setId(set.getInt(1));
+                    alb.setName(set.getString(2));
+                    alb.setType(set.getString(3));
+                    alb.setRelease(new java.util.Date(set.getDate(4).getTime()));
+                    alb.setGenre(set.getString(5));
+                    alb.setCover(set.getString(6));
+                    alb.setReview(set.getString(7));
+                    alb.setArtist(set.getInt(8));
+                    alb.setLabel(set.getInt(9));
+                    alb.setArtistName(set.getString(10));
+                    alb.setLabelName(set.getString(11));
                 break;
                 
                 case SHORT_MODE:
-                alb.setId(set.getInt(1));
-                alb.setName(set.getString(2));
+                    alb.setId(set.getInt(1));
+                    alb.setName(set.getString(2));
                 break;
                 
                 case NORMAL_MODE:
@@ -211,16 +211,12 @@ public class MainOperator {
 
             this.getConnection();
 
-            if (this.connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             this.statement = this.connection.prepareStatement(
                     SELECT_GENRES_BY_ARTIST);
 
             this.statement.setInt(1, artist.getId());
 
-            ResultSet set = this.executeResultQuery();
+            ResultSet set = this.statement.executeQuery();;
             while(set.next()){
                 genres.add(set.getString(1));
             }
@@ -246,16 +242,12 @@ public class MainOperator {
 
             this.getConnection();
 
-            if (this.connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             this.statement = this.connection.prepareStatement(
                     SELECT_GENRES_BY_LABEL);
 
             this.statement.setInt(1, label.getId());
 
-            ResultSet set = this.executeResultQuery();
+            ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 genres.add(set.getString(1));
             }
@@ -280,14 +272,10 @@ public class MainOperator {
 
             getConnection();
 
-            if (this.connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-
             this.statement = this.connection.prepareStatement(
                     SELECT_ALL_DATES);
 
-            ResultSet set = this.executeResultQuery();
+            ResultSet set = this.statement.executeQuery();;
             while(set.next()){
                 dates.add(set.getString(1));
             }

@@ -1,6 +1,6 @@
-package ua.edu.sumdu.lab3.model.operators;
+package ua.edu.sumdu.lab3.dao.operators;
 
-import ua.edu.sumdu.lab3.model.exceptions.*;
+import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
 import java.util.Date;
 import java.text.DateFormat;
@@ -68,7 +68,7 @@ public class LabelsOperator extends MainOperator {
                 statement.setString(3, label.getLogo());
                 statement.setString(4, label.getInfo());
                 connection.setAutoCommit(false);
-                executeUpdateQuery();
+                statement.executeUpdate();
                 connection.commit();
             } else {
                 throw new OracleDataAccessObjectException("Unable to add label");
@@ -113,7 +113,7 @@ public class LabelsOperator extends MainOperator {
             
             statement.setInt(1, id);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             if(set.next()) {
                 label = fillLabelBean(set,FULL_MODE);
             }
@@ -145,7 +145,7 @@ public class LabelsOperator extends MainOperator {
             statement = connection.prepareStatement(
                     SELECT_ALL_LABELS);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             
             while(set.next()){
                 currLabel = fillLabelBean(set,SHORT_MODE);
@@ -178,7 +178,7 @@ public class LabelsOperator extends MainOperator {
             statement = connection.prepareStatement(FIND_LABEL);
             statement.setString(1, name);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             while(set.next()){
                 lid = set.getInt(1);
             }
@@ -209,7 +209,7 @@ public class LabelsOperator extends MainOperator {
             
             statement.setInt(1, id);
             connection.setAutoCommit(false);
-            executeUpdateQuery();
+            statement.executeUpdate();
             connection.commit();
         
         } catch (SQLException e) {
@@ -263,7 +263,7 @@ public class LabelsOperator extends MainOperator {
             statement.setInt(5, label.getId());
             
             connection.setAutoCommit(false);
-            executeUpdateQuery();
+            statement.executeUpdate();
             connection.commit();
             
         } catch (SQLException e) {
@@ -307,7 +307,7 @@ public class LabelsOperator extends MainOperator {
             statement.setInt(1,lastRow);
             statement.setInt(2,firstRow);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             
             while(set.next()){
                 currLabel = fillLabelBean(set,SHORT_MODE);
@@ -343,7 +343,7 @@ public class LabelsOperator extends MainOperator {
                     GET_CHILD_LABELS);
             statement.setInt(1,id);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             
             while(set.next()){
                 currLabel = fillLabelBean(set, SHORT_MODE);
@@ -382,10 +382,10 @@ public class LabelsOperator extends MainOperator {
                         LABEL_GET_PATH);
             statement.setInt(1, id);
 
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             
             while(set.next()){
-                currLabel = fillLabelBean(set,SHORT_MODE);
+                currLabel = fillLabelBean(set, SHORT_MODE);
                 labels.add(currLabel);
             }
             
@@ -415,7 +415,7 @@ public class LabelsOperator extends MainOperator {
             
             statement = connection.prepareStatement(LABEL_MAX_ROW);
             
-            ResultSet set = executeResultQuery();
+            ResultSet set = statement.executeQuery();
             set.next();
             
             result = set.getInt(1);

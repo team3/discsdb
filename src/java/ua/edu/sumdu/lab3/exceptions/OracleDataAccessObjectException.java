@@ -1,4 +1,4 @@
-package ua.edu.sumdu.lab3.model.exceptions;
+package ua.edu.sumdu.lab3.exceptions;
 
 public class OracleDataAccessObjectException extends Exception {
     

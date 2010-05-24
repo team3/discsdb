@@ -6,10 +6,11 @@
 * @date 18.05.2010
 */
 
-package ua.edu.sumdu.lab3.model;
+package ua.edu.sumdu.lab3.dao;
 
-import ua.edu.sumdu.lab3.model.exceptions.*;
-import ua.edu.sumdu.lab3.model.operators.*;
+import ua.edu.sumdu.lab3.exceptions.*;
+import ua.edu.sumdu.lab3.dao.operators.*;
+import ua.edu.sumdu.lab3.model.*;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
