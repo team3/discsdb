@@ -100,6 +100,11 @@
         <location>/pages/404.html</location>
     </error-page> 
     
+    <error-page>
+        <error-code>500</error-code>
+        <location>/pages/error.jsp</location>
+    </error-page> 
+    
   <taglib>
     <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
     <taglib-location>/WEB-INF/tags/fmt.tld</taglib-location>
@@ -118,16 +123,6 @@
   <taglib>
     <taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
     <taglib-location>/WEB-INF/tags/c-rt.tld</taglib-location>
-  </taglib>
-
-  <taglib>
-    <taglib-uri>http://java.sun.com/jstl/sql</taglib-uri>
-    <taglib-location>/WEB-INF/tags/sql.tld</taglib-location>
-  </taglib>
-
-  <taglib>
-    <taglib-uri>http://java.sun.com/jstl/sql-rt</taglib-uri>
-    <taglib-location>/WEB-INF/tags/sql-rt.tld</taglib-location>
   </taglib>
 
   <taglib>

@@ -52,59 +52,21 @@ public class MainOperator {
     }
     
     /**
-     * This method execute result query of the defined statement.
-     */ 
-    protected ResultSet executeResultQuery() 
-            throws OracleDataAccessObjectException {
-        ResultSet result = null;
-        try {
-            if (this.connection != null) {
-                result = this.statement.executeQuery();
-            } else {
-                throw new OracleDataAccessObjectException("Unable to execute query");
-            }
-        } catch (SQLException e) {
-            throw new OracleDataAccessObjectException(e);
-        }
-        return result;
-    }
-
-    /**
-     * This method execute update query of the defined statement.
-     */ 
-    protected int executeUpdateQuery() 
-            throws OracleDataAccessObjectException {
-        int result = -1;
-        try {
-            if (this.statement == null) {
-                throw new OracleDataAccessObjectException("Statement is null"); 
-            }
-            result = this.statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new OracleDataAccessObjectException(e);
-        }
-        return result;
-    }
-    
-    /**
      * Closes connection with database. 
      */
     protected void closeConnection() 
             throws OracleDataAccessObjectException {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            }
-        }
-        
         if (statement != null) {
             try {
                 statement.close();
             } catch (SQLException e) {
                 throw new OracleDataAccessObjectException(e);
             }
+        }
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new OracleDataAccessObjectException(e);
         }
     }
     

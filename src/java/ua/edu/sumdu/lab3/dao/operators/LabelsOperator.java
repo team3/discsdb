@@ -54,25 +54,20 @@ public class LabelsOperator extends MainOperator {
             throws OracleDataAccessObjectException {        
         try {
             getConnection();
-            if (connection != null) {
-                statement = connection.prepareStatement(
-                        ADD_NEW_LABEL);
-                
-                int major = label.getMajor();
-                if (major == 0) {       
-                    statement.setNull(1, label.getMajor());
-                } else {
-                    statement.setInt(1, label.getMajor());
-                }
-                statement.setString(2, label.getName());
-                statement.setString(3, label.getLogo());
-                statement.setString(4, label.getInfo());
-                connection.setAutoCommit(false);
-                statement.executeUpdate();
-                connection.commit();
+            statement = connection.prepareStatement(
+                    ADD_NEW_LABEL);
+            int major = label.getMajor();
+            if (major == 0) {       
+                statement.setNull(1, label.getMajor());
             } else {
-                throw new OracleDataAccessObjectException("Unable to add label");
-            } 
+                statement.setInt(1, label.getMajor());
+            }
+            statement.setString(2, label.getName());
+            statement.setString(3, label.getLogo());
+            statement.setString(4, label.getInfo());
+            connection.setAutoCommit(false);
+            statement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -101,16 +96,10 @@ public class LabelsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
         Label label = null;
         try {
-            
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             
             statement = connection.prepareStatement(
                     SELECT_LABEL_BY_ID);
-            
             statement.setInt(1, id);
             
             ResultSet set = statement.executeQuery();
@@ -137,10 +126,6 @@ public class LabelsOperator extends MainOperator {
             labels = new LinkedList();
             Label currLabel;
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             
             statement = connection.prepareStatement(
                     SELECT_ALL_LABELS);
@@ -171,10 +156,6 @@ public class LabelsOperator extends MainOperator {
         try {
             getConnection();
             
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
             statement = connection.prepareStatement(FIND_LABEL);
             statement.setString(1, name);
             
@@ -199,14 +180,9 @@ public class LabelsOperator extends MainOperator {
     public void deleteLabel(int id) 
             throws OracleDataAccessObjectException {
         try {
-            
             getConnection();
             
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             statement = connection.prepareStatement(DELETE_LABEL);
-            
             statement.setInt(1, id);
             connection.setAutoCommit(false);
             statement.executeUpdate();
@@ -242,16 +218,11 @@ public class LabelsOperator extends MainOperator {
             
             getConnection();
             
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
             if (lbl == null) {
                 throw new OracleDataAccessObjectException("No label with specified id found");
             } 
             
             statement = connection.prepareStatement(EDIT_LABEL);
-        
             if (label.getMajor() == 0) {
                 statement.setNull(1, label.getMajor());
             } else {
@@ -298,10 +269,6 @@ public class LabelsOperator extends MainOperator {
             Label currLabel;
             getConnection();
             
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
             statement = connection.prepareStatement(
                     GET_MAJOR_LABELS);
             statement.setInt(1,lastRow);
@@ -334,10 +301,6 @@ public class LabelsOperator extends MainOperator {
             labels = new LinkedList();
             Label currLabel;
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             
             statement = connection.prepareStatement(
                     GET_CHILD_LABELS);
@@ -372,10 +335,6 @@ public class LabelsOperator extends MainOperator {
             Label currLabel;
             getConnection();
             labels = new LinkedList();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
 
             statement = 
                 connection.prepareStatement(
@@ -406,12 +365,7 @@ public class LabelsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
         int result = -1;
         try {
-            
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             
             statement = connection.prepareStatement(LABEL_MAX_ROW);
             

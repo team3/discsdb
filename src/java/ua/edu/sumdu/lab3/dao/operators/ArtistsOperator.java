@@ -51,14 +51,10 @@ public class ArtistsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
         try {
             getConnection();
-            
-            if (connection == null) {
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
+        
             statement = connection.prepareStatement(
                     ADD_NEW_ARTIST);
-            
+
             statement.setString(1, artist.getName());
             statement.setString(2, artist.getCountry());
             statement.setString(3, artist.getInfo());
@@ -91,12 +87,7 @@ public class ArtistsOperator extends MainOperator {
     public void deleteArtist(int id) 
             throws OracleDataAccessObjectException {
         try {
-            
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             
             statement = connection.prepareStatement(DELETE_ARTIST);
             
@@ -136,12 +127,9 @@ public class ArtistsOperator extends MainOperator {
             
             getConnection();
             
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
             if (art == null) {
-                throw new OracleDataAccessObjectException("No artist with specified id found");
+                throw new OracleDataAccessObjectException(
+                        "No artist with specified id found");
             } 
             
             statement = connection.prepareStatement(EDIT_ARTIST);
@@ -184,10 +172,6 @@ public class ArtistsOperator extends MainOperator {
         try {
             getConnection();
             
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
             statement = connection.prepareStatement(FIND_ARTIST);
             statement.setString(1, name);
             
@@ -215,12 +199,7 @@ public class ArtistsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
         Artist artist = null;
         try {
-            
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             
             statement = connection.prepareStatement(
                     SELECT_ARTIST_BY_ID);
@@ -254,10 +233,6 @@ public class ArtistsOperator extends MainOperator {
             
             getConnection();
             
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
             statement = connection.prepareStatement(
                     SELECT_ARTISTS_BY_LABEL);
             
@@ -289,10 +264,6 @@ public class ArtistsOperator extends MainOperator {
             artists = new LinkedList();
             Artist currArtist;
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             
             statement = connection.prepareStatement(
                     SELECT_ARTISTS_BY_COUNTRY);
@@ -326,10 +297,6 @@ public class ArtistsOperator extends MainOperator {
             
             getConnection();
             
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
             statement = connection.prepareStatement(ARTIST_MAX_ROW);
             
             ResultSet set = statement.executeQuery();
@@ -354,13 +321,8 @@ public class ArtistsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
          int result = -1;
         try {
-            
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
-            
+    
             statement = connection.prepareStatement(ARTIST_BY_COUNTRY_MAX_ROW);
             
             statement.setString(1,country);
@@ -391,10 +353,6 @@ public class ArtistsOperator extends MainOperator {
             Artist currArtist;
             
             getConnection();
-            
-            if (connection == null){
-                throw new OracleDataAccessObjectException("Connection is not created");
-            }
             
             statement = connection.prepareStatement(
                     SELECT_ALL_ARTISTS);

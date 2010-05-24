@@ -69,27 +69,21 @@ public class AlbumsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
         try {
             getConnection();
-            if (connection != null) {
-                statement = connection.prepareStatement(
-                        ADD_NEW_ALBUM);
-
-                java.util.Date alDate = (java.util.Date)album.getRelease();
-
-                statement.setString(1,album.getName());
-                statement.setString(2,album.getType());
-                statement.setDate(3,
-                        new java.sql.Date(alDate.getTime()));
-                statement.setString(4,album.getGenre());
-                statement.setString(5,album.getCover());
-                statement.setString(6,album.getReview());
-                statement.setInt(7,album.getArtist());
-                statement.setInt(8,album.getLabel());
-                connection.setAutoCommit(false);
-                statement.executeUpdate();
-                connection.commit();
-            } else {
-                throw new OracleDataAccessObjectException("Unable to add album");
-            }
+            statement = connection.prepareStatement(
+                    ADD_NEW_ALBUM);
+            java.util.Date alDate = (java.util.Date)album.getRelease();
+            statement.setString(1,album.getName());
+            statement.setString(2,album.getType());
+            statement.setDate(3,
+                    new java.sql.Date(alDate.getTime()));
+            statement.setString(4,album.getGenre());
+            statement.setString(5,album.getCover());
+            statement.setString(6,album.getReview());
+            statement.setInt(7,album.getArtist());
+            statement.setInt(8,album.getLabel());
+            connection.setAutoCommit(false);
+            statement.executeUpdate();
+            connection.commit();
         } catch (SQLException e) {
             try {
                 connection.rollback();

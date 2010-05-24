@@ -117,7 +117,7 @@ public class Linker extends HttpServlet {
                 int first = 0;
                 int last = 0;
                 
-                if(!checkParam(NUMERIC_PARAM,page)) {
+                if(!checkParam(NUMERIC_PARAM, page)) {
                     last = 10;
                 } else {
                     last = Integer.parseInt(page)*10;
