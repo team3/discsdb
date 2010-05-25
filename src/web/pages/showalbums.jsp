@@ -14,32 +14,19 @@
 <html>
     <head>
         <title>Albums</title>
-        <style>
-            
-            table {
-                border-collapse:collapse;
-                font-size: 13px;
-            }
-            
-            table,th, td {
-                border: 1px solid blue;
-            }
-            
-        </style>
-
         <link rel="stylesheet" href=<c:out value="${truepath}" /> type="text/css" />
     </head>
 <body>    
     <div class="allpage">
         
         <%@include file="menu.jsp" %>
-        <div class="albumslistcontent">
+        <div class="maincont">
             <h2>Albums</h2>
             <c:if test = "${albums == null}">
                 <h3>No albums found</h3>
             </c:if>
             
-            <table width = "100%">
+            <table>
             <tr>
                 <td>Album name</td>
                 <td>Artist</td>

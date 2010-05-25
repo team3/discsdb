@@ -34,7 +34,7 @@
                 </c:choose>
             </c:forEach>
         </p>
-        <div class="labelslistcontent">
+        <div class="maincont">
             <c:choose>
                 <c:when test="${label.name == null}">
                     <h2>Label does not exist. Mayby deleted?</h2>

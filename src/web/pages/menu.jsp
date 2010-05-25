@@ -6,7 +6,7 @@
     <c:set var = "datestspath" value = "/date/all" />
     <c:set var = "addpath" value = "/addalbum" />
     <c:set var = "searchpath" value = "/search" />
-    <c:set var = "aboutpath" value = "/pages/about.jsp" />
+    <c:set var = "aboutpath" value = "/about" />
     <c:set var = "artpath" value = "/artist?id=" />
     <c:set var = "lblpath" value = "/label?id=" />
     <c:set var = "albpath" value = "/album?id=" />
@@ -20,7 +20,7 @@
     <div  class="logopic">
         <a 
             href = "<c:out value= "${pageContext.request.contextPath}" />"> 
-            <img src = <c:out value="${pageContext.request.contextPath}${picpath}" /> alt= "logo" />
+            <img border = "0" src = <c:out value="${pageContext.request.contextPath}${picpath}" /> alt= "logo" />
         </a>
     </div>
     <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${aboutpath}" />>ABOUT</a></div>
@@ -29,10 +29,9 @@
     <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${artistspath}" />>ARTISTS</a></div> 
     <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${datestspath}" />>DATES</a></div>
     <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${searchpath}" />>SEARCH</a></div>
-    <div class = "menu">ADD</div>
     <div class = "menu">
     <select onchange = "location.href=this.options[this.selectedIndex].value">
-    <option selected velue = ""></option>
+    <option selected value="">ADD</option>
     <option value=<c:out value= "${pageContext.request.contextPath}/addalbum" />>album</option>
     <option value=<c:out value= "${pageContext.request.contextPath}/addartist" />>artist</option>
     <option value=<c:out value= "${pageContext.request.contextPath}/addlabel" />>label</option>

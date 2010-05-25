@@ -2,10 +2,17 @@
 <html>
     <head>
         <title>DiscsDB | About</title>
+        <link rel="stylesheet" href="css/style.css" type="text/css" />
     </head>
     <body>
-        <%@include file="menu.jsp" %>
-        <link rel="stylesheet" href="css/style.css" type="text/css" />
-        <img src = "http://darudar.org/var/files/img/3f/43/3f43532bceca73d76b394c64f5a64b3b_600.jpg" alt = "" />
+        <div class="allpage">
+            <%@include file="menu.jsp" %>
+            <div class="maincont">
+                <h1>About</h1>
+                <p>Welcome to the <b>sweet tunes</b>. Its probably the best database
+                 where you can store information about your favs artists, albums and labels.
+                 So enjoy!</p>
+            </div>
+        </div>
     </body>
 </html>

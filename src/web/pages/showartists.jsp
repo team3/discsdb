@@ -9,18 +9,6 @@
 <html>
     <head>
         <title>Artists</title>
-        <style>
-            
-            table {
-                border-collapse:collapse;
-                font-size: 13px;
-            }
-            
-            table,th, td {
-                border: 1px solid blue;
-            }
-            
-        </style>
         <c:set var="stylepath" value="/pages/css/style.css" />
         <c:set var="removepath" value="/remove?obj=artist&id="/>
         <c:set var="artpath" value="/artist?id=" />
@@ -33,9 +21,9 @@
         <div class = "header">
             <%@include file="menu.jsp" %>
         </div>
-        <div class="artistslistcontent">
+        <div class="maincont">
             <h2>Artists</h2>
-            <table width = "100%">
+            <table>
             <tr>
                 <td>Artist name</td>
                 <td>Country</td>

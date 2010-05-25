@@ -321,13 +321,16 @@ public class Linker extends HttpServlet {
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showalbums.jsp").forward(request,response);
                 }
+            } else if ("/about".equals(spath)) {
+                String servletPath = request.getContextPath();
+                response.sendRedirect(servletPath + "/pages/about.jsp");
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         } catch (ParseException e) {
-            showErrorPage(request,response,e);
+            response.sendError(500, e.getMessage());
         } catch (OracleDataAccessObjectException e) {
-            showErrorPage(request,response,e);
+            response.sendError(500,e.getMessage());
         }
     }
     
@@ -521,16 +524,6 @@ public class Linker extends HttpServlet {
             if (lid == id) return true;
         }
         return false;
-    }
-    
-    private void showErrorPage(HttpServletRequest request,
-            HttpServletResponse response, Throwable e) 
-            throws ServletException, IOException {
-                
-        request.setAttribute ("javax.servlet.jsp.jspException", e);
-        getServletConfig().getServletContext().
-                getRequestDispatcher("/pages/error.jsp").
-                forward(request,response);
     }
     
     private boolean checkParam(int type, String paramValue) {

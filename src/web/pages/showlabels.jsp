@@ -12,26 +12,14 @@
         <c:set var="stylepath" value="/pages/css/style.css" />
         <c:set var="removepath" value="/remove?obj=label&id="/>
         <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
-        <style>
-            
-            table {
-                border-collapse:collapse;
-                font-size: 13px;
-            }
-            
-            table,th, td {
-                border: 1px solid blue;
-            }
-            
-        </style>
         <link rel="stylesheet" href=<c:out value="${truepath}" /> type="text/css" />
     </head>
 <body>    
     <div class="allpage">
         <%@include file="menu.jsp" %>
-        <div class="labelslistcontent">
+        <div class="maincont">
             
-            <table width = "100%">
+            <table>
             <tr>
                 <td>Logo</td>
                 <td>Label name</td>
