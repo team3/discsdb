@@ -15,12 +15,22 @@
         <c:set var="countrypath" value="/artist/all?country=" />
         <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
         <link rel="stylesheet" href=<c:out value="${truepath}" /> type="text/css" />
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery-latest.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.delegate.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.validate.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.field.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            function add (data){
+                window.opener.document.forms[0].selectedartistname.value = data.trim();
+                window.close();
+            }
+        </script>
     </head>
 <body>    
     <div class="allpage">
-        <div class = "header">
+        <c:if test="${empty param.select}">
             <%@include file="menu.jsp" %>
-        </div>
+        </c:if>
         <div class="maincont">
             <h2>Artists</h2>
             <table>
@@ -29,6 +39,11 @@
                 <td>Country</td>
                 <td></td>
                 <td></td>
+                <c:if test="${not empty param.select}">
+                    <td>
+                        Select
+                    </td>
+                </c:if>
             </tr>
             <c:set var="truepath" value="${pageContext.request.contextPath}${removepath}"/>
             <c:forEach var="art" begin="0" items="${artists}">
@@ -46,6 +61,17 @@
                             <td><a href =<c:out value="${truepath}"/><c:out value="${art.id}"/> >Remove</a></td>
                         </c:otherwise>
                     </c:choose>
+                    <c:if test="${not empty param.select}">
+                        <td>
+                            <input 
+                                type = "button" 
+                                name = "selectthis" 
+                                id = "selectthis"
+                                value = "select"
+                                onclick = "add('<c:out value="${art.name}" />')"
+                            />
+                        </td>
+                    </c:if>
                 </tr>
             </c:forEach>
             </table>

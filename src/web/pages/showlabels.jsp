@@ -13,10 +13,23 @@
         <c:set var="removepath" value="/remove?obj=label&id="/>
         <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
         <link rel="stylesheet" href=<c:out value="${truepath}" /> type="text/css" />
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery-latest.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.delegate.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.validate.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.field.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            function add (data){
+                window.opener.document.forms[0].selectedlabelname.value = data.trim();
+                window.close();
+            }
+
+        </script>
     </head>
 <body>    
     <div class="allpage">
-        <%@include file="menu.jsp" %>
+        <c:if test="${empty param.select}">
+            <%@include file="menu.jsp" %>
+        </c:if>
         <div class="maincont">
             
             <table>
@@ -25,6 +38,11 @@
                 <td>Label name</td>
                 <td></td>
                 <td></td>
+                <c:if test="${not empty param.select}">
+                    <td>
+                        Select
+                    </td>
+                </c:if>
             </tr>
             <c:set var="truepath" value="${pageContext.request.contextPath}${removepath}"/>
             <c:forEach var="lbl" begin="0" items="${labels}">
@@ -34,7 +52,14 @@
                     </td>
                     
                     <td>
-                        <a href=<c:out value="${pageContext.request.contextPath}/label?id=${lbl.id}" /> ><c:out value="${lbl.name}" /></a>
+                        <c:choose>
+                        <c:when test="${not empty param.select}">
+                            <a class = "lname" href=<c:out value="${pageContext.request.contextPath}/label?id=${lbl.id}&select=true" /> ><c:out value="${lbl.name}" /></a>
+                        </c:when>
+                        <c:otherwise>
+                            <a class = "lname" href=<c:out value="${pageContext.request.contextPath}/label?id=${lbl.id}" /> ><c:out value="${lbl.name}" /></a>
+                        </c:otherwise>
+                        </c:choose>
                     </td>
                     
                     <td>
@@ -48,6 +73,16 @@
                             <td><a href =<c:out value="${pageContext.request.contextPath}${removepath}"/><c:out value="${lbl.id}"/> >Remove</a></td>
                         </c:otherwise>
                     </c:choose>
+                    <c:if test="${not empty param.select}">
+                        <td>
+                            <input 
+                                type = "button" 
+                                name = "selectthis" 
+                                id = "selectthis"
+                                value = "select"
+                                onclick = "add('<c:out value="${lbl.name}" />')"
+                        </td>
+                    </c:if>
                 </tr>
             </c:forEach>
             </table>

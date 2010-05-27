@@ -7,6 +7,12 @@
     <head>
         <title>Add album</title>
         <link rel="stylesheet" href="pages/css/style.css" type="text/css" />
+        <link 
+            type="text/css" 
+            href="pages/js/jquery-ui-1.8.1.custom/css/ui-lightness/jquery-ui-1.8.1.custom.css" 
+            rel="stylesheet" 
+        />
+
         <style>
             label.error {
                 color: red;
@@ -20,118 +26,12 @@
         <script src = "pages/js/jquery.delegate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.field.min.js" type="text/javascript"></script>
-        
-        <script type="text/javascript">    
-                    
-            
-            function createList(data, name) {
-                var array = data.split('\n');
-                var result = '<select name = ' + name + ' class = ' + name + '>';
-                for (i = 0; i < array.length-1; i++){
-                    result += '<option value="'+array[i]+'">'+array[i]+'</option>';
-                }
-                result += '</select>';
-                return result;
-            } 
-            
-            $(document).ready(function(){
-                $("#albumForm").validate({
-                    rules : {
-                        name : {required : true },
-                        date : {required : true, minlength: 8},
-                        artist : {required : true},
-                        label : {required : true},
-                        cover : {required : true, url: true},
-                        artistname : {required : true},
-                        labelname : {required : true}
-                    },
-                        
-                    messages : {
-                        username : {
-                            required : "Enter name of the album",
-                        },
-                        date : {
-                            required : "Enter Date of release",
-                            minlength : "Date format: dd.MM.YY"
-                        }, 
-                        artist : {
-                            required : "Enter artist of the album",
-                        }, 
-                        label : {
-                            required : "Enter label of the album"
-                        } 
-                    }
-                });
-        
-                
-                $("#listall").change(function(){
-                    $('div.artistfields').empty();
-                    $("#addnew").attr("checked", false);
-                    if ($(this).attr("checked")) {
-                        $.ajax({
-                            type: 'GET',
-                            url: 'showartists',
-                            success: function(data){
-                                $('div.artistfields').append(createList(data, 'artistslist'));
-                            },
-                            dataType: 'text'
-                        });
-                    
-                        
-                        return;
-                    } else {
-                        $('div.artistfields').empty();
-                    }
-                });
-            
-                $("#lablistall").change(function(){
-                    $('div.labelfields').empty();
-                    $("#labaddnew").attr("checked", false);
-                    if ($(this).attr("checked")) {
-                        $.ajax({
-                            type: 'GET',
-                            url: 'showlabels',
-                            success: function(data){
-                                labellist = createList(data, 'labelslist');
-                                $('div.labelfields').append(labellist);
-                            },
-                            dataType: 'text'
-                        });
-                        return;
-                    } else {
-                        $('div.labelfields').empty();
-                    }
-                });
-            
-                $("#addnew").change(function(){
-                    $("#listall").attr("checked", false);
-                    if ($(this).attr("checked")) {
-                        $('div.artistfields').empty();
-                        window.open ("pages/addartist.jsp",
-                        "mywindow",
-                        "menubar=1, resizable=1, width=800, height=600"); 
-                        $(this).attr("checked", false);
-                        return;
-                    } else {
-                        $('div.artistfields').empty();
-                    }
-                });
-                
-                $("#labaddnew").change(function(){
-                    $("#lablistall").attr("checked", false);
-                    if ($(this).attr("checked")) {
-                        
-                        window.open ("pages/addlabel.jsp",
-                        "mywindow",
-                        "menubar=1, resizable=1, width=800, height=600"); 
-                        $("this").attr("checked", false);
-                        return;
-                    } else {
-                        $('div.labelfields').empty();
-                    }
-                });
-            });
+        <script 
+            src = "pages/js/jquery-ui-1.8.1.custom/js/jquery-ui-1.8.1.custom.min.js" 
+            type = "text/javascript">
         </script>
+        
+        <script src = "pages/js/scripts.js" type="text/javascript"></script>
     </head>
 <body>
 
@@ -165,15 +65,14 @@
             <input type = "checkbox" id = "addnew" />New 
             <input type = "checkbox" id = "listall" />&nbsp;Select
             <br />
-            <div class = "artistfields">
-            </div>    
+            <input type = "text" name = "selectedartistname" class = "selectedartistname" />
+            <br />
             Label: <br />
             <input type = "checkbox" id = "labaddnew" />New 
             <input type = "checkbox" id = "lablistall" />&nbsp;Select
-            
             <br />
-            <div class = "labelfields">
-            </div>    
+            <input type = "text" name = "selectedlabelname" class = "selectedlabelname" />
+            <br />
             Review: <br />
             <textarea name = "review" cols = "70" rows = "15"></textarea>
             <br />

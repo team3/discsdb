@@ -215,6 +215,10 @@ public class Linker extends HttpServlet {
                         "/pages/showdates.jsp").forward(request,response);
             
             } else if ("/addalbum".equals(spath)) {
+                List artists = dao.getArtists(0, dao.getArtistNumber());
+                List labels = dao.getLabels();
+                request.setAttribute("artists", artists);
+                request.setAttribute("labels", labels);
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/addalbum.jsp").forward(request,response);
             } else if ("/addartist".equals(spath)) {
@@ -324,9 +328,17 @@ public class Linker extends HttpServlet {
             } else if ("/about".equals(spath)) {
                 String servletPath = request.getContextPath();
                 response.sendRedirect(servletPath + "/pages/about.jsp");
+            } else if ("/selectArtist".equals(spath)) {
+                List artists = dao.getArtists(0, dao.getArtistNumber());
+                out.print(artists.size());
+                request.setAttribute("artists", artists);
+                getServletConfig().getServletContext().
+                        getRequestDispatcher("/pages/selectArtist.jsp").
+                        forward(request,response);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
+            
         } catch (ParseException e) {
             response.sendError(500, e.getMessage());
         } catch (OracleDataAccessObjectException e) {
@@ -351,8 +363,8 @@ public class Linker extends HttpServlet {
                 String genre = request.getParameter("genre");
                 String cover = request.getParameter("cover");
                 String review = request.getParameter("review");
-                String artistName = request.getParameter("artistslist");
-                String labelName = request.getParameter("labelslist");
+                String artistName = request.getParameter("selectedartistname");
+                String labelName = request.getParameter("selectedalabelname");
                 int artist = dao.findArtist(artistName); 
                 int label = dao.findLabel(labelName);
                 

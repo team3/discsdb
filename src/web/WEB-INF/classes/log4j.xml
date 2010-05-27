@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration>
+
+<appender name="logfile" class="org.apache.log4j.RollingFileAppender">
+
+<param name="File" value="/home/akl/lab3/disksdb.1.0/trace.log" />
+
+<param name="Append" value="true" />
+
+<param name="MaxFileSize" value="1024KB"/>
+
+<layout class="org.apache.log4j.PatternLayout">
+
+<param name="ConversionPattern" value="%d [%p] : %m%n"/>
+
+</layout>
+
+</appender>
+
+<root>
+
+<priority value="DEBUG"/>
+
+<appender-ref ref="logfile"/>
+
+</root>
+
+</log4j:configuration> 
