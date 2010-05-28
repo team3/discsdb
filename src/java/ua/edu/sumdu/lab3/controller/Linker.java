@@ -355,6 +355,7 @@ public class Linker extends HttpServlet {
                 DataValidator.isValidLink(cover);
                 String review = request.getParameter("review");
                 DataValidator.isValidText(review);
+<<<<<<< HEAD:src/java/ua/edu/sumdu/lab3/controller/Linker.java
                 String artistName = request.getParameter("artistslist");
                 DataValidator.isValidName(artistName);
                 String labelName = request.getParameter("labelslist");
@@ -362,6 +363,14 @@ public class Linker extends HttpServlet {
                 
                 int artist = dao.findArtist(artistName); 
                 int label = dao.findLabel(labelName);
+=======
+                String artistName = request.getParameter("selectedartistname");
+                DataValidator.isValidName(artistName);
+                String labelName = request.getParameter("selectedlabelname");
+                DataValidator.isValidName(labelName);
+                int artist = Integer.parseInt(request.getParameter("aid"));
+                int label = Integer.parseInt(request.getParameter("lid"));
+>>>>>>> ae68cffcb7fb041a4b469cfbbe97493744c8512a:src/java/ua/edu/sumdu/lab3/controller/Linker.java
                 
                 Album album = new Album();
                 album.setName(name);
@@ -507,12 +516,21 @@ public class Linker extends HttpServlet {
                 DataValidator.isValidLink(cover);
                 String review = request.getParameter("review");
                 DataValidator.isValidText(review);
+<<<<<<< HEAD:src/java/ua/edu/sumdu/lab3/controller/Linker.java
                 String artistName = request.getParameter("artistslist");
                 DataValidator.isValidName(artistName);
                 String labelName = request.getParameter("labelslist");
                 DataValidator.isValidName(labelName);
                 int artist = dao.findArtist(artistName);
                 int label = dao.findLabel(labelName);
+=======
+                String artistName = request.getParameter("selectedartistname");
+                DataValidator.isValidName(artistName);
+                String labelName = request.getParameter("selectedlabelname");
+                DataValidator.isValidName(labelName);
+                int artist = Integer.parseInt(request.getParameter("aid"));
+                int label = Integer.parseInt(request.getParameter("lid"));
+>>>>>>> ae68cffcb7fb041a4b469cfbbe97493744c8512a:src/java/ua/edu/sumdu/lab3/controller/Linker.java
                 
                 Album album = new Album();
                 album.setId(id);

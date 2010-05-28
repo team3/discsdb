@@ -26,10 +26,6 @@
         <script src = "pages/js/jquery.delegate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.field.min.js" type="text/javascript"></script>
-        <script 
-            src = "pages/js/jquery-ui-1.8.1.custom/js/jquery-ui-1.8.1.custom.min.js" 
-            type = "text/javascript">
-        </script>
         
         <script src = "pages/js/scripts.js" type="text/javascript"></script>
     </head>
@@ -76,6 +72,8 @@
             Review: <br />
             <textarea name = "review" cols = "70" rows = "15"></textarea>
             <br />
+            <input type = "hidden" name = "aid" value = "<c:out value = "${album.artist}" />" />
+            <input type = "hidden" name = "lid" value = "<c:out value = "${album.label}" />" />
             <input id = "button" type = "submit" value = "Send" />
         </form>
     </div>
