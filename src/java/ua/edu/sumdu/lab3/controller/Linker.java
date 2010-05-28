@@ -21,8 +21,6 @@ import org.apache.log4j.BasicConfigurator;
 
 public class Linker extends HttpServlet {
     
-    private static int NUMERIC_PARAM = 0;
-    private static int ALPHA_PARAM = 1;
     DateFormat df = null;
     private OperableDAO dao = null;
     private boolean datachanged = true;
@@ -61,7 +59,7 @@ public class Linker extends HttpServlet {
             
             } else if ("/artist".equals(spath)) {
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM,id)) {
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,id)) {
                     int aid = Integer.parseInt(id);
                     request.setAttribute("artist", dao.getArtist(aid));
                     Artist artForGenres = new Artist();
@@ -78,7 +76,7 @@ public class Linker extends HttpServlet {
                 String country = request.getParameter("country");
                 int first = 0;
                 int last = 0;
-                if(!checkParam(NUMERIC_PARAM,page)) {
+                if(!DataValidator.checkParam(DataValidator.NUMERIC_PARAM,page)) {
                     last = 10;
                 } else {
                     last = Integer.parseInt(page)*10;
@@ -86,7 +84,7 @@ public class Linker extends HttpServlet {
                 }
                 int number = 0;
                 Object artists;
-                if(checkParam(ALPHA_PARAM,country)) {
+                if(DataValidator.checkParam(DataValidator.ALPHA_PARAM,country)) {
                     number = (int)Math.ceil(
                             (double)dao.getArtistNumber(country) / 10);
                     artists = dao.getArtists(country, first, last);
@@ -103,7 +101,7 @@ public class Linker extends HttpServlet {
             
             } else if("/album".equals(spath)) {
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM,id)) {
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,id)) {
                     request.setAttribute("album",  
                             dao.getAlbum(Integer.parseInt(id)));
                 
@@ -117,7 +115,7 @@ public class Linker extends HttpServlet {
                 int first = 0;
                 int last = 0;
                 
-                if(!checkParam(NUMERIC_PARAM, page)) {
+                if(!DataValidator.checkParam(DataValidator.NUMERIC_PARAM, page)) {
                     last = 10;
                 } else {
                     last = Integer.parseInt(page)*10;
@@ -129,14 +127,14 @@ public class Linker extends HttpServlet {
                 
                 Object albums = null;
                 
-                if(checkParam(NUMERIC_PARAM,year)){
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,year)){
                 
                     Date date = df.parse(year);
                     number = (int)Math.ceil(
                             (double)dao.getAlbumNumber(date) / 10);
                     albums = dao.getAlbums(date, first, last);
                 
-                } else if(checkParam(ALPHA_PARAM,genre)) {
+                } else if(DataValidator.checkParam(DataValidator.ALPHA_PARAM,genre)) {
                     number = (int)Math.ceil(
                             (double)dao.getAlbumNumber(genre) / 10);
                     albums = dao.getAlbums(genre, first, last);
@@ -153,7 +151,7 @@ public class Linker extends HttpServlet {
                         
             } else if("/label".equals(spath)) {
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM,id)) {
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,id)) {
                     int lid = Integer.parseInt(id);
                     Label label = dao.getLabel(lid);
                     request.setAttribute("label", label);
@@ -170,7 +168,7 @@ public class Linker extends HttpServlet {
                 String page = request.getParameter("page");
                 int first = 0;
                 int last = 0;
-                if(!checkParam(NUMERIC_PARAM,page)) {
+                if(!DataValidator.checkParam(DataValidator.NUMERIC_PARAM,page)) {
                     last = 10;
                 } else {
                     last = Integer.parseInt(page)*10;
@@ -190,7 +188,8 @@ public class Linker extends HttpServlet {
                 String id = request.getParameter("id");
                 String mode = request.getParameter("mode");
                 StringBuffer redirPath = new StringBuffer(request.getContextPath());
-                if(checkParam(NUMERIC_PARAM,id) && checkParam(ALPHA_PARAM,what)) {
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,id) &&
+                        DataValidator.checkParam(DataValidator.ALPHA_PARAM,what)) {
                     if("album".equals(what)) {
                         dao.deleteAlbum(Integer.parseInt(id));
                         redirPath.append("/album/all");
@@ -215,10 +214,6 @@ public class Linker extends HttpServlet {
                         "/pages/showdates.jsp").forward(request,response);
             
             } else if ("/addalbum".equals(spath)) {
-                List artists = dao.getArtists(0, dao.getArtistNumber());
-                List labels = dao.getLabels();
-                request.setAttribute("artists", artists);
-                request.setAttribute("labels", labels);
                 getServletConfig().getServletContext().getRequestDispatcher(
                         "/pages/addalbum.jsp").forward(request,response);
             } else if ("/addartist".equals(spath)) {
@@ -229,7 +224,7 @@ public class Linker extends HttpServlet {
                         "/pages/addlabel.jsp").forward(request,response);
             } else if ("/editlabel".equals(spath)) {
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM, id)) {
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM, id)) {
                     int lid = Integer.parseInt(id);
                     Label label = (Label)dao.getLabel(lid);
                     request.setAttribute("label", label);
@@ -240,7 +235,7 @@ public class Linker extends HttpServlet {
                 }
             } else if ("/editartist".equals(spath)) {
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM, id)) {
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM, id)) {
                     int aid = Integer.parseInt(id);
                     Artist artist = (Artist)dao.getArtist(aid);
                     request.setAttribute("artist", artist);
@@ -251,7 +246,7 @@ public class Linker extends HttpServlet {
                 }
             } else if ("/editalbum".equals(spath)) {
                 String id = request.getParameter("id");
-                if(checkParam(NUMERIC_PARAM,id)) {
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,id)) {
                     int alid = Integer.parseInt(id);
 
                     Album album = (Album)dao.getAlbum(alid);
@@ -328,17 +323,9 @@ public class Linker extends HttpServlet {
             } else if ("/about".equals(spath)) {
                 String servletPath = request.getContextPath();
                 response.sendRedirect(servletPath + "/pages/about.jsp");
-            } else if ("/selectArtist".equals(spath)) {
-                List artists = dao.getArtists(0, dao.getArtistNumber());
-                out.print(artists.size());
-                request.setAttribute("artists", artists);
-                getServletConfig().getServletContext().
-                        getRequestDispatcher("/pages/selectArtist.jsp").
-                        forward(request,response);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
-            
         } catch (ParseException e) {
             response.sendError(500, e.getMessage());
         } catch (OracleDataAccessObjectException e) {
@@ -358,13 +345,21 @@ public class Linker extends HttpServlet {
         try {
             if ("/addalbum".equals(spath)){
                 String name = request.getParameter("name");
+                DataValidator.isValidName(name);
                 String type = request.getParameter("type");
+                DataValidator.isValidType(type);
                 Date release = df.parse(request.getParameter("date"));
                 String genre = request.getParameter("genre");
+                DataValidator.isValidGenre(genre);
                 String cover = request.getParameter("cover");
+                DataValidator.isValidLink(cover);
                 String review = request.getParameter("review");
-                String artistName = request.getParameter("selectedartistname");
-                String labelName = request.getParameter("selectedalabelname");
+                DataValidator.isValidText(review);
+                String artistName = request.getParameter("artistslist");
+                DataValidator.isValidName(artistName);
+                String labelName = request.getParameter("labelslist");
+                DataValidator.isValidName(labelName);
+                
                 int artist = dao.findArtist(artistName); 
                 int label = dao.findLabel(labelName);
                 
@@ -386,9 +381,12 @@ public class Linker extends HttpServlet {
             
             if ("/addartist".equals(spath)) {
                 String name = request.getParameter("name");
+                DataValidator.isValidName(name);
                 String country = request.getParameter("country");
+                DataValidator.isValidName(country);
                 String info = request.getParameter("info");
-                            
+                DataValidator.isValidText(info);
+                
                 if (artistInList(name)){
                     out.print("Artist already exists");  
                 } else {
@@ -402,9 +400,13 @@ public class Linker extends HttpServlet {
                 }         
             } else if ("/addlabel".equals(spath)) {
                 String name = request.getParameter("name");
+                DataValidator.isValidName(name);
                 String info = request.getParameter("info");
+                DataValidator.isValidText(info);
                 String logo = request.getParameter("logo");
+                DataValidator.isValidLink(logo);
                 String major = request.getParameter("major");
+                DataValidator.isValidName(major);
                 
                 int majorId = 0;
                 if (!("none".equals(major))){
@@ -424,13 +426,21 @@ public class Linker extends HttpServlet {
             } else 
             
             if ("/editlabel".equals(spath)) {
-                int id = Integer.parseInt(
-                        request.getParameter("labelid"));   
+                int id = 0;
+                String sid = request.getParameter("labelid");
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,sid)) {
+                    id = Integer.parseInt(sid);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
                 String name = request.getParameter("labelname");
+                DataValidator.isValidName(name);
                 String info = request.getParameter("labelinfo");
+                DataValidator.isValidText(info);
                 String logo = request.getParameter("labellogo");
+                DataValidator.isValidLink(logo);
                 String major = request.getParameter("labelslist");
-               
+                DataValidator.isValidName(major);
                 int majorId = 0;
                 if (!("none".equals(major))){
                     majorId = dao.findLabel(major);
@@ -449,13 +459,21 @@ public class Linker extends HttpServlet {
             }
             
             if ("/editartist".equals(spath)) {
-                int id = Integer.parseInt(
-                        request.getParameter("artistid"));
+                int id = 0;
+                String sid = request.getParameter("artistid");
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,sid)) {
+                    id = Integer.parseInt(sid);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
                 
                 String name = request.getParameter("artistname");
+                DataValidator.isValidName(name);
                 String country = request.getParameter("artistcountry");
+                DataValidator.isValidName(country);
                 String info = request.getParameter("artistinfo");
-
+                DataValidator.isValidText(info);
+                
                 Artist artist = new Artist();
                 artist.setId(id);
                 artist.setName(name);
@@ -469,16 +487,30 @@ public class Linker extends HttpServlet {
             }
             
             if ("/editalbum".equals(spath)){
-                int id = Integer.parseInt(
-                        request.getParameter("id"));
+                int id = 0;
+                String sid = request.getParameter("id");
+                if(DataValidator.checkParam(DataValidator.NUMERIC_PARAM,sid)) {
+                    id = Integer.parseInt(sid);
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
                 String name = request.getParameter("name");
+                DataValidator.isValidName(name);
                 String type = request.getParameter("type");
-                Date release = df.parse(request.getParameter("date"));
+                DataValidator.isValidType(type);
+                String date = request.getParameter("date");
+                DataValidator.isValidDate(date);
+                Date release = df.parse(date);
                 String genre = request.getParameter("genre");
+                DataValidator.isValidGenre(genre);
                 String cover = request.getParameter("cover");
+                DataValidator.isValidLink(cover);
                 String review = request.getParameter("review");
+                DataValidator.isValidText(review);
                 String artistName = request.getParameter("artistslist");
+                DataValidator.isValidName(artistName);
                 String labelName = request.getParameter("labelslist");
+                DataValidator.isValidName(labelName);
                 int artist = dao.findArtist(artistName);
                 int label = dao.findLabel(labelName);
                 
@@ -500,8 +532,11 @@ public class Linker extends HttpServlet {
                 
                 response.sendRedirect("album?id=" + id);
             }
-            
-        } catch (Exception e) {
+        } catch (DataValidException e) {
+            throw new ServletException(e);
+        } catch (ParseException e) {
+            throw new ServletException(e);
+        } catch (OracleDataAccessObjectException e) {
             throw new ServletException(e);
         }
     }
@@ -536,24 +571,5 @@ public class Linker extends HttpServlet {
             if (lid == id) return true;
         }
         return false;
-    }
-    
-    private boolean checkParam(int type, String paramValue) {
-        String regexp;
-        if((paramValue == null) || 
-                " ".equals(paramValue) ||
-                "".equals(paramValue))
-        {
-            return false;
-        }
-        if (type == NUMERIC_PARAM) {
-            regexp = "[0-9]+";
-           
-        } else  if(type == ALPHA_PARAM) {
-            regexp = "[a-zA-Z]+";
-        } else {
-            regexp = ".+";
-        }
-        return paramValue.matches(regexp);
     }
 }
