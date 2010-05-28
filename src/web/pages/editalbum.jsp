@@ -30,67 +30,7 @@
         <script src = "pages/js/jquery.delegate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.field.min.js" type="text/javascript"></script>
-        
-        <script type="text/javascript">    
-            function createList(data, name) {
-                var array = data.split('\n');
-                var result = '<select name = ' + name + ' class = ' + name + '>';
-                for (i = 0; i < array.length-1; i++){
-                    result += '<option value="'+array[i]+'">'+array[i]+'</option>';
-                }
-                result += '</select>';
-                return result;
-            } 
-            
-            $(document).ready(function(){
-                $("#albumForm").validate({
-                    rules : {
-                        name : {required : true },
-                        date : {required : true, minlength: 8},
-                        artist : {required : true},
-                        label : {required : true},
-                        cover : {required : true, url: true},
-                        artistname : {required : true},
-                        labelname : {required : true}
-                    },
-                        
-                    messages : {
-                        username : {
-                            required : "Enter name of the album",
-                        },
-                        date : {
-                            required : "Enter Date of release",
-                            minlength : "Date format: dd.MM.YY"
-                        }, 
-                        artist : {
-                            required : "Enter artist of the album",
-                        }, 
-                        label : {
-                            required : "Enter label of the album"
-                        } 
-                    }
-                });
-                
-                $.ajax({
-                    type: 'GET',
-                    url: 'showartists',
-                    success: function(data){
-                        $('div.artistfields').append(createList(data, 'artistslist'));
-                    },
-                    dataType: 'text'
-                });
-        
-                $.ajax({
-                    type: 'GET',
-                    url: 'showlabels',
-                    success: function(data){
-                        labellist = createList(data, 'labelslist');
-                        $('div.labelfields').append(labellist);
-                    },
-                    dataType: 'text'
-                });
-            });
-        </script>
+        <script src = "pages/js/scripts.js" type="text/javascript"></script>
         
     </head>
 <body>
@@ -125,25 +65,43 @@
             Cover: <br />
             <input type = "text" name = "cover" value = "<c:out value = "${album.cover}" />" />
             <br />
-            Artist:  <c:out value = "${album.artistName}" />&nbsp;&nbsp;
+            
+            Artist:  
+            <br />
+            <input type = "checkbox" id = "listall" />&nbsp;Select
+            <br />
+            <input 
+                type = "text" 
+                value = "<c:out value = "${album.artistName}" />" 
+                name = "selectedartistname" 
+                class = "selectedartistname" />
+            <br />    
             <c:if test = "${album.artistName != 'unknown'}">
-                <a href = "editartist?id=<c:out value = "${album.artist}" />" target="_blank" >Edit</a>
+                <a href = "editartist?id=<c:out value = "${album.artist}" />" target="_blank" >Edit this artist</a>
             </c:if>
             <br />
-            <div class = "artistfields">
-            </div>    
-            Label: <c:out value = "${album.labelName}" />&nbsp;&nbsp;
+            Label: 
+            <br />
+            <input type = "checkbox" id = "lablistall" />&nbsp;Select
+            <br />
+            <input 
+                type = "text" 
+                name = "selectedlabelname" 
+                class = "selectedlabelname" 
+                value = "<c:out value = "${album.labelName}" />"
+            />
+            <br />
             <c:if test = "${album.labelName != 'unknown'}">
-                <a href = "editlabel?id=<c:out value = "${album.label}" />" target="_blank">Edit</a> 
+                <a href = "editlabel?id=<c:out value = "${album.label}" />" target="_blank">Edit this label</a> 
             </c:if>
-            <br />
-            <div class = "labelfields">
-            </div>    
+            <br />   
+            
             Review: <br />
             <textarea name = "review" cols = "70" rows = "15"><c:out value = "${album.review}" /></textarea>
             <br />
             <input type = "hidden" name = "id" value = "<c:out value = "${album.id}" />" />
-
+            <input type = "hidden" name = "aid" value = "<c:out value = "${album.artist}" />" />
+            <input type = "hidden" name = "lid" value = "<c:out value = "${album.label}" />" />
             <input id = "button" type = "submit" value = "Send" />
         </form>
     </div>

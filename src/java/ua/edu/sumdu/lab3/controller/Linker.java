@@ -355,13 +355,12 @@ public class Linker extends HttpServlet {
                 DataValidator.isValidLink(cover);
                 String review = request.getParameter("review");
                 DataValidator.isValidText(review);
-                String artistName = request.getParameter("artistslist");
+                String artistName = request.getParameter("selectedartistname");
                 DataValidator.isValidName(artistName);
-                String labelName = request.getParameter("labelslist");
+                String labelName = request.getParameter("selectedlabelname");
                 DataValidator.isValidName(labelName);
-                
-                int artist = dao.findArtist(artistName); 
-                int label = dao.findLabel(labelName);
+                int artist = Integer.parseInt(request.getParameter("aid"));
+                int label = Integer.parseInt(request.getParameter("lid"));
                 
                 Album album = new Album();
                 album.setName(name);
@@ -507,12 +506,12 @@ public class Linker extends HttpServlet {
                 DataValidator.isValidLink(cover);
                 String review = request.getParameter("review");
                 DataValidator.isValidText(review);
-                String artistName = request.getParameter("artistslist");
+                String artistName = request.getParameter("selectedartistname");
                 DataValidator.isValidName(artistName);
-                String labelName = request.getParameter("labelslist");
+                String labelName = request.getParameter("selectedlabelname");
                 DataValidator.isValidName(labelName);
-                int artist = dao.findArtist(artistName);
-                int label = dao.findLabel(labelName);
+                int artist = Integer.parseInt(request.getParameter("aid"));
+                int label = Integer.parseInt(request.getParameter("lid"));
                 
                 Album album = new Album();
                 album.setId(id);

@@ -18,8 +18,9 @@
         <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.field.min.js" type="text/javascript"></script>
         <script type="text/javascript">
-            function add (data){
+            function add (data, id){
                 window.opener.document.forms[0].selectedlabelname.value = data.trim();
+                window.opener.document.forms[0].lid.value = id;
                 window.close();
             }
 
@@ -36,13 +37,17 @@
             <tr>
                 <td>Logo</td>
                 <td>Label name</td>
-                <td></td>
-                <td></td>
-                <c:if test="${not empty param.select}">
-                    <td>
-                        Select
-                    </td>
-                </c:if>
+                <c:choose>
+                    <c:when test="${empty param.select}">
+                        <td></td>
+                        <td></td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>
+                            Select
+                        </td>
+                    </c:otherwise>
+                </c:choose>
             </tr>
             <c:set var="truepath" value="${pageContext.request.contextPath}${removepath}"/>
             <c:forEach var="lbl" begin="0" items="${labels}">
@@ -62,27 +67,31 @@
                         </c:choose>
                     </td>
                     
-                    <td>
-                        <a href =<c:out value="${pageContext.request.contextPath}${edit_label}" /><c:out value="${lbl.id}" /> > Edit</a>
-                    </td>
-                        <c:choose>
-                        <c:when test="${param.page != null}">
-                            <td><a href =<c:out value="${pageContext.request.contextPath}${removepath}"/><c:out value="${lbl.id}"/>&page=<c:out value="${param.page}"/> >Remove</a></td>
+                    <c:choose>
+                        <c:when test="${empty param.select}">
+                            <td>
+                                <a href =<c:out value="${pageContext.request.contextPath}${edit_label}" /><c:out value="${lbl.id}" /> > Edit</a>
+                            </td>
+                            <c:choose>
+                                <c:when test="${param.page != null}">
+                                    <td><a href =<c:out value="${pageContext.request.contextPath}${removepath}"/><c:out value="${lbl.id}"/>&page=<c:out value="${param.page}"/> >Remove</a></td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td><a href =<c:out value="${pageContext.request.contextPath}${removepath}"/><c:out value="${lbl.id}"/> >Remove</a></td>
+                                </c:otherwise>
+                            </c:choose>
                         </c:when>
                         <c:otherwise>
-                            <td><a href =<c:out value="${pageContext.request.contextPath}${removepath}"/><c:out value="${lbl.id}"/> >Remove</a></td>
-                        </c:otherwise>
-                    </c:choose>
-                    <c:if test="${not empty param.select}">
                         <td>
                             <input 
                                 type = "button" 
                                 name = "selectthis" 
                                 id = "selectthis"
                                 value = "select"
-                                onclick = "add('<c:out value="${lbl.name}" />')"
+                                onclick = "add('<c:out value="${lbl.name}" />', <c:out value="${lbl.id}" />)"
                         </td>
-                    </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </tr>
             </c:forEach>
             </table>
