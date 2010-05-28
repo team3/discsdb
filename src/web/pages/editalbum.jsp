@@ -68,6 +68,8 @@
             
             Artist:  
             <br />
+            <input type = "checkbox" id = "addnew" />New 
+            <br />
             <input type = "checkbox" id = "listall" />&nbsp;Select
             <br />
             <input 
@@ -82,6 +84,7 @@
             <br />
             Label: 
             <br />
+            <input type = "checkbox" id = "labaddnew" />New 
             <input type = "checkbox" id = "lablistall" />&nbsp;Select
             <br />
             <input 

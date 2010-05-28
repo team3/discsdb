@@ -31,31 +31,7 @@
                     }
                 });
             });
-            function addArtist() {
-                var name = $('.artistname').getValue();
-                var country = $('.artistcountry').getValue();
-                var info = $('.artistinfo').getValue();
-               
-                var url = '/discs/addartist?name=' + name + 
-                        '&country=' + country + 
-                        '&info=' + info;
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    success: function(data){
-                        if (data == '1') {
-                            $("div#editartist_main").
-                                    append('<div class = acceptmessage>Artist was added</div>');
-                        } else {
-                            $("div#editartist_main").
-                                    append('<div class = denymessage>Artist was not added<br />' + data +'</div>');
-                        }                        
-                    },
-                dataType: 'text'
-                });
-
-            }
-            
+                        
         </script>
         
     </head>
@@ -64,7 +40,7 @@
 <div id = "editartist_main">
     <h1>Try to add Artist</h1>
     
-    <form name = "artist_edit_form" method = "POST">
+    <form name = "artist_edit_form" method = "POST" action = "addartist">
         Name: <br />
         <input type = "text" class = "artistname" name = "artistname" />
         <br />
@@ -75,7 +51,7 @@
         <textarea name = "artistinfo" cols = "15" row = "70"></textarea>
         <br />
        
-        <input type = "button" onclick = "addArtist()" value = "Add" />
+        <input type = "submit" value = "Add" />
     </form>
 </div>
 

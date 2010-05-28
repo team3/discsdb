@@ -151,7 +151,7 @@ div.smallalbum {
     text-align: center;
 }
 
-p.title {
+p.title, p.lname{
     font-family: Helvetica, sans-serif;
     font-size: 48px;
 }

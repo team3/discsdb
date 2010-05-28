@@ -24,33 +24,7 @@
         <script src = "pages/js/jquery.delegate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.field.min.js" type="text/javascript"></script>
-        
-        <script type="text/javascript">    
-            $(document).ready(function(){
-                $.ajax({
-                    type: 'GET',
-                    url: '/discs/showlabels',
-                    success: function(data){
-                        labellist = createList(data, 'labelslist');
-                        $('div.labelfields').append(labellist);
-                    },
-                    dataType: 'text'
-                });
-            });
-            
-            
-            function createList(data, name) {
-                var array = data.split('\n');
-                var result = '<select name = ' + name + ' class = ' + name + '>';
-                for (i = 0; i < array.length-1; i++){
-                    result += '<option value="'+array[i]+'">'+array[i]+'</option>';
-                }
-                result += '<option value = "none"> none </option>';
-                result += '</select>';
-                return result;
-            }
-            
-        </script>
+        <script src = "pages/js/scripts.js" type="text/javascript"></script>
     </head>
 <body>
 
@@ -66,11 +40,19 @@
         Logo: <br />
         <input type = "text" class = "labellogo" name = "labellogo" value = "<c:out value="${label.logo}" />" />
         <br />
+        Major: <br />
+        <input 
+            type = "text" 
+            name = "selectedlabelname" 
+            class = "selectedlabelname" 
+            value = "<c:out value="${label.majorName}" />"
+            readonly = "readonly"
+        />
         <br />
-         <div class = "labelfields">
-        Major: 
-        </div>
-        <input type = "hidden" name = "labelid" value = <c:out value="${label.id}" /> />
+        <input type = "checkbox" id = "lablistall" />&nbsp;Select
+        <br />
+
+        <input type = "hidden" name = "lid" value = <c:out value="${label.id}" /> />
         <input type = "hidden" name = "majorid" value = <c:out value="${label.major}" /> />
         <br />
         <input type = "submit" value = "ok" />

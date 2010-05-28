@@ -61,13 +61,13 @@
             <input type = "checkbox" id = "addnew" />New 
             <input type = "checkbox" id = "listall" />&nbsp;Select
             <br />
-            <input type = "text" name = "selectedartistname" class = "selectedartistname" />
+            <input type = "text" readonly = "readonly" name = "selectedartistname" class = "selectedartistname" />
             <br />
             Label: <br />
             <input type = "checkbox" id = "labaddnew" />New 
             <input type = "checkbox" id = "lablistall" />&nbsp;Select
             <br />
-            <input type = "text" name = "selectedlabelname" class = "selectedlabelname" />
+            <input type = "text" readonly = "readonly" name = "selectedlabelname" class = "selectedlabelname" />
             <br />
             Review: <br />
             <textarea name = "review" cols = "70" rows = "15"></textarea>
