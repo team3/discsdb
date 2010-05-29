@@ -31,23 +31,6 @@
                     }
                 });
             });
-            <c:if test = "${not empty param.refer}">
-                function addArt() {
-                    $.post("addartist", { 
-                        artistname: "huy",
-                        artistcountry: "UK",
-                        artistinfo: "bla-bla-bla",
-                        refer: "true"},
-                        function(data){
-                            if(data == "1") {
-                                alert("Data Loaded");
-                            } else {
-                                alert("ERROR");
-                            }
-                        }
-                    );
-                }
-            </c:if>
         </script>
         
     </head>
@@ -66,14 +49,7 @@
         Info: <br />
         <textarea name = "artistinfo" cols = "15" row = "70"></textarea>
         <br />
-        <c:choose>
-            <c:when test = "${empty param.refer}">
-                <input type = "submit" value = "Add" />
-            </c:when>
-            <c:otherwise>
-                <input type = "button" onclick = "addArt()" value = "Add" />
-            </c:otherwise>
-        </c:choose>
+        <input type = "submit" value = "Add" />
     </form>
 </div>
 

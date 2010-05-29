@@ -386,7 +386,7 @@ public class Linker extends HttpServlet {
                 DataValidator.isValidText(info);
                 
                 if (artistInList(name)){
-                    out.print("Artist already exists");  
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 } else {
                     Artist artist = new Artist();
                     artist.setName(name);
@@ -394,12 +394,7 @@ public class Linker extends HttpServlet {
                     artist.setCountry(country);
                     
                     dao.addArtist(artist);
-                    String isRefer = request.getParameter("refer");
-                    if(isRefer == null || "".equals(isRefer)) {
-                        response.sendRedirect("artist/all");
-                    } else {
-                        out.print("1");
-                    }
+                    response.sendRedirect("artist/all");
                 }         
             } else if ("/addlabel".equals(spath)) {
                 String name = request.getParameter("labelname");

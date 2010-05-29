@@ -50,8 +50,10 @@
             </select>
             <br/>
             Cover: <br />
-            <input type = "text" name = "cover"><br />
-            Artist: <br />
+            <input type = "text" name = "cover">
+            <br />
+            Artist: 
+            <br />
             <input type = "checkbox" id = "addnew" />New 
             <input type = "checkbox" id = "listall" />&nbsp;Select
             <br />
