@@ -25,32 +25,39 @@
     </head>
 <body>
 
-<div id = "editlabel_main">
-    <h1>Try to add new label.</h1>
-    <form  name = "edit_label_form" method = "POST" action = "addlabel" class = "edit_label_form">
-        Name: <br />
-        <input type = "text" class = "labelname" name= "labelname" />
-        <br />
-        Info: <br />
-        <textarea rows = "15" cols = "60" class = "labelinfo" name = "labelinfo"></textarea>
-        <br />
-        Logo: <br />
-        <input type = "text" class = "labellogo" name = "labellogo" />
-        <br />
-        Major: <br />
-        <input 
-            type = "text" 
-            name = "selectedlabelname" 
-            class = "selectedlabelname" 
-            readonly = "readonly"
-        />
-        <br />
-        <input type = "checkbox" id = "lablistall" />&nbsp;Select
-        <br />
-        <input type = "hidden" value = "-1" name = "lid" />
-        <input type = "submit" value = "Add" />
-    </form>
+<div class="allpage">
+    <c:if test="${param.opener != true}">
+        <%@include file="menu.jsp" %>
+    </c:if>
+    <div class = "maincont">
+        <h1>Try to add new label.</h1>
+        <form  name = "edit_label_form" method = "POST" action = "addlabel" class = "edit_label_form">
+            Name: <br />
+            <input type = "text" class = "labelname" name= "labelname" />
+            <br />
+            Info: <br />
+            <textarea rows = "15" cols = "60" class = "labelinfo" name = "labelinfo"></textarea>
+            <br />
+            Logo: <br />
+            <input type = "text" class = "labellogo" name = "labellogo" />
+            <br />
+            Major: <br />
+            <input 
+                type = "text" 
+                name = "selectedlabelname" 
+                class = "selectedlabelname" 
+                readonly = "readonly"
+            />
+            <br />
+            <input type = "checkbox" id = "lablistall" />&nbsp;Select
+            <br />
+            <input type = "hidden" value = "-1" name = "lid" />
+            <c:if test = "${param.opener == true }">
+                <input type="hidden" name = "opener" value = "true"/>
+            </c:if>
+            <input type = "submit" value = "Add" />
+        </form>
+    </div>
 </div>
-
 </body>
 </html>

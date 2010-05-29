@@ -23,7 +23,7 @@
         
         <script type="text/javascript">    
             $("document").ready(function(){
-                $("artist_edit_form").validate({
+                $("#artist_edit_form").validate({
                     rules : {
                         artistname : {required : true },
                         artistcountry : {required : true },
@@ -36,22 +36,28 @@
     </head>
 <body>
 
-<div id = "editartist_main">
-    <h1>Try to add Artist</h1>
-    
-    <form name = "form" method = "POST" action = "addartist" id = "artist_edit_form">
-        Name: <br />
-        <input type = "text" class = "artistname" name = "artistname" />
-        <br />
-        Country: <br />
-        <input type = "text" class = "artistcountry" name = "artistcountry" />
-        <br />
-        Info: <br />
-        <textarea name = "artistinfo" cols = "15" row = "70"></textarea>
-        <br />
-        <input type = "submit" value = "Add" />
-    </form>
+<div class="allpage">
+        <c:if test="${param.opener != true}">
+            <%@include file="menu.jsp" %>
+        </c:if>
+    <div class = "maincont">
+        <h1>Add artist</h1>
+        <form name = "form" method = "POST" action = "addartist" id = "artist_edit_form">
+            Name: <br />
+            <input type = "text" class = "artistname" name = "artistname" />
+            <br />
+            Country: <br />
+            <input type = "text" class = "artistcountry" name = "artistcountry" />
+            <br />
+            Info: <br />
+            <textarea name = "artistinfo" cols = "15" row = "70"></textarea>
+            <br />
+            <c:if test = "${param.opener == true }">
+                <input type="hidden" name = "opener" value = "true"/>
+            </c:if>
+            <input type = "submit" value = "Add" />
+        </form>
+    </div>
 </div>
-
 </body>
 </html>

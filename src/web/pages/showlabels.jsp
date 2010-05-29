@@ -98,6 +98,7 @@
         </div>
     </div>
     <c:set var="pagepath" value="/label/all?page=" />
+    <c:set var="select" value="&select=true"/>
     <c:set var="truepath" value="${pageContext.request.contextPath}${pagepath}"/>
     <p>
         <c:if test="${number > 1}">
@@ -107,7 +108,14 @@
                         <c:out value="${i}" />
                     </c:when>
                     <c:otherwise>
-                        <a href =<c:out value="${truepath}" /><c:out value="${i}" /> ><c:out value="${i}" /></a> &nbsp;
+                        <c:choose>
+                            <c:when test = "${param.select == true}">
+                                <a href =<c:out value="${truepath}" /><c:out value="${i}" /><c:out value="${select}" /> ><c:out value="${i}" /></a> &nbsp;
+                            </c:when>
+                            <c:otherwise>
+                                <a href =<c:out value="${truepath}" /><c:out value="${i}" /> ><c:out value="${i}" /></a> &nbsp;
+                            </c:otherwise>
+                        </c:choose>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

@@ -34,7 +34,7 @@ $(document).ready(function(){
         $("#listall").attr("checked", false);
         if ($(this).attr("checked")) {
             $('div.artistfields').empty();
-            window.open ("addartist",
+            window.open ("addartist?opener=true",
             "mywindow",
             "menubar=1, resizable=1, width=800, height=600"); 
             $(this).attr("checked", false);
@@ -48,7 +48,7 @@ $(document).ready(function(){
         $("#lablistall").attr("checked", false);
         if ($(this).attr("checked")) {
             
-            window.open ("addlabel",
+            window.open ("addlabel?opener=true",
             "mywindow",
             "menubar=1, resizable=1, width=800, height=600"); 
             $("this").attr("checked", false);
