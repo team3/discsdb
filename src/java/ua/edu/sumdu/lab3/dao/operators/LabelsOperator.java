@@ -57,10 +57,10 @@ public class LabelsOperator extends MainOperator {
             statement = connection.prepareStatement(
                     ADD_NEW_LABEL);
             int major = label.getMajor();
-            if (major == 0) {       
-                statement.setNull(1, label.getMajor());
+            if (major == -1) {       
+                statement.setNull(1,java.sql.Types.NULL);
             } else {
-                statement.setInt(1, label.getMajor());
+                statement.setInt(1, major);
             }
             statement.setString(2, label.getName());
             statement.setString(3, label.getLogo());

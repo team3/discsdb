@@ -31,7 +31,23 @@
                     }
                 });
             });
-                        
+            <c:if test = "${not empty param.refer}">
+                function addArt() {
+                    $.post("addartist", { 
+                        artistname: "huy",
+                        artistcountry: "UK",
+                        artistinfo: "bla-bla-bla",
+                        refer: "true"},
+                        function(data){
+                            if(data == "1") {
+                                alert("Data Loaded");
+                            } else {
+                                alert("ERROR");
+                            }
+                        }
+                    );
+                }
+            </c:if>
         </script>
         
     </head>
@@ -40,7 +56,7 @@
 <div id = "editartist_main">
     <h1>Try to add Artist</h1>
     
-    <form name = "artist_edit_form" method = "POST" action = "addartist">
+    <form name = "form" method = "POST" action = "addartist" id = "artist_edit_form">
         Name: <br />
         <input type = "text" class = "artistname" name = "artistname" />
         <br />
@@ -50,8 +66,14 @@
         Info: <br />
         <textarea name = "artistinfo" cols = "15" row = "70"></textarea>
         <br />
-       
-        <input type = "submit" value = "Add" />
+        <c:choose>
+            <c:when test = "${empty param.refer}">
+                <input type = "submit" value = "Add" />
+            </c:when>
+            <c:otherwise>
+                <input type = "button" onclick = "addArt()" value = "Add" />
+            </c:otherwise>
+        </c:choose>
     </form>
 </div>
 

@@ -45,7 +45,7 @@ public class DataValidator {
     
     public static void isValidLink(String link) throws DataValidException {
         isValidText(link,200);
-        if(!link.matches("^(http|https|ftp)://[a-zA-Z0-9.]+/+([a-zA-Z0-9.?&_=]/?)+$")) {
+        if(!link.matches("^(http|https|ftp)://[a-zA-Z0-9.]+/+([a-zA-Z0-9.?&_=-]/?)+$")) {
             throw new DataValidException("Bad url. Valid direct link needed.");
         }
     }

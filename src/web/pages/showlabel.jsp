@@ -17,9 +17,24 @@
         <script src = "pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.field.min.js" type="text/javascript"></script>
         <script type="text/javascript">
+            function getIdParam(qs) {
+                qs = qs.split("+").join(" ");
+                var param;
+                var tokens;
+
+                while (tokens = /[?&]?([^=]+)=([^&]*)/g.exec(qs)) {
+                    if(decodeURIComponent(tokens[1]) == "id") {
+                        param = decodeURIComponent(tokens[2]);
+                    break;
+                    }
+                }
+                return param;
+            }
+        
             $("document").ready(function(){
                 $("#selectlabel").click(function(){
                     window.opener.document.forms[0].selectedlabelname.value = $('.lname').text().trim();
+                    window.opener.document.forms[0].lid.value = getIdParam(document.location.search);
                     window.close();
                 });
             });

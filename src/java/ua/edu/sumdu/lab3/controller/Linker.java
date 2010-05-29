@@ -341,7 +341,6 @@ public class Linker extends HttpServlet {
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();       
         String spath = request.getServletPath();
-        
         try {
             if ("/addalbum".equals(spath)){
                 String name = request.getParameter("name");
@@ -375,7 +374,7 @@ public class Linker extends HttpServlet {
                 album.setLabel(label);
 
                 dao.addAlbum(album);
-                response.sendRedirect("/discs");
+                response.sendRedirect("album/all");
             } else 
             
             if ("/addartist".equals(spath)) {
@@ -395,7 +394,12 @@ public class Linker extends HttpServlet {
                     artist.setCountry(country);
                     
                     dao.addArtist(artist);
-                    response.sendRedirect("artist/all");
+                    String isRefer = request.getParameter("refer");
+                    if(isRefer == null || "".equals(isRefer)) {
+                        response.sendRedirect("artist/all");
+                    } else {
+                        out.print("1");
+                    }
                 }         
             } else if ("/addlabel".equals(spath)) {
                 String name = request.getParameter("labelname");
@@ -404,17 +408,18 @@ public class Linker extends HttpServlet {
                 DataValidator.isValidText(info);
                 String logo = request.getParameter("labellogo");
                 DataValidator.isValidLink(logo);
-                String major = request.getParameter("selectedlabelname");
-                DataValidator.isValidName(major);
                 
-                int majorId = Integer.parseInt(
-                        request.getParameter("majorid"));
+                int majorId = -1;
+                
+                String lid = request.getParameter("lid");
+                if(lid != null || !"".equals(lid)) {
+                    majorId = Integer.parseInt(lid);
+                }
                 
                 Label label = new Label();
                 label.setName(name);
                 label.setInfo(info);
                 label.setLogo(logo);
-                label.setMajorName(major);
                 label.setMajor(majorId);
 
                 dao.addLabel(label);

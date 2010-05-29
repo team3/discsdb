@@ -60,6 +60,10 @@ div.menu a:hover {
     text-decoration:none;
 }
 
+div.menu span {
+    color: #CD2626;
+}
+
 a:link {
     color:#8B7D7B;
 }

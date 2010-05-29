@@ -23,12 +23,67 @@
             <img border = "0" src = <c:out value="${pageContext.request.contextPath}${picpath}" /> alt= "logo" />
         </a>
     </div>
-    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${aboutpath}" />>ABOUT</a></div>
-    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${albumspath}" />>ALBUMS</a></div> 
-    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${labelspath}" />>LABELS</a></div> 
-    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${artistspath}" />>ARTISTS</a></div> 
-    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${datestspath}" />>DATES</a></div>
-    <div class = "menu"><a href=<c:out value= "${pageContext.request.contextPath}${searchpath}" />>SEARCH</a></div>
+    <c:set var = "suppaPath" value = "${pageContext.request.servletPath}"/>
+    <div class = "menu">
+    <c:choose>
+        <c:when test = "${suppaPath != \"/pages/about.jsp\"}">
+            <a href=<c:out value= "${pageContext.request.contextPath}${aboutpath}" />>ABOUT</a>
+        </c:when>
+        <c:otherwise>
+            <span>ABOUT</span>
+        </c:otherwise>
+    </c:choose>
+    </div>
+        <div class = "menu">
+    <c:choose>
+        <c:when test = "${suppaPath != \"/pages/showalbums.jsp\"}">
+            <a href=<c:out value= "${pageContext.request.contextPath}${albumspath}" />>ALBUMS</a>
+        </c:when>
+        <c:otherwise>
+            <span>ALBUMS</span>
+        </c:otherwise>
+    </c:choose>
+    </div> 
+    <div class = "menu">
+    <c:choose>
+        <c:when test = "${suppaPath != \"/pages/showlabels.jsp\"}">
+            <a href=<c:out value= "${pageContext.request.contextPath}${labelspath}" />>LABELS</a>
+        </c:when>
+        <c:otherwise>
+            <span>LABELS</span>
+        </c:otherwise>
+    </c:choose>
+    </div> 
+    <div class = "menu">
+    <c:choose>
+        <c:when test = "${suppaPath != \"/pages/showartists.jsp\"}">
+            <a href=<c:out value= "${pageContext.request.contextPath}${artistspath}" />>ARTISTS</a>
+        </c:when>
+        <c:otherwise>
+            <span>ARTISTS</span>
+        </c:otherwise>
+    </c:choose>
+    </div>
+    <div class = "menu">
+    <c:choose>
+        <c:when test = "${suppaPath != \"/pages/showdates.jsp\"}">
+            <a href=<c:out value= "${pageContext.request.contextPath}${datestspath}" />>DATES</a>
+        </c:when>
+        <c:otherwise>
+            <span>DATES</span>
+        </c:otherwise>
+    </c:choose>
+    </div>
+    <div class = "menu">
+    <c:choose>
+        <c:when test = "${suppaPath != \"/pages/search.jsp\"}">
+            <a href=<c:out value= "${pageContext.request.contextPath}${searchpath}" />>SEARCH</a>
+        </c:when>
+        <c:otherwise>
+            <span>SEARCH</span>
+        </c:otherwise>
+    </c:choose>
+    </div>
     <div class = "menu">
     <select onchange = "location.href=this.options[this.selectedIndex].value">
     <option selected value="">ADD</option>

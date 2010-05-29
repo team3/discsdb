@@ -47,7 +47,7 @@
         <br />
         <input type = "checkbox" id = "lablistall" />&nbsp;Select
         <br />
-        <input type = "hidden" value = "0" name = "lid" />
+        <input type = "hidden" value = "-1" name = "lid" />
         <input type = "submit" value = "Add" />
     </form>
 </div>

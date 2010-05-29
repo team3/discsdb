@@ -34,7 +34,7 @@ $(document).ready(function(){
         $("#listall").attr("checked", false);
         if ($(this).attr("checked")) {
             $('div.artistfields').empty();
-            window.open ("pages/addartist.jsp",
+            window.open ("pages/addartist.jsp?refer=true",
             "mywindow",
             "menubar=1, resizable=1, width=800, height=600"); 
             $(this).attr("checked", false);

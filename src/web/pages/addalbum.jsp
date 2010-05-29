@@ -7,12 +7,6 @@
     <head>
         <title>Add album</title>
         <link rel="stylesheet" href="pages/css/style.css" type="text/css" />
-        <link 
-            type="text/css" 
-            href="pages/js/jquery-ui-1.8.1.custom/css/ui-lightness/jquery-ui-1.8.1.custom.css" 
-            rel="stylesheet" 
-        />
-
         <style>
             label.error {
                 color: red;
