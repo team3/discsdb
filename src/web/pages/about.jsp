@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>DiscsDB | About</title>
-        <link rel="stylesheet" href="css/style.css" type="text/css" />
+        <link rel="stylesheet" href= <c:out value= "${pageContext.request.contextPath}" />/pages/css/style.css type="text/css" />
     </head>
     <body>
         <div class="allpage">

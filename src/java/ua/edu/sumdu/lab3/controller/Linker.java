@@ -21,20 +21,15 @@ import org.apache.log4j.BasicConfigurator;
 
 public class Linker extends HttpServlet {
     
-    DateFormat df = null;
     private OperableDAO dao = null;
-    private boolean datachanged = true;
     private Logger log = null;
             
     public void init() throws ServletException {
         super.init();
 
         log = Logger.getLogger(Linker.class);
-        df = new SimpleDateFormat("dd.MM.yy");
         Locale.setDefault(Locale.ENGLISH);
         ServletContext context = getServletContext();
-        Map props = new HashMap();
-
         dao = DaoFactory.getDao("oracle");
     }
     
@@ -47,7 +42,6 @@ public class Linker extends HttpServlet {
                 
         String spath = request.getServletPath();
         DateFormat df = new SimpleDateFormat("yyyy");
-        PrintWriter out = response.getWriter();
         
         try {
             if ("".equals(spath)) {
@@ -169,12 +163,12 @@ public class Linker extends HttpServlet {
                 int first = 0;
                 int last = 0;
                 if(!DataValidator.checkParam(DataValidator.NUMERIC_PARAM,page)) {
-                    last = 10;
+                    last = 5;
                 } else {
-                    last = Integer.parseInt(page)*10;
-                    first = last - 9;
+                    last = Integer.parseInt(page)*5;
+                    first = last - 4;
                 }
-                int number = (int)Math.ceil((double)dao.getAlbumNumber() / 10);
+                int number = (int)Math.ceil((double)dao.getAlbumNumber() / 5);
                 Object labels = null;
                 labels = dao.getMajorLabels(first,last);
                 request.setAttribute("number",new Integer(number));
@@ -257,28 +251,6 @@ public class Linker extends HttpServlet {
                 } else {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }
-            } else if ("/check".equals(spath)) {
-                
-                String artist = request.getParameter("artist");
-                if (artist != null) {
-                    out.print(dao.findArtist(artist));
-                }
-                String label = request.getParameter("label");
-                if (label != null) {
-                    out.print(dao.findArtist(label));
-                }
-            } else if ("/showartists".equals(spath)) {
-                List artists = dao.getArtists(1, 9999);
-                Iterator itr = artists.iterator();
-                while(itr.hasNext()){
-                    out.print(((Artist)itr.next()).getName() + "\n");
-                }
-            } else if ("/showlabels".equals(spath)) {
-                List labels = dao.getLabels();
-                Iterator itr = labels.iterator();
-                while(itr.hasNext()){
-                    out.print(((Label)itr.next()).getName() + "\n");
-                }
             } else if ("/search".equals(spath)) {
                 String by = (String)request.getParameter("by");
                 if (by == null) {
@@ -312,17 +284,16 @@ public class Linker extends HttpServlet {
                     
                     if ("genre".equals(by)) 
                         albums = dao.getAlbums(query, 1, 9999);
-                    
-                    
-                    request.setAttribute("albums", albums);
-                    request.setAttribute("number",new Integer(5));
+                        
+                        request.setAttribute("albums", albums);
+                        request.setAttribute("number",new Integer(5));
                     
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showalbums.jsp").forward(request,response);
                 }
             } else if ("/about".equals(spath)) {
-                String servletPath = request.getContextPath();
-                response.sendRedirect(servletPath + "/pages/about.jsp");
+                getServletConfig().getServletContext().getRequestDispatcher(
+                            "/pages/about.jsp").forward(request,response);
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
@@ -339,15 +310,17 @@ public class Linker extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) 
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();       
         String spath = request.getServletPath();
+        DateFormat df = new SimpleDateFormat("dd.MM.yy");
         try {
             if ("/addalbum".equals(spath)){
                 String name = request.getParameter("name");
                 DataValidator.isValidName(name);
                 String type = request.getParameter("type");
                 DataValidator.isValidType(type);
-                Date release = df.parse(request.getParameter("date"));
+                String date = request.getParameter("date");
+                DataValidator.isValidDate(date);
+                Date release = df.parse(date);
                 String genre = request.getParameter("genre");
                 DataValidator.isValidGenre(genre);
                 String cover = request.getParameter("cover");
@@ -528,7 +501,6 @@ public class Linker extends HttpServlet {
                 album.setArtist(artist);
                 album.setLabel(label);
                 
-                out.print(album);
                 dao.editAlbum(album);
                 
                 response.sendRedirect("album?id=" + id);

@@ -25,10 +25,12 @@
     </head>
 <body>
 
+
+<div class = "allpage">
 <%@include file="menu.jsp" %>
 <div id = "addalbum_main">
-
     <div id = "form">
+        <h1>Add album</h1>
         <form action = "addalbum" method = "post" id = "albumForm">
             Name: <br />
             <input type = "text" name = "name" /><br />
@@ -74,6 +76,6 @@
         </form>
     </div>
 </div>
-
+</div>
 </body>
 </html>

@@ -60,7 +60,7 @@ public class DataValidator {
     
     public static void isValidDate(String date) throws DataValidException {
         isValidText(date,9);
-        if(!date.matches("^(0[0-9]|[1-2][0-9]|31)[.](0[1-9]|1[0-2])[.][0-9]{2}$")) {
+        if(!date.matches("^((0[1-9])|([1-2][0-9])|30|31)[.]((0[1-9])|(1[0-2]))[.][0-9]{2}$")) {
             throw new DataValidException("Bad date format. Need dd.MM.YY using only numbers.");
         }
     }

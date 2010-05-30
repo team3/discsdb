@@ -35,8 +35,8 @@ $(document).ready(function(){
         if ($(this).attr("checked")) {
             $('div.artistfields').empty();
             window.open ("addartist?opener=true",
-            "mywindow",
-            "menubar=1, resizable=1, width=800, height=600"); 
+            "addArtistWindow",
+            "menubar=1, resizable=1, width=510, height=540"); 
             $(this).attr("checked", false);
             return;
         } else {
@@ -49,8 +49,8 @@ $(document).ready(function(){
         if ($(this).attr("checked")) {
             
             window.open ("addlabel?opener=true",
-            "mywindow",
-            "menubar=1, resizable=1, width=800, height=600"); 
+            "addLabelWindow",
+            "menubar=1, resizable=1, width=510, height=650"); 
             $("this").attr("checked", false);
             return;
         } else {
@@ -62,14 +62,14 @@ $(document).ready(function(){
         $("this").attr("checked", false);
         window.open ("artist/all?select=true",
             "mywindow",
-            "menubar=1, resizable=1, width=800, height=600"); 
+            "menubar=1, resizable=1, width=640, height=600"); 
     });
     
     $("#lablistall").change(function(){
         $("this").attr("checked", false);
         window.open ("label/all?select=true",
             "mywindow",
-            "menubar=1, resizable=1, width=800, height=600"); 
+            "menubar=1, resizable=1, width=640, height=600"); 
     });
 });
     

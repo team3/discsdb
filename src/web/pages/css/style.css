@@ -118,11 +118,12 @@ div.smallalbum {
     height: 400px;
 }
 
-#addalbum_main, #search_main, #search_main {
-    width: 45%;
+#addalbum_main, #search_main, #addartist_main, #addlabel_main {
+    width: 40%;
     margin: 30px auto;
-    background-color: #F9E3FD;
-    padding-left: 20px; 
+    background-color: #F5F5F5;
+    border: 1px dashed lightgray;
+    min-width: 460px;
 }
 
 #logo {
@@ -180,19 +181,20 @@ div#form {
     width: 90%;
     text-align: left;
     font-family: Helvetica, sans-serif;
-    font-size: 24px;
+    font-size: 22px;
     color: gray;
+    padding:20px;
 }
 
 form input[type="text"],select{
     background-color: rgb(255, 255, 255);
     padding-left: 18px;
     width: 400px;
-    height: 40px;
+    height: 30px;
     border: 1px solid #e0e0e0;
     font-family: Helvetica, sans-serif;
-    font-size: 24px;
-    color: green;
+    font-size: 18px;
+    color: #2F4F4F;
 }
 
 div.menu select{
@@ -212,17 +214,16 @@ form textarea{
     border: 1px solid #e0e0e0;
     font-family: Helvetica, sans-serif;
     font-size: 16px;
-    color: green;
 }
 
 form input[type="submit"]{
     background-color: #e0e0e0;
     width: 100px;
-    height: 40px;
-    border: 1px solid gray;
+    height: 38px;
+    border: 1px solid lightgray;
     font-family: Helvetica, sans-serif;
     font-size: 24px;
-    color: green;
+    color:gray;
 }
 
 label.error {
