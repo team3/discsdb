@@ -366,8 +366,9 @@ public class Linker extends HttpServlet {
                     artist.setInfo(info);
                     artist.setCountry(country);
                     dao.addArtist(artist);
+                    int id = dao.findArtist(name);
                     if("true".equals(request.getParameter("opener"))) {
-                        response.sendRedirect("pages/succes.jsp?obj=artist");
+                        response.sendRedirect("pages/succes.jsp?obj=artist&aid=" + id + "&name=" + name);
                     } else {
                         response.sendRedirect("artist/all");
                     }
@@ -394,8 +395,9 @@ public class Linker extends HttpServlet {
                 label.setMajor(majorId);
 
                 dao.addLabel(label);
+                int id = dao.findLabel(name);
                 if("true".equals(request.getParameter("opener"))) {
-                    response.sendRedirect("pages/succes.jsp?obj=label");
+                    response.sendRedirect("pages/succes.jsp?obj=label&lid=" + id + "&name=" + name);
                 } else {
                     response.sendRedirect("label/all");
                 }
