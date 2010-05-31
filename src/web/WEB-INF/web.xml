@@ -36,71 +36,6 @@
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
     
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/Dispatcher</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/album</url-pattern>
-    </servlet-mapping>  
-
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/album/all</url-pattern>
-    </servlet-mapping>  
-    
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/artist</url-pattern>
-    </servlet-mapping>  
-
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/artist/all</url-pattern>
-    </servlet-mapping>  
-    
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/label</url-pattern>
-    </servlet-mapping>
-    
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/addalbum</url-pattern>
-    </servlet-mapping>  
-    
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/addlabel</url-pattern>
-    </servlet-mapping>  
-    
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/addartist</url-pattern>
-    </servlet-mapping>  
- 
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/search</url-pattern>
-    </servlet-mapping>  
-    
-     <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/check</url-pattern>
-    </servlet-mapping>  
-    
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/about</url-pattern>
-    </servlet-mapping>  
-    
-    <servlet-mapping>
-        <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/selectArtist</url-pattern>
-    </servlet-mapping> 
-    
     <error-page>
         <error-code>404</error-code>
         <location>/pages/404.jsp</location>
@@ -117,28 +52,8 @@
     </taglib>
 
     <taglib>
-        <taglib-uri>http://java.sun.com/jstl/fmt-rt</taglib-uri>
-        <taglib-location>/WEB-INF/tags/fmt-rt.tld</taglib-location>
-    </taglib>
-
-    <taglib>
         <taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
         <taglib-location>/WEB-INF/tags/c.tld</taglib-location>
-    </taglib>
-
-    <taglib>
-        <taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
-        <taglib-location>/WEB-INF/tags/c-rt.tld</taglib-location>
-    </taglib>
-
-    <taglib>
-        <taglib-uri>http://java.sun.com/jstl/x</taglib-uri>
-        <taglib-location>/WEB-INF/tags/x.tld</taglib-location>
-    </taglib>
-
-    <taglib>
-        <taglib-uri>http://java.sun.com/jstl/x-rt</taglib-uri>
-        <taglib-location>/WEB-INF/tags/x-rt.tld</taglib-location>
     </taglib>
 
     <resource-ref>

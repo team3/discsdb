@@ -179,7 +179,7 @@ public class ArtistsOperator extends MainOperator {
             while(set.next()){
                 aid = set.getInt(1);
             }
-            
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -210,6 +210,7 @@ public class ArtistsOperator extends MainOperator {
             if(set.next()) {
                 artist = fillArtistBean(set,FULL_MODE);
             }
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -243,6 +244,7 @@ public class ArtistsOperator extends MainOperator {
                 currArtist = fillArtistBean(set,FULL_MODE);
                 artists.add(currArtist);
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -277,6 +279,7 @@ public class ArtistsOperator extends MainOperator {
                 currArtist = fillArtistBean(set, FULL_MODE);
                 artists.add(currArtist);
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -303,7 +306,7 @@ public class ArtistsOperator extends MainOperator {
             set.next();
             
             result = set.getInt(1);
-            
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -331,7 +334,7 @@ public class ArtistsOperator extends MainOperator {
             set.next();
             
             result = set.getInt(1);
-            
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -364,6 +367,7 @@ public class ArtistsOperator extends MainOperator {
                 currArtist = fillArtistBean(set,FULL_MODE);
                 artists.add(currArtist);
             }
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {

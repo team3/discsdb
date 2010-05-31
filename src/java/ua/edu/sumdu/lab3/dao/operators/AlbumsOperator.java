@@ -117,6 +117,7 @@ public class AlbumsOperator extends MainOperator {
             if(set.next()) {
                 album = fillAlbumBean(set,FULL_MODE);
             }
+            set.close();
         }   catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -151,6 +152,7 @@ public class AlbumsOperator extends MainOperator {
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -185,6 +187,7 @@ public class AlbumsOperator extends MainOperator {
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -222,6 +225,7 @@ public class AlbumsOperator extends MainOperator {
                 currAlbum = fillAlbumBean(set, FULL_MODE);
                 albums.add(currAlbum);
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -256,6 +260,7 @@ public class AlbumsOperator extends MainOperator {
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -290,6 +295,7 @@ public class AlbumsOperator extends MainOperator {
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -321,6 +327,7 @@ public class AlbumsOperator extends MainOperator {
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -369,6 +376,7 @@ public class AlbumsOperator extends MainOperator {
             while(set.next()){
                 albums.add(getAlbum(set.getInt(1)));
             }
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -452,7 +460,7 @@ public class AlbumsOperator extends MainOperator {
                 currAlbum = fillAlbumBean(set,FULL_MODE);
                 albums.add(currAlbum);
             }
-
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -478,7 +486,7 @@ public class AlbumsOperator extends MainOperator {
             set.next();
 
             result = set.getInt(1);
-
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -507,7 +515,7 @@ public class AlbumsOperator extends MainOperator {
             set.next();
 
             result = set.getInt(1);
-
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -535,7 +543,7 @@ public class AlbumsOperator extends MainOperator {
             set.next();
 
             result = set.getInt(1);
-
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -564,6 +572,7 @@ public class AlbumsOperator extends MainOperator {
             if(set.next()) {
                 album = fillAlbumBean(set,FULL_MODE);
             }
+            set.close();
         }   catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {

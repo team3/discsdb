@@ -106,6 +106,7 @@ public class LabelsOperator extends MainOperator {
             if(set.next()) {
                 label = fillLabelBean(set,FULL_MODE);
             }
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -136,6 +137,7 @@ public class LabelsOperator extends MainOperator {
                 currLabel = fillLabelBean(set,SHORT_MODE);
                 labels.add(currLabel);
             }
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -163,7 +165,7 @@ public class LabelsOperator extends MainOperator {
             while(set.next()){
                 lid = set.getInt(1);
             }
-            
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -280,6 +282,7 @@ public class LabelsOperator extends MainOperator {
                 currLabel = fillLabelBean(set,SHORT_MODE);
                 labels.add(currLabel);
             }
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -312,6 +315,7 @@ public class LabelsOperator extends MainOperator {
                 currLabel = fillLabelBean(set, SHORT_MODE);
                 labels.add(currLabel);
             }
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -347,7 +351,7 @@ public class LabelsOperator extends MainOperator {
                 currLabel = fillLabelBean(set, SHORT_MODE);
                 labels.add(currLabel);
             }
-            
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -373,7 +377,7 @@ public class LabelsOperator extends MainOperator {
             set.next();
             
             result = set.getInt(1);
-            
+            set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {

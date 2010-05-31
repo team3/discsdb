@@ -184,6 +184,7 @@ public class MainOperator {
             while(set.next()){
                 genres.add(set.getString(1));
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -215,6 +216,7 @@ public class MainOperator {
             while(set.next()){
                 genres.add(set.getString(1));
             }
+            set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -243,7 +245,8 @@ public class MainOperator {
             while(set.next()){
                 dates.add(set.getString(1));
             }
-        }   catch (SQLException e) {
+            set.close();
+        } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
             closeConnection();
