@@ -6,14 +6,29 @@
 
 <html>
     <head>
-        <title>Search albums</title>
-        <link rel="stylesheet" href="pages/css/style.css" type="text/css" />        
+        <title>ST | Search</title>
+        <link rel="stylesheet" href="pages/css/style.css" type="text/css" />
+        <script src = <c:out value= "${pageContext.request.contextPath}" />/pages/js/jquery-latest.js type="text/javascript"></script>
+        <script src = <c:out value= "${pageContext.request.contextPath}" />/pages/js/jquery.delegate.js type="text/javascript"></script>
+        <script src = <c:out value= "${pageContext.request.contextPath}" />/pages/js/jquery.validate.js type="text/javascript"></script>
+        <script src = <c:out value= "${pageContext.request.contextPath}" />/pages/js/jquery.field.min.js type="text/javascript"></script>
+        
+        <script type="text/javascript">    
+            $("document").ready(function(){
+                $("#searchForm").validate({
+                    rules : {
+                        search : {required : true }
+                    }
+                });
+            });
+        </script>
     </head>
 <body>
 <%@include file="menu.jsp" %>
 <div id = "search_main">
     <div id = "form">
-        <form action = "search" method = "get" id = "albumForm">
+    <h1>Search</h1>
+        <form action = "search" method = "get" id = "searchForm">
             <br />
             <input type = "text" name = "search"><br />
             By : 
@@ -26,6 +41,7 @@
                 <option value = "label" >label</option>
             </select>
             
+            <br />
             <br />
             <input id = "button" type = "submit" value = "Send" />
         </form>

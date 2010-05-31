@@ -12,7 +12,7 @@
 
 <html>
 <head>
-<title>Discs storage</title>
+<title>Sweet tunes</title>
 <c:set var="stylepath" value="/pages/css/style.css" />
 <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
 

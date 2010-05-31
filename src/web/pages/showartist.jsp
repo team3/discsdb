@@ -8,7 +8,7 @@
 
 <html>
     <head>
-        <title><jsp:getProperty name="artist" property="name" /></title>
+        <title>ST | <jsp:getProperty name="artist" property="name" /></title>
         <c:set var="stylepath" value="/pages/css/style.css" />
         <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
         <c:set var="genresPath" value="/album/all?genre=" />

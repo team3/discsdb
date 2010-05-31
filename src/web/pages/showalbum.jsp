@@ -10,7 +10,7 @@
 
 <html>
 <head>
-<title>Discs storage</title>
+<title>ST | <c:out value="${album.name}" /></title>
 <c:set var="stylepath" value="/pages/css/style.css" />
 <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
 <link rel="stylesheet" href=<c:out value="${truepath}" /> type="text/css" />

@@ -72,6 +72,10 @@ a:visited {
     color:#8B7D7B;
 }
 
+#date {
+    font-size: 26px;
+}
+
 .maincont {
     color:#2F4F4F;
     font-size: 13px;
@@ -118,8 +122,8 @@ div.smallalbum {
     height: 400px;
 }
 
-#addalbum_main, #search_main, #addartist_main, #addlabel_main {
-    width: 40%;
+#addalbum_main, #search_main, #addartist_main, #addlabel_main, #editlabel_main, #editartist_main, #editalbum_main {
+    width: 39%;
     margin: 30px auto;
     background-color: #F5F5F5;
     border: 1px dashed lightgray;
@@ -171,7 +175,7 @@ p.item {
 div#album {
     border: 1px solid black;
     width: 350px;
-    heigth: 400px;
+    height: 400px;
     margin-left: 15px;
     margin-top: 15px;
     padding: 5px 5px;
@@ -186,6 +190,9 @@ div#form {
     padding:20px;
 }
 
+div#form sup{
+    font-size:26px;
+}
 form input[type="text"],select{
     background-color: rgb(255, 255, 255);
     padding-left: 18px;
@@ -277,10 +284,6 @@ div.labelfields {
 p.selector {
     font-family: Helvetica, sans-serif;
     color: gray;
-}
-div#editlabel_main, div#editartist_main, div#editalbum_main{
-    width: 50%;
-    margin-left: 10%;
 }
 
 div.acceptmessage {

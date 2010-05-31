@@ -8,7 +8,7 @@
 
 <html>
     <head>
-        <title>Label|<jsp:getProperty name="label" property="name" /></title>
+        <title>ST | <jsp:getProperty name="label" property="name" /></title>
         <c:set var="stylepath" value="/pages/css/style.css" />
         <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
         <link rel="stylesheet" href=<c:out value="${truepath}" /> type="text/css" />

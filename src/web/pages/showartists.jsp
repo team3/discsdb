@@ -8,7 +8,7 @@
 
 <html>
     <head>
-        <title>Artists</title>
+        <title>ST | Artists</title>
         <c:set var="stylepath" value="/pages/css/style.css" />
         <c:set var="removepath" value="/remove?obj=artist&id="/>
         <c:set var="artpath" value="/artist?id=" />

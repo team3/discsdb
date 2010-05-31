@@ -254,12 +254,12 @@ $.extend($.validator, {
 	},
 
 	messages: {
-		required: "*",
+		required: "<sup>*</sup>",
 		remote: "Please fix this field.",
 		email: "Please enter a valid email address.",
-		url: "* URL",
-		date: "Please enter a valid date.",
-		dateISO: "Please enter a valid date (ISO).",
+		url: "<sup>*</sup>",
+		date: "<sup>*</sup>",
+		dateISO: "<sup>*</sup>",
 		number: "Please enter a valid number.",
 		digits: "Please enter only digits.",
 		creditcard: "Please enter a valid credit card number.",
@@ -1014,7 +1014,7 @@ $.extend($.validator, {
 	
 		// http://docs.jquery.com/Plugins/Validation/Methods/dateISO
 		dateISO: function(value, element) {
-			return this.optional(element) || /^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(value);
+			return this.optional(element) || /^((0[1-9])|([1-2][0-9])|30|31)\.((0[1-9])|(1[0-2]))\.[0-9]{2}$/.test(value);
 		},
 	
 		// http://docs.jquery.com/Plugins/Validation/Methods/number

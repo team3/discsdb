@@ -9,7 +9,7 @@
      
 <html>
     <head>
-        <title>Edit Label</title>
+        <title>ST | Edit label</title>
         <link rel="stylesheet" href="pages/css/style.css" type="text/css" />
         <style>
             label.error {
@@ -25,38 +25,61 @@
         <script src = "pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.field.min.js" type="text/javascript"></script>
         <script src = "pages/js/scripts.js" type="text/javascript"></script>
+        <script type="text/javascript">    
+            $("document").ready(function(){
+                $("#edit_label_form").validate({
+                    rules : {
+                        labelname : {required : true },
+                        labellogo : {required : true, url: true },
+                    }
+                });
+            });
+        </script>
     </head>
 <body>
-
-<div id = "editlabel_main">
-    <h1>Try to edit label: <font color = "red"><c:out value="${label.name}" /> </font></h1>
-    <form action = "editlabel" name = "edit_label_form" class = "edit_label_form" method = "POST">
-        Name: <br />
-        <input type = "text" class = "labelname" name= "labelname" value = "<c:out value="${label.name}"  />" />
-        <br />
-        Info: <br />
-        <textarea rows = "15" cols = "60" class = "labelinfo" name = "labelinfo"><c:out value="${label.info}" /></textarea>
-        <br />
-        Logo: <br />
-        <input type = "text" class = "labellogo" name = "labellogo" value = "<c:out value="${label.logo}" />" />
-        <br />
-        Major: <br />
-        <input 
-            type = "text" 
-            name = "selectedlabelname" 
-            class = "selectedlabelname" 
-            value = "<c:out value="${label.majorName}" />"
-            readonly = "readonly"
-        />
-        <br />
-        <input type = "checkbox" id = "lablistall" />&nbsp;Select
-        <br />
-
-        <input type = "hidden" name = "lid" value = <c:out value="${label.id}" /> />
-        <input type = "hidden" name = "majorid" value = <c:out value="${label.major}" /> />
-        <br />
-        <input type = "submit" value = "ok" />
-    </form>
+<div class="allpage">
+    <c:if test = "${param.refer != true}">
+        <%@include file="menu.jsp" %>
+    </c:if>
+    <div id = "editlabel_main">
+        <div id = "form">
+            <h1>Edit label</h1>
+            <form action = "editlabel" name = "edit_label_form" class = "edit_label_form" method = "POST">
+                Name: <br />
+                <input type = "text" class = "labelname" name= "labelname" value = "<c:out value="${label.name}"  />" />
+                <br />
+                Info: <br />
+                <textarea rows = "15" cols = "60" class = "labelinfo" name = "labelinfo"><c:out value="${label.info}" /></textarea>
+                <br />
+                Logo: <br />
+                <input type = "text" class = "labellogo" name = "labellogo" value = "<c:out value="${label.logo}" />" />
+                <br />
+                Major: <br />
+                <input 
+                    type = "text" 
+                    name = "selectedlabelname" 
+                    class = "selectedlabelname" 
+                    value = "<c:out value="${label.majorName}" />"
+                    readonly = "readonly"
+                />
+                <br />
+                <input type = "checkbox" id = "lablistall" />&nbsp;Select
+                <br />
+                <input type = "hidden" name = "lid" value = <c:out value="${label.id}" /> />
+                <input type = "hidden" name = "majorid" value = <c:out value="${label.major}" /> />
+                <br />
+                
+                <c:choose>
+                    <c:when test = "${param.refer == true}">
+                        <input type = "submit" value = "Ok" onsubmit="top.close();"/>
+                    </c:when>
+                    <c:otherwise>
+                        <input type = "submit" value = "Ok" />
+                    </c:otherwise>
+                </c:choose>
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

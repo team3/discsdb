@@ -1,7 +1,7 @@
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
 <html>
     <head>
-        <title>DiscsDB | About</title>
+        <title>ST | About</title>
         <link rel="stylesheet" href= <c:out value= "${pageContext.request.contextPath}" />/pages/css/style.css type="text/css" />
     </head>
     <body>

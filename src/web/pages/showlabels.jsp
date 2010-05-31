@@ -8,7 +8,7 @@
 
 <html>
     <head>
-        <title>Labels</title>
+        <title>ST | Labels</title>
         <c:set var="stylepath" value="/pages/css/style.css" />
         <c:set var="removepath" value="/remove?obj=label&id="/>
         <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
@@ -32,7 +32,7 @@
             <%@include file="menu.jsp" %>
         </c:if>
         <div class="maincont">
-            
+            <h2>Labels</h2>
             <table>
             <tr>
                 <td>Logo</td>

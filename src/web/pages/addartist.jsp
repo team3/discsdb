@@ -5,15 +5,14 @@
   
 <html>
     <head>
-        <title>Add Artist</title>
+        <title>ST | Add Artist</title>
         <link rel="stylesheet" href= <c:out value= "${pageContext.request.contextPath}" />/pages/css/style.css type="text/css" />
         <style>
             label.error {
                 color: red;
-                font-style: italic;
             }
             input.error {
-                border: 1px dotted #f00;
+                border: 1px dotted red;
             }
         </style>
         <script src = <c:out value= "${pageContext.request.contextPath}" />/pages/js/jquery-latest.js type="text/javascript"></script>
@@ -26,12 +25,10 @@
                 $("#artist_edit_form").validate({
                     rules : {
                         artistname : {required : true },
-                        artistcountry : {required : true },
-                        artistinfo : {required : true }
+                        artistcountry : {required : true }
                     }
                 });
             });
-
         </script>
         
     </head>

@@ -9,7 +9,7 @@
      
 <html>
     <head>
-        <title>Edit Artist</title>
+        <title>ST | Edit Artist</title>
         <link rel="stylesheet" href="pages/css/style.css" type="text/css" />
         <style>
             label.error {
@@ -24,42 +24,49 @@
         <script src = "pages/js/jquery.delegate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.field.min.js" type="text/javascript"></script>
-        
         <script type="text/javascript">    
-            $(document).ready(function(){
-                $("artist_edit_form").validate({
+            $("document").ready(function(){
+                $("#artist_edit_form").validate({
                     rules : {
                         artistname : {required : true },
                         artistcountry : {required : true },
-                        artistinfo : {required : true }
                     }
                 });
-            }
+            });
         </script>
     </head>
 <body>
-
-<div id = "editartist_main">
-    <h1>Try to edit Artist: <font color = "red">
-        <c:out value="${artist.name}" /> </font>
-    </h1>
-    
-    <form action = "editartist" name = "artist_edit_form" method = "POST">
-        Name: <br />
-        <input type = "text" class = "artistname" name = "artistname" 
-                value = "<c:out value="${artist.name}" />" />
-        <br />
-        Country: <br />
-        <input type = "text" class = "artistcountry" name = "artistcountry" value = "<c:out value="${artist.country}" />" />
-        <br />
-        Info: <br />
-        <textarea name = "artistinfo" cols = "15" row = "70"><c:out value="${artist.info}" /></textarea>
+<div class="allpage">
+    <c:if test = "${param.refer != true}">
+        <%@include file="menu.jsp" %>
+    </c:if>
+    <div id = "editartist_main">
+        <div id="form">
+            <h1>Edit artist</h1>
+            <c:choose>
+                <c:when test = "${param.refer == true}">
+                    <form action = "editartist" name = "artist_edit_form" method = "POST" id = "artist_edit_form" onsubmit="top.close();">
+                </c:when>
+                <c:otherwise>
+                    <form action = "editartist" name = "artist_edit_form" method = "POST" id = "artist_edit_form" >
+                </c:otherwise>
+            </c:choose>
+                Name: <br />
+                <input type = "text" class = "artistname" name = "artistname" 
+                    value = "<c:out value="${artist.name}" />" />
+                <br />
+                Country: <br />
+                <input type = "text" class = "artistcountry" name = "artistcountry" value = "<c:out value="${artist.country}" />" />
+                <br />
+                Info: <br />
+                <textarea name = "artistinfo" cols = "15" row = "70"><c:out value="${artist.info}" /></textarea>
         
-        <input type = "hidden" name = "artistid" value = <c:out value="${artist.id}" /> />
-        <br />
-       
-        <input type = "submit" value = "ok" />
-    </form>
+                <input type = "hidden" name = "artistid" value = <c:out value="${artist.id}" /> />
+                <br />
+                <input type = "submit" value = "Ok" />
+            </form>
+        </div>
+    </div>
 </div>
 
 </body>

@@ -3,7 +3,7 @@ $(document).ready(function(){
     $("#albumForm").validate({
         rules : {
             name : {required : true },
-            date : {required : true, minlength: 8},
+            date : {required : true, dateISO:true},
             artist : {required : true},
             label : {required : true},
             cover : {required : true, url: true},
@@ -11,22 +11,6 @@ $(document).ready(function(){
             labelname : {required : true},
             selectedlabelname : {required : true},
             selectedartistname : {required : true}
-        },
-                        
-        messages : {
-            username : {
-                required : "Enter name of the album",
-            },
-            date : {
-                required : "Enter Date of release",
-                minlength : "Date format: dd.MM.YY"
-            }, 
-            artist : {
-                required : "Enter artist of the album",
-            }, 
-            label : {
-                required : "Enter label of the album"
-            } 
         }
     });
         

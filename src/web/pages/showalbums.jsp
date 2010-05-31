@@ -13,7 +13,7 @@
     <c:set var = "removepath" value = "/remove?obj=album&id=" />     
 <html>
     <head>
-        <title>Albums</title>
+        <title>ST | Albums</title>
         <link rel="stylesheet" href=<c:out value="${truepath}" /> type="text/css" />
     </head>
 <body>    

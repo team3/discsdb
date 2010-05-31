@@ -5,22 +5,20 @@
     
 <html>
     <head>
-        <title>Add album</title>
+        <title>ST | Add album</title>
         <link rel="stylesheet" href="pages/css/style.css" type="text/css" />
         <style>
             label.error {
                 color: red;
-                font-style: italic;
             }
             input.error {
-                border: 1px dotted #f00;
+                border: 1px dotted red;
             }
         </style>
         <script src = "pages/js/jquery-latest.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.delegate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.validate.js" type="text/javascript"></script>
         <script src = "pages/js/jquery.field.min.js" type="text/javascript"></script>
-        
         <script src = "pages/js/scripts.js" type="text/javascript"></script>
     </head>
 <body>
@@ -52,7 +50,7 @@
             </select>
             <br/>
             Cover: <br />
-            <input type = "text" name = "cover">
+            <input type = "text" name = "cover" value = "http://">
             <br />
             Artist: 
             <br />

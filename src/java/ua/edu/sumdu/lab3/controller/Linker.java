@@ -58,7 +58,7 @@ public class Linker extends HttpServlet {
                     request.setAttribute("artist", dao.getArtist(aid));
                     Artist artForGenres = new Artist();
                     artForGenres.setId(aid);
-                    request.setAttribute("genres",
+                    request.setAttribute("genres", 
                             new CollectionWrapper(dao.getGenres(artForGenres)));
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showartist.jsp").forward(request,response);
@@ -149,9 +149,9 @@ public class Linker extends HttpServlet {
                     int lid = Integer.parseInt(id);
                     Label label = dao.getLabel(lid);
                     request.setAttribute("label", label);
-                    request.setAttribute("path", 
+                    request.setAttribute("path",  
                             new CollectionWrapper(dao.getLabelPath(lid)));
-                    request.setAttribute("children",
+                    request.setAttribute("children", 
                             new CollectionWrapper(dao.getChildLabels(lid)));
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showlabel.jsp").forward(request,response);
@@ -298,9 +298,9 @@ public class Linker extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         } catch (ParseException e) {
-            response.sendError(500, e.getMessage());
+            throw new ServletException(e);
         } catch (OracleDataAccessObjectException e) {
-            response.sendError(500,e.getMessage());
+            throw new ServletException(e);
         }
     }
     
@@ -326,7 +326,6 @@ public class Linker extends HttpServlet {
                 String cover = request.getParameter("cover");
                 DataValidator.isValidLink(cover);
                 String review = request.getParameter("review");
-                DataValidator.isValidText(review);
                 String artistName = request.getParameter("selectedartistname");
                 DataValidator.isValidName(artistName);
                 String labelName = request.getParameter("selectedlabelname");
@@ -356,7 +355,6 @@ public class Linker extends HttpServlet {
                 String country = request.getParameter("artistcountry");
                 DataValidator.isValidName(country);
                 String info = request.getParameter("artistinfo");
-                DataValidator.isValidText(info);
                 
                 if (artistInList(name)){
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -377,7 +375,6 @@ public class Linker extends HttpServlet {
                 String name = request.getParameter("labelname");
                 DataValidator.isValidName(name);
                 String info = request.getParameter("labelinfo");
-                DataValidator.isValidText(info);
                 String logo = request.getParameter("labellogo");
                 DataValidator.isValidLink(logo);
                 
@@ -418,7 +415,6 @@ public class Linker extends HttpServlet {
                 String logo = request.getParameter("labellogo");
                 DataValidator.isValidLink(logo);
                 String major = request.getParameter("selectedlabelname");
-                DataValidator.isValidName(major);
                 int majorId = Integer.parseInt(
                         request.getParameter("majorid"));
 
