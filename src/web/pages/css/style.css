@@ -315,7 +315,6 @@ td {
     border-style:solid;
     border-width:2px;
     border-color:#F5F5F5;
-    background-color:#E8E8E8;
     padding:5px;
 }
 
@@ -363,4 +362,27 @@ div#selectlabel{
     position:relative;
     float:left;
     color: #E8E8E8;
+}
+
+tr {
+    background-color:#E8E8E8;
+}
+
+tr.overed:hover {
+    background-color: #DCDCDC;
+}
+
+p.edit_link {
+    padding-left: 20px;
+    font-size: 14px;
+}
+
+p.edit_link a:hover {
+    color: black;
+}
+
+p.edit_link:hover {
+    background-image: url('../images/edit.png'); 
+    background-position: left bottom; 
+    background-repeat: no-repeat; 
 }

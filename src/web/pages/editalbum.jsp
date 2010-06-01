@@ -77,7 +77,6 @@
                 Artist:  
                 <br />
                 <input type = "checkbox" id = "addnew" />New 
-                <br />
                 <input type = "checkbox" id = "listall" />&nbsp;Select
                 <br />
                 <input 
@@ -86,12 +85,13 @@
                     name = "selectedartistname" 
                     class = "selectedartistname" />
                 <br />    
-                <c:if test = "${album.artistName != 'unknown'}">
-                    <a href="notfound" onClick="openWindow('editartist?id=<c:out value = "${album.artist}"/>&refer=true'); return false">
-                        Edit this artist
-                    </a>
-                </c:if>
-                <br />
+                <p class = "edit_link">
+                    <c:if test = "${album.artistName != 'unknown'}">
+                        <a href="notfound" onClick="openWindow('editartist?id=<c:out value = "${album.artist}"/>&refer=true&opener=true'); return false">
+                            Edit this artist
+                        </a>
+                    </c:if>
+                </p>
                 Label: 
                 <br />
                 <input type = "checkbox" id = "labaddnew" />New 
@@ -104,13 +104,14 @@
                     value = "<c:out value = "${album.labelName}" />"
                 />
                 <br />
-                <c:if test = "${album.labelName != 'unknown'}">
-                    <a href="notfound" onClick="openWindow('editlabel?id=<c:out value = "${album.label}"/>&refer=true'); return false">
-                        Edit this label
-                    </a>   
-                </c:if>
-                <br />   
-            
+                <p class = "edit_link">
+                    <c:if test = "${album.labelName != 'unknown'}">
+                        <a href="editlabel" 
+                            onClick="openWindow('editlabel?id=<c:out value = "${album.label}"/>&refer=true&opener=true'); return false">
+                            Edit this label
+                        </a>   
+                    </c:if>
+                </p>
                 Review: <br />
                 <textarea name = "review" cols = "70" rows = "15"><c:out value = "${album.review}" /></textarea>
                 <br />

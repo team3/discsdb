@@ -51,7 +51,7 @@
             </tr>
             <c:set var="truepath" value="${pageContext.request.contextPath}${removepath}"/>
             <c:forEach var="lbl" begin="0" items="${labels}">
-                <tr>
+                <tr class = "overed">
                     <td>
                         <img src=<c:out value="${lbl.logo}" /> width="50" height="50" align="left" alt="cover"/>
                     </td>

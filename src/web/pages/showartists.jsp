@@ -53,7 +53,7 @@
             </tr>
             <c:set var="truepath" value="${pageContext.request.contextPath}${removepath}"/>
             <c:forEach var="art" begin="0" items="${artists}">
-                <tr>
+                <tr class = "overed">
                     <c:choose>
                         <c:when test="${empty param.select}">
                             <td>

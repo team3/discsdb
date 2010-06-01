@@ -68,15 +68,10 @@
                 <input type = "hidden" name = "lid" value = <c:out value="${label.id}" /> />
                 <input type = "hidden" name = "majorid" value = <c:out value="${label.major}" /> />
                 <br />
-                
-                <c:choose>
-                    <c:when test = "${param.refer == true}">
-                        <input type = "submit" value = "Ok" onsubmit="top.close();"/>
-                    </c:when>
-                    <c:otherwise>
-                        <input type = "submit" value = "Ok" />
-                    </c:otherwise>
-                </c:choose>
+                <c:if test = "${param.opener == true }">
+                    <input type="hidden" name = "opener" value = "true"/>
+                </c:if>
+                <input type = "submit" value = "Ok" />
             </form>
         </div>
     </div>

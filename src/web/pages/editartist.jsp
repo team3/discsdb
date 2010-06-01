@@ -43,14 +43,7 @@
     <div id = "editartist_main">
         <div id="form">
             <h1>Edit artist</h1>
-            <c:choose>
-                <c:when test = "${param.refer == true}">
-                    <form action = "editartist" name = "artist_edit_form" method = "POST" id = "artist_edit_form" onsubmit="top.close();">
-                </c:when>
-                <c:otherwise>
-                    <form action = "editartist" name = "artist_edit_form" method = "POST" id = "artist_edit_form" >
-                </c:otherwise>
-            </c:choose>
+                <form action = "editartist" name = "artist_edit_form" method = "POST" id = "artist_edit_form">
                 Name: <br />
                 <input type = "text" class = "artistname" name = "artistname" 
                     value = "<c:out value="${artist.name}" />" />
@@ -63,6 +56,9 @@
         
                 <input type = "hidden" name = "artistid" value = <c:out value="${artist.id}" /> />
                 <br />
+                <c:if test = "${param.opener == true }">
+                    <input type="hidden" name = "opener" value = "true"/>
+                </c:if>
                 <input type = "submit" value = "Ok" />
             </form>
         </div>

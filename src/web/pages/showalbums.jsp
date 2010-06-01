@@ -39,7 +39,7 @@
             </tr>
             <c:set var="truepath" value="${pageContext.request.contextPath}${removepath}"/>
             <c:forEach var="alb" begin="0" items="${albums}">
-                <tr>
+                <tr class = "overed">
                     <td><a href =<c:out value="${pageContext.request.contextPath}${albpath}${alb.id}"/> ><c:out value="${alb.name}" /></a></td>
                     <c:set var="truepath" value="${pageContext.request.contextPath}${artpath}${alb.artist} "/>
                     
