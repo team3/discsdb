@@ -3,7 +3,7 @@
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
 
 <jsp:useBean id="artist" scope="request" class="ua.edu.sumdu.lab3.model.Artist" />
-<jsp:useBean id="genres" scope="request" class ="ua.edu.sumdu.lab3.CollectionWrapper" />
+<jsp:useBean id="genres" scope="request" class ="ua.edu.sumdu.lab3.javabeans.CollectionBean" />
 <c:set var="artByCountryPath" value="/artist/all?country="/>
 
 <html>

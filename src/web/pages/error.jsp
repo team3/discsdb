@@ -2,7 +2,7 @@
 <%@ page language="java"%>
 <%@ page isErrorPage="true" %>
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
-<jsp:useBean id="exceptionBean" class="ua.edu.sumdu.lab3.ExceptionBean"/>
+<jsp:useBean id="exceptionBean" class="ua.edu.sumdu.lab3.javabeans.ExceptionBean"/>
 <html>
 <head>
 <title>ST | ERROR</title>

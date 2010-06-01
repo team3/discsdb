@@ -328,3 +328,39 @@ div#selectlabel{
     text-align: center;
     clear: both;
 }
+
+.pages {
+    color:#2F4F4F;
+    font-family: Helvetica;
+    font-size: 20px;
+    margin-top:1%;
+    margin-bottom: 3%;
+    margin-left: 12%;
+    
+}
+
+.unchoosed {
+    position:relative;
+    float:left;
+    margin-left: 6px;
+    margin-right:6px;
+
+}
+
+.choosed {
+    font-size: 22px;
+    color: #CD2626;
+    display:block; 
+    position:relative;
+    float:left;
+    margin-left: 6px;
+    margin-right:6px;
+    -webkit-transform: rotate(-90deg); 
+    -moz-transform: rotate(-90deg)
+}
+
+.yap {
+    position:relative;
+    float:left;
+    color: #E8E8E8;
+}

@@ -105,36 +105,51 @@
             </c:forEach>
             </table>
     </div>
-    </div>
     <c:set var="yearparam" value="?year=" />
     <c:set var="pagelast" value="&page=" />
     <c:set var="pagefirst" value="?page=" />
     <c:set var="genreparam" value="?genre=" />
     <c:set var="pagepath" value="/album/all" />
-    <p>
         <c:if test="${number > 1}">
+            <div class = "pages">
+            <span class="yap">[</span>
             <c:forEach var = "i" begin = "1" end="${number}" >
                 <c:choose>
                     <c:when test="${i == param.page || (i == 1 && param.page == null)}">
-                        <c:out value="${i}" />
+                        <span class="choosed"><c:out value="${i}" /></span>
+                        <c:if test = "${i != number}">
+                            <span class = "yap"> | </span>
+                        </c:if>
                     </c:when>
                     <c:otherwise>
                         <c:if test="${param.year != null}">
                             <c:set var="truepath" value="${pageContext.request.contextPath}${pagepath}${yearparam}${param.year}${pagelast}${i}" />
-                            <a href =<c:out value="${truepath}" /> ><c:out value="${i}" /></a> &nbsp;
+                            <span class = "unchoosed"><a href =<c:out value="${truepath}" /> ><c:out value="${i}" /></a></span>
+                            <c:if test = "${i != number}">
+                                <span class = "yap"> | </span>
+                            </c:if>
                         </c:if>
                         <c:if test="${param.genre != null}">
                             <c:set var="truepath" value="${pageContext.request.contextPath}${pagepath}${genreparam}${param.genre}${pagelast}${i}" />
-                            <a href =<c:out value="${truepath}" /> ><c:out value="${i}" /></a> &nbsp;
+                            <span class = "unchoosed"><a href =<c:out value="${truepath}" /> ><c:out value="${i}" /></a><span>
+                            <c:if test = "${i != number}">
+                                <span class = "yap"> | </span>
+                            </c:if>
                         </c:if>
                         <c:if test="${param.year == null && param.genre == null}">
                             <c:set var="truepath" value="${pageContext.request.contextPath}${pagepath}${pagefirst}" />
-                            <a href =<c:out value="${truepath}" /><c:out value="${i}" /> ><c:out value="${i}" /></a> &nbsp;
+                            <span class = "unchoosed"><a href =<c:out value="${truepath}" /><c:out value="${i}" /> ><c:out value="${i}" /></a></span> 
+                            <c:if test = "${i != number}">
+                                <span class = "yap"> | </span>
+                            </c:if>
                         </c:if>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
+            <span class = "yap">]</span>
+            </div>
         </c:if>
-    </p>
+    </div>
+    </div>
 </body>
 </html>

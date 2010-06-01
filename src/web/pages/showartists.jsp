@@ -101,18 +101,22 @@
             </c:forEach>
             </table>
     </div>
-    </div>
+    
     <c:set var="pagepath" value="/artist/all" />
     <c:set var="pagefirst" value="?page=" />
     <c:set var="pagelast" value="&page=" />
     <c:set var="countrypath" value="?country=" />
     <c:set var="select" value="&select=true"/>
-    <p>
         <c:if test="${number > 1}">
+            <div class = "pages">
+            <span class="yap">[</span>
             <c:forEach var = "i" begin = "1" end="${number}" >
                 <c:choose>
                     <c:when test="${i == param.page || (i == 1 && param.page == null)}">
-                        <c:out value="${i}" />
+                        <span class="choosed"><c:out value="${i}" /></span>
+                        <c:if test = "${i != number}">
+                            <span class = "yap"> | </span>
+                        </c:if>
                     </c:when>
                     <c:otherwise>
                         <c:if test="${param.country == null}">
@@ -123,16 +127,24 @@
                         </c:if>
                         <c:choose>
                             <c:when test = "${param.select == true}">
-                                <a href =<c:out value="${truepath}" /><c:out value="${i}" /><c:out value ="${select}" /> ><c:out value="${i}" /></a> &nbsp;
+                                <span class = "unchoosed"><a href =<c:out value="${truepath}" /><c:out value="${i}" /><c:out value ="${select}" /> ><c:out value="${i}" /></a></span>
+                                <c:if test = "${i != number}">
+                                    <span class = "yap"> | </span>
+                                </c:if>
                             </c:when>
                             <c:otherwise>
-                                <a href =<c:out value="${truepath}" /><c:out value="${i}" /> ><c:out value="${i}" /></a> &nbsp;
+                                <span class = "unchoosed"><a href =<c:out value="${truepath}" /><c:out value="${i}" /> ><c:out value="${i}" /></a></span>
+                                <c:if test = "${i != number}">
+                                    <span class = "yap"> | </span>
+                                </c:if>
                             </c:otherwise>
                         </c:choose>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
+            <span class="yap">]</span>
+            </div>
         </c:if>
-    </p>
+    </div>
 </body>
 </html>

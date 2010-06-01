@@ -3,7 +3,7 @@ package ua.edu.sumdu.lab3.controller;
 import ua.edu.sumdu.lab3.model.*;
 import ua.edu.sumdu.lab3.dao.*;
 import ua.edu.sumdu.lab3.exceptions.*;
-import ua.edu.sumdu.lab3.CollectionWrapper;
+import ua.edu.sumdu.lab3.javabeans.CollectionBean;
 
 import javax.servlet.http.*;
 import javax.servlet.*;
@@ -59,7 +59,7 @@ public class Linker extends HttpServlet {
                     Artist artForGenres = new Artist();
                     artForGenres.setId(aid);
                     request.setAttribute("genres", 
-                            new CollectionWrapper(dao.getGenres(artForGenres)));
+                            new CollectionBean(dao.getGenres(artForGenres)));
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showartist.jsp").forward(request,response);
                 } else {
@@ -150,9 +150,9 @@ public class Linker extends HttpServlet {
                     Label label = dao.getLabel(lid);
                     request.setAttribute("label", label);
                     request.setAttribute("path",  
-                            new CollectionWrapper(dao.getLabelPath(lid)));
+                            new CollectionBean(dao.getLabelPath(lid)));
                     request.setAttribute("children", 
-                            new CollectionWrapper(dao.getChildLabels(lid)));
+                            new CollectionBean(dao.getChildLabels(lid)));
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showlabel.jsp").forward(request,response);
                 } else {
@@ -168,7 +168,7 @@ public class Linker extends HttpServlet {
                     last = Integer.parseInt(page)*5;
                     first = last - 4;
                 }
-                int number = (int)Math.ceil((double)dao.getAlbumNumber() / 5);
+                int number = (int)Math.ceil((double)dao.getLabelNumber() / 5);
                 Object labels = null;
                 labels = dao.getMajorLabels(first,last);
                 request.setAttribute("number",new Integer(number));

@@ -3,8 +3,8 @@
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
 
 <jsp:useBean id="label" scope="request" class="ua.edu.sumdu.lab3.model.Label" />
-<jsp:useBean id="children" scope="request" class="ua.edu.sumdu.lab3.CollectionWrapper"/>
-<jsp:useBean id="path" scope="request" class="ua.edu.sumdu.lab3.CollectionWrapper"/>
+<jsp:useBean id="children" scope="request" class="ua.edu.sumdu.lab3.javabeans.CollectionBean"/>
+<jsp:useBean id="path" scope="request" class="ua.edu.sumdu.lab3.javabeans.CollectionBean"/>
 
 <html>
     <head>

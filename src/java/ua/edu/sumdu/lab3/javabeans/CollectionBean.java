@@ -1,12 +1,12 @@
-package ua.edu.sumdu.lab3;
+package ua.edu.sumdu.lab3.javabeans;
 
 import java.util.Collection;
 
-public class CollectionWrapper {
+public class CollectionBean {
 
     private Collection collection;
     
-    public CollectionWrapper(Collection collection) {
+    public CollectionBean(Collection collection) {
         this.collection = collection;
     }
     

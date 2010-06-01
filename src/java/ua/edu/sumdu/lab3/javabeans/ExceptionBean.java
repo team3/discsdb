@@ -1,4 +1,4 @@
-package ua.edu.sumdu.lab3;
+package ua.edu.sumdu.lab3.javabeans;
 
 import java.io.*;
 
