@@ -5,9 +5,9 @@ html, body {
 
 .allpage {
     min-height:100%;
-    position:relative;
     height: 100%;
-    height: auto; 
+    height: auto;
+    padding-bottom:50px;
 }
 
 .header {
@@ -16,6 +16,20 @@ html, body {
     width:100%;
     display:table;
     padding-bottom:4%;
+}
+
+.footer {
+    position:relative;
+    height: 50px;
+    margin-top: -50px;
+    clear:both;
+    padding-left:48%;
+    padding-right:48%;
+}
+
+.footer span {
+    position:absolute;
+    bottom: 4px;
 }
 
 .logotext {

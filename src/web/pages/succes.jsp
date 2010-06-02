@@ -4,8 +4,6 @@
 <head>
 <title><c:out value="${param.obj}"/> added</title>
     <script src = "js/jquery-latest.js" type="text/javascript"></script>
-    <script src = "js/jquery.delegate.js" type="text/javascript"></script>
-    <script src = "js/jquery.validate.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         $("document").ready(function add (){

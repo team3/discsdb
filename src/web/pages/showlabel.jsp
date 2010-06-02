@@ -136,5 +136,9 @@
             </c:choose>
         </div>
     </div>
+    <c:set var = "team3" value = "/pages/images/team3_logo.png" />
+    <div class = "footer">
+        <span><img border = "0" src = <c:out value="${pageContext.request.contextPath}${team3}" /> alt= "logo" /><span>
+    </div>
 </body>
 </html>

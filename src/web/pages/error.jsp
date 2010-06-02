@@ -15,12 +15,18 @@
 <div class="allpage">
     <%@include file="menu.jsp" %>
     <div class="maincont">
+        <c:set var = "picpath" value = "/pages/images/sinatra.png" />
+        <img border = "0" src = <c:out value="${pageContext.request.contextPath}${picpath}" /> align = "right" alt= "elvis" />
         <h1>Sorry, but service is down. </h1>
         <b> ERROR </b> :<BR>
         <c:set var="throwable" value="${requestScope['javax.servlet.error.exception']}"/>
         <c:set target="${exceptionBean}" property="throwable" value="${throwable}"/>
         <p><c:out value="${exceptionBean}"/></p>
     </div>
+</div>
+<c:set var = "team3" value = "/pages/images/team3_logo.png" />
+<div class = "footer">
+    <span><img border = "0" src = <c:out value="${pageContext.request.contextPath}${team3}" /> alt= "logo" /><span>
 </div>
 </body>
 </html>
