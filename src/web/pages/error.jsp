@@ -21,7 +21,7 @@
         <b> ERROR </b> :<BR>
         <c:set var="throwable" value="${requestScope['javax.servlet.error.exception']}"/>
         <c:set target="${exceptionBean}" property="throwable" value="${throwable}"/>
-        <p><c:out value="${exceptionBean}"/></p>
+        <span id = "exception"><c:out value="${exceptionBean}"/></span>
     </div>
 </div>
 <c:set var = "team3" value = "/pages/images/team3_logo.png" />

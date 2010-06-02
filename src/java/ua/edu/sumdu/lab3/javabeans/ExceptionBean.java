@@ -13,10 +13,7 @@ public class ExceptionBean implements Serializable {
         if (this.t == null) {
             return "throwable is null";
         } else {
-            CharArrayWriter chars = new CharArrayWriter();
-            PrintWriter out = new PrintWriter(chars);
-            t.printStackTrace(out);
-            return chars.toString();
+            return t.getMessage();
         }
     }
 }
