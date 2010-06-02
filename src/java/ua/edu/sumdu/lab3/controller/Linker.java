@@ -286,7 +286,7 @@ public class Linker extends HttpServlet {
                         albums = dao.getAlbums(query, 1, 9999);
                         
                         request.setAttribute("albums", albums);
-                        request.setAttribute("number",new Integer(5));
+                        request.setAttribute("number",new Integer(1));
                     
                     getServletConfig().getServletContext().getRequestDispatcher(
                             "/pages/showalbums.jsp").forward(request,response);
