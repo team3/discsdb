@@ -68,13 +68,15 @@
             <c:forEach var="lalbum" begin="0" items="${latest}">
                 <div class = "smallalbum">
                     <br />
-                    <img src = <c:out value="${lalbum.cover}" /> width = "100" height = "100" alt= "" />&nbsp;
+                    <a href=<c:out value="${pageContext.request.contextPath}${albpath}${lalbum.id}"/> >
+                        <img src = <c:out value="${lalbum.cover}" /> width = "100" height = "100" alt= "" />
+                    </a>
                     <br />
                     <c:choose>
                         <c:when test = "${lalbum.artist >= 0}">
                             <a href=<c:out value="${pageContext.request.contextPath}${artpath}${lalbum.artist}"/>>
                                 <c:out value="${lalbum.artistName}"/>
-                            </a>
+                            </a><br />
                         </c:when>
                         <c:otherwise>
                             <c:out value="${lalbum.artistName}"/>

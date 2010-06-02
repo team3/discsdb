@@ -107,13 +107,17 @@ a:visited {
     margin-right: 7px;
 }
 
+div.smallalbum a:hover {
+    color: black;
+}
+
 .latest {
     margin-top:3%;
     color:#2F4F4F;
     font-size: 12px;
     font-family: eneva, Arial, Helvetica, sans-serif;
     border: 1px dashed lightgray;
-    height: 140px;
+    height: 150px;
     background-color:#F5F5F5;
     margin-left: 12%;
     margin-right: 12%;
