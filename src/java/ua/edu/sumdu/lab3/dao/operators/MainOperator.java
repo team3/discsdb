@@ -9,7 +9,7 @@ import java.util.*;
 import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
-
+import javax.transaction.*;
 
 public class MainOperator {
     protected Connection connection = null;
@@ -18,7 +18,6 @@ public class MainOperator {
     protected static final int FULL_MODE = 2;
     protected static final int SHORT_MODE = 1;
     protected static final int NORMAL_MODE = 0;
-    
         
     private static final String SELECT_GENRES_BY_ARTIST =
             "SELECT DISTINCT genre FROM ALBUM WHERE art = ?";
@@ -29,7 +28,7 @@ public class MainOperator {
     private static final String SELECT_ALL_DATES =
             "SELECT DISTINCT TO_CHAR(release, 'YYYY') as year FROM album order by year";
             
-    
+	
     /**
      * Setups the connection with database by specified parameters.
      */ 
@@ -37,18 +36,18 @@ public class MainOperator {
             throws OracleDataAccessObjectException {
         try {
             InitialContext iContext = new InitialContext();
-            Context context = (Context) iContext.lookup("java:comp/env");
-            DataSource datasource = (DataSource)context.lookup("jdbc/DiscsDB");
+            DataSource  datasource = (DataSource) iContext.lookup("java:jdbc/DiscsDB");
             connection = datasource.getConnection();
             if (connection == null) {
                     throw new OracleDataAccessObjectException(
                             "Connection has not created");
             }
+            
         } catch (javax.naming.NamingException e){
             throw new OracleDataAccessObjectException(e);
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
-        }
+        } 
     }
     
     /**

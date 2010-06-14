@@ -2,6 +2,7 @@ package ua.edu.sumdu.lab3.dao.operators;
 
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
+import ua.edu.sumdu.lab3.dao.*;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -9,11 +10,12 @@ import java.util.*;
 import java.sql.*;
 import javax.sql.*;
 import javax.naming.*;
+import javax.transaction.*;
 
 public class LabelsOperator extends MainOperator {
     
     private static final String ADD_NEW_LABEL = 
-            "INSERT INTO LABEL VALUES (SQ_LABEL.nextval, ?, ?, ?, ?)";
+            "INSERT INTO LABEL VALUES (?, ?, ?, ?, ?)";
             
     private static final String SELECT_LABEL_BY_ID = 
             "SELECT a.lid,a.major,a.name,a.logo,a.info,a.major_name FROM (SELECT d.lid,d.major,d.name,d.logo,d.info,e.name as major_name FROM label d, label e WHERE d.major = e.lid UNION SELECT d.lid,d.major,d.name,d.logo,info,null as major_name FROM label d WHERE d.major IS NULL) a where a.lid = ?";
@@ -44,45 +46,78 @@ public class LabelsOperator extends MainOperator {
     
     private static final String LABEL_MAX_ROW =
             "SELECT MAX(ROWNUM) FROM label WHERE major IS NULL";
+    
+    private static final String RESERVE_NEW_ID = 
+			"SELECT SQ_LABEL.nextval FROM dual";
             
+    
+    /**
+     * Returns the new value of the labels counter.
+     * 
+     * @return the new value of the labels counter.
+     */ 
+    public int getNewId() throws OracleDataAccessObjectException {
+		int id = 0;
+		try {
+			getConnection();
+			statement = connection.prepareStatement(RESERVE_NEW_ID);
+			ResultSet set = statement.executeQuery();
+			if(set.next()){
+				id = set.getInt(1);
+			}
+		} catch (java.sql.SQLException e) {
+            throw new OracleDataAccessObjectException(e);
+        } finally {
+            closeConnection();
+        }
+        return id;
+	}
+    
     /**
      * Adds new label to the specified storage.
      * @param album new instanse of the Label that should be added.
      * @throws OracleDataAccessObjectException if problems while adding the data.
      */ 
-    public void addLabel(Label label) 
+    public int addLabel(int major, String name, 
+			String info, String logo, String majorName) 
             throws OracleDataAccessObjectException {        
+        int result;
         try {
+			int id = getNewId();
+			System.out.println("labels operator create");
             getConnection();
+            System.out.println("--- Connection established");
             statement = connection.prepareStatement(
                     ADD_NEW_LABEL);
-            int major = label.getMajor();
+
+            System.out.println("new id = " + id);
+            statement.setInt(1, id);
             if (major == -1) {       
-                statement.setNull(1,java.sql.Types.NULL);
+                statement.setNull(2, java.sql.Types.NULL);
             } else {
-                statement.setInt(1, major);
+                statement.setInt(2, major);
             }
-            statement.setString(2, label.getName());
-            statement.setString(3, label.getLogo());
-            statement.setString(4, label.getInfo());
-            connection.setAutoCommit(false);
+            statement.setString(3, name);
+            statement.setString(4, logo);
+            statement.setString(5, info);
+            
+            UserTransactionManager.transBegin();
+            System.out.println("--- transaction started");
             statement.executeUpdate();
-            connection.commit();
+            System.out.println("--- query started");
+            UserTransactionManager.transCommit();
+            System.out.println("--- transaction finished");
+            
+            result = id;
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new OracleDataAccessObjectException(exc);
-            }
+            UserTransactionManager.transRollback();
+            System.out.println("Rollback");
             throw new OracleDataAccessObjectException(e);
         } finally {
-            try {
-                connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            }
+			System.out.println("--- Closing connection");
+            closeConnection();
         }
+        return result;
     }
 
     /**
@@ -104,7 +139,7 @@ public class LabelsOperator extends MainOperator {
             
             ResultSet set = statement.executeQuery();
             if(set.next()) {
-                label = fillLabelBean(set,FULL_MODE);
+                label = fillLabelBean(set, FULL_MODE);
             }
             set.close();
         } catch (SQLException e) {
@@ -186,24 +221,15 @@ public class LabelsOperator extends MainOperator {
             
             statement = connection.prepareStatement(DELETE_LABEL);
             statement.setInt(1, id);
-            connection.setAutoCommit(false);
+            UserTransactionManager.transBegin();
             statement.executeUpdate();
-            connection.commit();
+            UserTransactionManager.transCommit();
         
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new OracleDataAccessObjectException(exc);
-            }
+            UserTransactionManager.transRollback();
             throw new OracleDataAccessObjectException(e);
         } finally {
-            try {
-                connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            }
+             closeConnection();
         }
     }
 
@@ -213,46 +239,32 @@ public class LabelsOperator extends MainOperator {
      * @param label to edit/change.
      * @throws OracleDataAccessObjectException if problems while editting data.
      */ 
-    public void editLabel(Label label) 
+    public void editLabel(int id, int major, String name, 
+			String info, String logo, String majorName) 
             throws OracleDataAccessObjectException {
         try {
-            Label lbl = getLabel(label.getId());
-            
             getConnection();
             
-            if (lbl == null) {
-                throw new OracleDataAccessObjectException("No label with specified id found");
-            } 
-            
             statement = connection.prepareStatement(EDIT_LABEL);
-            if (label.getMajor() == 0) {
-                statement.setNull(1, label.getMajor());
+            if (major == 0) {
+                statement.setNull(1, major);
+                System.out.println("Setted major: " + major);
             } else {
-                statement.setInt(1, label.getMajor());
+                statement.setInt(1, major);
+                System.out.println("Setted major: " + major);
             }
-            statement.setString(2, label.getName());
-            statement.setString(3, label.getInfo());
-            statement.setString(4, label.getLogo());
-            statement.setInt(5, label.getId());
-            
-            connection.setAutoCommit(false);
+            statement.setString(2, name);
+            statement.setString(3, info);
+            statement.setString(4, logo);
+            statement.setInt(5, id);
+           
             statement.executeUpdate();
-            connection.commit();
-            
+       
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new OracleDataAccessObjectException(e);
-            }
+            UserTransactionManager.transRollback();
             throw new OracleDataAccessObjectException(e);
         } finally {
-            try {
-                connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            } 
+            closeConnection();
         }
     }
 

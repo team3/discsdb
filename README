@@ -1,1 +1,6 @@
 Use "ant" command to build the project. 
+
+<jsp:useBean id="number" scope="request" type="java.lang.Integer" />
+http://forums.sun.com/thread.jspa?threadID=5181950
+
+

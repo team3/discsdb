@@ -6,7 +6,7 @@
 
 <jsp:useBean id="album" scope="request" class="ua.edu.sumdu.lab3.model.Album" />
 <jsp:useBean id="albums" scope="request" class="java.util.LinkedList" />
-<jsp:useBean id="number" scope="request" class="java.lang.Integer" />
+<jsp:useBean id="number" scope="request" type="java.lang.Integer" />
     
     <c:set var = "stylepath" value = "/pages/css/style.css" />
     <c:set var = "truepath" value = "${pageContext.request.contextPath}${stylepath} "/>   

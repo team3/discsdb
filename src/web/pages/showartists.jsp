@@ -4,7 +4,7 @@
 
 <jsp:useBean id="artist" scope="request" class="ua.edu.sumdu.lab3.model.Artist" />
 <jsp:useBean id="artists" scope="request" class="java.util.LinkedList" />
-<jsp:useBean id="number" scope="request" class="java.lang.Integer" />
+<jsp:useBean id="number" scope="request" type="java.lang.Integer" />
 
 <html>
     <head>

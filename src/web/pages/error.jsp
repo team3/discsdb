@@ -1,8 +1,9 @@
 <%@ page contentType="text/html"%>
 <%@ page language="java"%>
 <%@ page isErrorPage="true" %>
+
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
-<jsp:useBean id="exceptionBean" class="ua.edu.sumdu.lab3.javabeans.ExceptionBean"/>
+
 <html>
 <head>
 <title>ST | ERROR</title>
@@ -19,9 +20,8 @@
         <img border = "0" src = <c:out value="${pageContext.request.contextPath}${picpath}" /> align = "right" alt= "sinatra" />
         <h1>Sorry, but service is down. </h1>
         <b> ERROR </b> :<BR>
-        <c:set var="throwable" value="${requestScope['javax.servlet.error.exception']}"/>
-        <c:set target="${exceptionBean}" property="throwable" value="${throwable}"/>
-        <span id = "exception"><c:out value="${exceptionBean}"/></span>
+        
+        <span id = "exception"><%= exception.getMessage() %></span>
     </div>
 </div>
 <c:set var = "team3" value = "/pages/images/team3_logo.png" />

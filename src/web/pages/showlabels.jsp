@@ -4,7 +4,7 @@
 
 <jsp:useBean id="label" scope="request" class="ua.edu.sumdu.lab3.model.Label" />
 <jsp:useBean id="labels" scope="request" class="java.util.LinkedList" />
-<jsp:useBean id="number" scope="request" class="java.lang.Integer" />
+<jsp:useBean id="number" scope="request" type="java.lang.Integer" />
 
 <html>
     <head>

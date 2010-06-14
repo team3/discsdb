@@ -3,8 +3,8 @@
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
 
 <jsp:useBean id="label" scope="request" class="ua.edu.sumdu.lab3.model.Label" />
-<jsp:useBean id="children" scope="request" class="ua.edu.sumdu.lab3.javabeans.CollectionBean"/>
-<jsp:useBean id="path" scope="request" class="ua.edu.sumdu.lab3.javabeans.CollectionBean"/>
+<jsp:useBean id="children" scope="request" type="ua.edu.sumdu.lab3.javabeans.CollectionBean"/>
+<jsp:useBean id="path" scope="request" type="ua.edu.sumdu.lab3.javabeans.CollectionBean"/>
 
 <html>
     <head>
@@ -77,7 +77,13 @@
                     <h2>Label does not exist. Mayby deleted?</h2>
                 </c:when>
                 <c:otherwise>
-                    <img src=<c:out value="${label.logo}" /> width="220" height="220" align="left" alt="cover"/>
+                    <img src=<c:out value="${label.logo}" /> 
+						width="220" 
+						height="220" 
+						align="left" 
+						alt="cover" 
+						style = "padding: 5px;"
+					/>
                     <p class = "lname"> 
                         <c:out value="${label.name}" />
                     </p>

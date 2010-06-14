@@ -2,13 +2,15 @@
 * This interface describes all posible operation with albums.
 * @author Andrey Parhomenko
 * @author Sergiy Stetsyun
-* @version 1.0
-* @date 18.05.2010
+* @version 2.0
+* @date 11.06.2010
 */
 
 package ua.edu.sumdu.lab3.dao;
 
 import ua.edu.sumdu.lab3.exceptions.*;
+import ua.edu.sumdu.lab3.ejbModule.label.*;
+import ua.edu.sumdu.lab3.ejbModule.Allocator;
 import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.model.*;
 import java.util.Date;
@@ -17,7 +19,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.*;
 import javax.sql.*;
-import javax.naming.*;
+import javax.ejb.FinderException;
+import javax.ejb.CreateException;
+import javax.ejb.EJBException;
+import javax.ejb.RemoveException;
+import java.rmi.RemoteException;
+import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
@@ -100,7 +107,19 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void addLabel(Label label) 
             throws OracleDataAccessObjectException {
-        labelsOperator.addLabel(label);
+		try {
+			LabelHome labelHome = Allocator.getLabelHomeItf();
+			labelHome.create(
+				label.getMajor(), label.getName(), label.getInfo(),
+				label.getLogo(), label.getMajorName()
+			);
+		} catch (CreateException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
     }
 
     /**
@@ -134,8 +153,28 @@ public class OracleDAO implements OperableDAO {
      */ 
     public Label getLabel(int id) 
             throws OracleDataAccessObjectException {
-        return labelsOperator.getLabel(id);
-    }
+        Label label = null;
+        try {
+			label = new Label();
+			LabelHome labelHome = Allocator.getLabelHomeItf();
+			LabelRemote labelRemote = labelHome.findByPrimaryKey(new Integer(id));
+			
+			label.setId(labelRemote.getId().intValue());
+			label.setName(labelRemote.getName());
+			label.setInfo(labelRemote.getInfo());
+			label.setLogo(labelRemote.getLogo());
+			label.setMajor(labelRemote.getMajor().intValue());
+			label.setMajorName(labelRemote.getMajorName());
+           
+		} catch (FinderException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return label;
+	}
     
     /**
      * Returns the artist by the specified id.
@@ -234,7 +273,15 @@ public class OracleDAO implements OperableDAO {
     */
     public List getLabels() 
             throws OracleDataAccessObjectException {
-        return labelsOperator.getLabels();
+        List labels = null;
+        try {
+			labels = (List)Allocator.getLabelHomeItf().getLabels();
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return labels;
     }
     
     /**
@@ -246,7 +293,16 @@ public class OracleDAO implements OperableDAO {
     */
     public List getMajorLabels(int firstRow, int lastRow)
             throws OracleDataAccessObjectException {
-        return labelsOperator.getMajorLabels(firstRow, lastRow);
+        List labels = null;
+        try {
+			labels = (List)Allocator.getLabelHomeItf().getMajorLabels(
+					firstRow, lastRow);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return labels;
     }
     
     /**
@@ -257,7 +313,15 @@ public class OracleDAO implements OperableDAO {
     */
     public List getChildLabels(int id) 
             throws OracleDataAccessObjectException {
-        return labelsOperator.getChildLabels(id);
+        List labels = null;
+        try {
+			labels = (List)Allocator.getLabelHomeItf().getChildLabels(id);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return labels;
     }
     
     /**
@@ -323,8 +387,34 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void editLabel(Label label) 
             throws OracleDataAccessObjectException {
-        labelsOperator.editLabel(label);
+        editLabel(label.getId(), label.getMajor(), label.getName(), 
+				label.getInfo(), label.getLogo(), label.getMajorName());
     }
+    
+    public void editLabel(
+			int id, int major, String name, 
+			String info, String logo, String majorName) 
+			throws OracleDataAccessObjectException {
+		try {
+			LabelHome labelHome = Allocator.getLabelHomeItf();
+			LabelRemote labelRemote = labelHome.findByPrimaryKey(new Integer(id));
+			UserTransactionManager.transBegin();
+			labelRemote.setId(new Integer(id));
+			labelRemote.setMajor(new Integer(major));
+			labelRemote.setName(name);
+			labelRemote.setInfo(info);
+			labelRemote.setLogo(logo);
+			labelRemote.setMajorName(majorName);
+			
+			UserTransactionManager.transCommit();
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (FinderException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+	}
     
     /**
      * Returns list of the <code>number</code> lastest albums.
@@ -416,7 +506,15 @@ public class OracleDAO implements OperableDAO {
      */
     public int getLabelNumber() 
             throws OracleDataAccessObjectException {
-        return labelsOperator.getLabelNumber();
+        int number = 0;
+        try {
+			number = Allocator.getLabelHomeItf().getLabelNumber();
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return number;
     }
     
     /**
@@ -456,7 +554,13 @@ public class OracleDAO implements OperableDAO {
      */
     public void deleteLabel(int id) 
             throws OracleDataAccessObjectException {
-        labelsOperator.deleteLabel(id);
+        try {
+			Allocator.getLabelHomeItf().remove();
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
     }
 
     /**
@@ -467,6 +571,14 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getLabelPath(int id) 
             throws OracleDataAccessObjectException {
-        return labelsOperator.getLabelPath(id);
+        List labels = null;
+        try {
+			labels = (List)Allocator.getLabelHomeItf().getLabelPath(id);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return labels;
     }       
 }
