@@ -221,12 +221,8 @@ public class LabelsOperator extends MainOperator {
             
             statement = connection.prepareStatement(DELETE_LABEL);
             statement.setInt(1, id);
-            UserTransactionManager.transBegin();
             statement.executeUpdate();
-            UserTransactionManager.transCommit();
-        
         } catch (SQLException e) {
-            UserTransactionManager.transRollback();
             throw new OracleDataAccessObjectException(e);
         } finally {
              closeConnection();

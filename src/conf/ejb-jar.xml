@@ -13,6 +13,17 @@
       <reentrant>false</reentrant>
    </entity>    
    
+   <entity>
+      <display-name>AlbumBean</display-name>
+      <ejb-name>Album</ejb-name>
+      <home>ua.edu.sumdu.lab3.ejbModule.album.AlbumHome</home>
+      <remote>ua.edu.sumdu.lab3.ejbModule.album.AlbumRemote</remote>
+      <ejb-class>ua.edu.sumdu.lab3.ejbModule.album.AlbumBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>false</reentrant>
+   </entity>  
+   
 </enterprise-beans>
 
 </ejb-jar>

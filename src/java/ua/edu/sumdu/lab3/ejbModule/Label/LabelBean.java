@@ -34,7 +34,6 @@ public class LabelBean implements EntityBean {
 			id = labelsOperator.addLabel(
 				major, name, info, logo, majorName
 			);
-			System.out.println("NEW ID = " + id);
 			this.id = id;
 			this.major = major;
 			this.name = name;
@@ -43,7 +42,7 @@ public class LabelBean implements EntityBean {
 			this.majorName = majorName;
 			
 		} catch (OracleDataAccessObjectException e){
-			throw new CreateException();
+			throw new CreateException(e.getMessage());
 		}
 		return new Integer(id);
 	}
@@ -201,8 +200,7 @@ public class LabelBean implements EntityBean {
 				labelsOperator.editLabel(
 						this.id, this.major, this.name, this.info,
 						this.logo, this.majorName);
-				System.out.println(this.name);
-				System.out.println(this.major);
+
 				this.needToStore = false;
 			} catch (OracleDataAccessObjectException e){
 				throw new EJBException(e.getMessage());

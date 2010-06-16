@@ -76,6 +76,7 @@
 		<copy todir = "${dir_jar_classes}">
 			<fileset dir = "${dir_classes}" >
 				<include name = "ua/edu/sumdu/lab3/ejbModule/label/*.*" />
+				<include name = "ua/edu/sumdu/lab3/ejbModule/album/*.*" />
 				<include name = "ua/edu/sumdu/lab3/exceptions/*.class" />
 				<include name = "ua/edu/sumdu/lab3/model/Label.class" />
 				<include name = "ua/edu/sumdu/lab3/model/Artist.class" />

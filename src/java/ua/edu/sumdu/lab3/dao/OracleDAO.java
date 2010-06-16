@@ -10,6 +10,7 @@ package ua.edu.sumdu.lab3.dao;
 
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.ejbModule.label.*;
+import ua.edu.sumdu.lab3.ejbModule.album.*;
 import ua.edu.sumdu.lab3.ejbModule.Allocator;
 import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.model.*;
@@ -97,7 +98,19 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void addAlbum(Album album) 
             throws OracleDataAccessObjectException {
-        albumsOperator.addAlbum(album);
+        try {
+			AlbumHome albumHome = Allocator.getAlbumHomeItf();
+			albumHome.create(album.getName(), album.getType(), album.getRelease(),
+					album.getGenre(), album.getCover(), album.getArtistName(),
+					album.getLabelName(), album.getReview(), 
+					new Integer(album.getArtist()), new Integer(album.getLabel()));
+		} catch (CreateException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
     }
 
     /**
@@ -114,11 +127,11 @@ public class OracleDAO implements OperableDAO {
 				label.getLogo(), label.getMajorName()
 			);
 		} catch (CreateException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		}
     }
 
@@ -141,7 +154,31 @@ public class OracleDAO implements OperableDAO {
      */ 
     public Album getAlbum(int id) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbum(id);
+        Album album = null;
+        try {
+			album = new Album();
+			AlbumHome albumHome = Allocator.getAlbumHomeItf();
+			AlbumRemote albumRemote = albumHome.findByPrimaryKey(new Integer(id));
+			
+			album.setId(albumRemote.getId());
+			album.setName(albumRemote.getName());
+			album.setType(albumRemote.getType());
+			album.setRelease(albumRemote.getRelease());
+			album.setGenre(albumRemote.getGenre());
+			album.setCover(albumRemote.getCover());
+			album.setArtist(albumRemote.getArtist());
+			album.setArtistName(albumRemote.getArtistName());
+			album.setLabelName(albumRemote.getLabelName());
+			album.setReview(albumRemote.getReview());
+           
+		} catch (FinderException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return album;
     }
     
     /**
@@ -365,7 +402,7 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void editAlbum(Album album) 
             throws OracleDataAccessObjectException {
-        albumsOperator.editAlbum(album);
+       
     }
     
     /**
@@ -534,7 +571,20 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void deleteAlbum(int id) 
             throws OracleDataAccessObjectException {
-        albumsOperator.deleteAlbum(id);
+        try {
+			AlbumHome albumHome = Allocator.getAlbumHomeItf();
+			AlbumRemote remote = albumHome.findByPrimaryKey(new Integer(id));
+			remote.remove();
+		} catch (FinderException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoveException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+
     }
     
     /**
@@ -555,11 +605,17 @@ public class OracleDAO implements OperableDAO {
     public void deleteLabel(int id) 
             throws OracleDataAccessObjectException {
         try {
-			Allocator.getLabelHomeItf().remove();
+			LabelHome labelHome = Allocator.getLabelHomeItf();
+			LabelRemote remote = labelHome.findByPrimaryKey(new Integer(id));
+			remote.remove();
+		} catch (FinderException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoveException e){
+			throw new OracleDataAccessObjectException(e);
 		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		}
     }
 
