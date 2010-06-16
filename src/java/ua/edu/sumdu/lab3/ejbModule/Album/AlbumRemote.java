@@ -28,7 +28,7 @@ public interface AlbumRemote extends EJBObject {
 
     public String getReview() throws RemoteException;
     
-    public void setId(int id) throws RemoteException;
+    public void setId(Integer id) throws RemoteException;
 
     public void setName(String name) throws RemoteException;
 
@@ -40,9 +40,9 @@ public interface AlbumRemote extends EJBObject {
 
     public void setCover(String cover)  throws RemoteException;
 
-    public void setArtist(int artist) throws RemoteException;
+    public void setArtist(Integer artist) throws RemoteException;
 
-    public void setLabel(int label)  throws RemoteException;
+    public void setLabel(Integer label)  throws RemoteException;
 
     public void setArtistName(String artistName)  throws RemoteException;
 

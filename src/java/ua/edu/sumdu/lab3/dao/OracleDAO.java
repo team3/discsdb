@@ -390,20 +390,54 @@ public class OracleDAO implements OperableDAO {
     
     public List findAlbums(Map params, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.findAlbums(params, firstRow, lastRow);
+        //return albumsOperator.findAlbums(params, firstRow, lastRow);
+        List albums = null;
+        try {
+			albums =  (List)Allocator.getAlbumHomeItf().searchAlbums(params,
+				new Integer(firstRow), new Integer(lastRow));
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		
+        return albums;
     }
+   
+   /**
+    * 
+    * 
+    */ 
+   public void editAlbum(int id, String name, String type, Date release,
+			String genre, String cover, String artistName, 
+			String labelName, String review, int artist, int label) 
+			throws OracleDataAccessObjectException {
+		try {
+		
+			AlbumHome albumHome = Allocator.getAlbumHomeItf();
+			AlbumRemote albumRemote = albumHome.findByPrimaryKey(new Integer(id));
+			System.out.println("DAO id = " + id);
+			albumRemote.setId(new Integer(id));
+			albumRemote.setName(name);
+			albumRemote.setType(type);
+			albumRemote.setRelease(release);
+			albumRemote.setGenre(genre);
+			albumRemote.setCover(cover);
+			albumRemote.setArtist(new Integer(artist));
+			albumRemote.setLabel(new Integer(label));
+			albumRemote.setArtistName(artistName);
+			albumRemote.setLabelName(labelName);
+			albumRemote.setReview(review);
+
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (FinderException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+	}
     
-    
-    /**
-     * Edits specified album. Replaces found (by id) album by specified.
-     * 
-     * @param album to edit/change.
-     * @throws OracleDataAccessObjectException if problems while editting data.
-     */ 
-    public void editAlbum(Album album) 
-            throws OracleDataAccessObjectException {
-       
-    }
     
     /**
      * Edits specified artist. Replaces found (by id) label by specified.
@@ -435,15 +469,12 @@ public class OracleDAO implements OperableDAO {
 		try {
 			LabelHome labelHome = Allocator.getLabelHomeItf();
 			LabelRemote labelRemote = labelHome.findByPrimaryKey(new Integer(id));
-			UserTransactionManager.transBegin();
 			labelRemote.setId(new Integer(id));
 			labelRemote.setMajor(new Integer(major));
 			labelRemote.setName(name);
 			labelRemote.setInfo(info);
 			labelRemote.setLogo(logo);
 			labelRemote.setMajorName(majorName);
-			
-			UserTransactionManager.transCommit();
 		} catch (RemoteException e){
 			throw new OracleDataAccessObjectException(e.getMessage());
 		} catch (NamingException e){
@@ -513,7 +544,16 @@ public class OracleDAO implements OperableDAO {
      */
     public int getAlbumNumber() 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbumNumber();
+        //return albumsOperator.getAlbumNumber();
+        int number = 0;
+        try {
+			number = Allocator.getAlbumHomeItf().getAlbumNumber().intValue();
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return number;
     }
     
     /**

@@ -15,6 +15,12 @@ public interface AlbumHome extends EJBHome {
 	public AlbumRemote findByPrimaryKey(Integer id) 
 			throws FinderException, RemoteException;
 	
-	
+	public Collection searchAlbums(Map params, Integer firstRow, 
+			Integer lastRow) throws EJBException, RemoteException;
 
+	public Integer getAlbumNumber() 
+			throws EJBException, RemoteException;
+			
+	public Integer getAlbumNumber(Date date)
+			throws EJBException, RemoteException;
 }

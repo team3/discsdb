@@ -203,7 +203,10 @@ public interface OperableDAO {
      * @param album to edit/change.
      * @throws OracleDataAccessObjectException if problems while editting data.
      */ 
-    public void editAlbum(Album album) throws OracleDataAccessObjectException;
+    public void editAlbum(int id, String name, String type, Date release,
+			String genre, String cover, String artistName, 
+			String labelName, String review, int artist, int label) 
+			throws OracleDataAccessObjectException;
     
     /**
      * Edits specified artist. Replaces found (by id) label by specified.

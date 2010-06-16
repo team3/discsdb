@@ -491,7 +491,7 @@ public class Linker extends HttpServlet {
                 DataValidator.isValidName(labelName);
                 int artist = Integer.parseInt(request.getParameter("aid"));
                 int label = Integer.parseInt(request.getParameter("lid"));
-                
+                /*
                 Album album = new Album();
                 album.setId(id);
                 album.setName(name);
@@ -504,8 +504,10 @@ public class Linker extends HttpServlet {
                 album.setLabelName(labelName);
                 album.setArtist(artist);
                 album.setLabel(label);
-                
-                dao.editAlbum(album);
+                */
+                dao.editAlbum(id, name, type, release,
+					genre, cover, artistName, 
+					labelName, review, artist, label);
                 
                 response.sendRedirect("album?id=" + id);
             }

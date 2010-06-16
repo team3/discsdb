@@ -195,12 +195,11 @@ public class LabelBean implements EntityBean {
 		
 		if (this.needToStore) {
 			System.out.println("STORING");
-			Label label = null;
 			try {
 				labelsOperator.editLabel(
 						this.id, this.major, this.name, this.info,
 						this.logo, this.majorName);
-
+				
 				this.needToStore = false;
 			} catch (OracleDataAccessObjectException e){
 				throw new EJBException(e.getMessage());

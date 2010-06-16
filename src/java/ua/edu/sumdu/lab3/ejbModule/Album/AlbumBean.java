@@ -164,6 +164,7 @@ public class AlbumBean implements EntityBean {
 		if (!needToStore) return;
 		
 		try {
+			System.out.println("Storing");
 			albumsOperator.editAlbum(this.id, this.name, this.type,
 					this.release, this.genre, this.cover, this.artistName,
 					this.labelName, this.review, this.artist, this.label);
@@ -173,7 +174,30 @@ public class AlbumBean implements EntityBean {
 		}
 	} 
 	
-	private int id = -1;
+	public Collection ejbHomeSearchAlbums(Map params, Integer firstRow,
+			Integer lastRow) throws EJBException {
+		Collection albums = null;
+			
+		try {
+			albums = albumsOperator.findAlbums(params, firstRow.intValue(),
+					lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return albums;
+	}
+	
+	public Integer ejbHomeGetAlbumNumber() throws EJBException {
+		int number = 0;
+		try {
+			number = albumsOperator.getAlbumNumber();
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return new Integer(number);
+	}
+	
+	private int id;
     private String name;
     private String type;
     private Date release;
@@ -229,47 +253,58 @@ public class AlbumBean implements EntityBean {
         return this.review;
     }
     
-    public void setId(int id) {
-        this.id = id;
+    public void setId(Integer id) {
+        this.id = id.intValue();
+        this.needToStore = true;
     }
 
     public void setName(String name) {
         this.name = name;
+        this.needToStore = true;
     }
 
     public void setType(String type) {
         this.type = type;
+        this.needToStore = true;
     }
 
     public void setRelease(Date release) {
         this.release = release;
+        this.needToStore = true;
     }
 
     public void setGenre(String genre) {
         this.genre = genre;
+        this.needToStore = true;
     }
 
     public void setCover(String cover) {
         this.cover = cover;
+        this.needToStore = true;
     }
 
-    public void setArtist(int artist) {
-        this.artist = artist;
+    public void setArtist(Integer artist) {
+        this.artist = artist.intValue();
+        this.needToStore = true;
     }
 
-    public void setLabel(int label) {
-        this.label = label;
+    public void setLabel(Integer label) {
+        this.label = label.intValue();
+        this.needToStore = true;
     }
 
     public void setArtistName(String artistName) {
         this.artistName = artistName;
+        this.needToStore = true;
     }
 
     public void setLabelName(String labelName) {
         this.labelName = labelName;
+        this.needToStore = true;
     }
     
     public void setReview(String review) {
         this.review = review;
+        this.needToStore = true;
     }
 }

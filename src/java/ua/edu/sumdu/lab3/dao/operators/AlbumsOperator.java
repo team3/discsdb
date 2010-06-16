@@ -427,7 +427,20 @@ public class AlbumsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
         try {
             Album alb = getAlbum(id);
-
+            
+			System.out.println(id);
+            System.out.println(name);
+            System.out.println(cover);
+            System.out.println(type);
+            System.out.println(release);
+            System.out.println(genre);
+            System.out.println(cover);
+            System.out.println(artistName);
+            System.out.println(labelName);
+            System.out.println(review);
+            System.out.println(artist);
+            System.out.println(label);
+            
             getConnection();
 
             if (alb == null) {
@@ -446,27 +459,16 @@ public class AlbumsOperator extends MainOperator {
             statement.setString(6, cover);
             statement.setInt(7, artist);
             statement.setString(8, review);
+            
             statement.setInt(9, label);
             statement.setInt(10, id);
-            
-            connection.setAutoCommit(false);
             statement.executeUpdate();
-            connection.commit();
+			System.out.println("Operator: eddited");
 
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new OracleDataAccessObjectException(exc);
-            }
             throw new OracleDataAccessObjectException(e);
         } finally {
-            try {
-                connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            }
+			closeConnection();
         }
     }
 
