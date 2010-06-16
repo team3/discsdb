@@ -233,7 +233,20 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getAlbums(String genre, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbums(genre, firstRow, lastRow);
+        //return albumsOperator.getAlbums(genre, firstRow, lastRow);
+        List albums = null;
+        try {
+			albums = (List)Allocator.getAlbumHomeItf().findByGenre(
+					genre, new Integer(firstRow), 
+					new Integer(lastRow));
+		} catch (FinderException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return albums;
     }
 
     /**
@@ -563,7 +576,17 @@ public class OracleDAO implements OperableDAO {
      */
     public int getAlbumNumber(Date date) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbumNumber(date);
+        //return albumsOperator.getAlbumNumber(date);
+        int number = 0;
+        try {
+			number = Allocator.getAlbumHomeItf().getAlbumNumber(
+					date).intValue();
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return number;
     }
     
     /**
@@ -573,7 +596,17 @@ public class OracleDAO implements OperableDAO {
      */
     public int getAlbumNumber(String genre) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbumNumber(genre);
+        //return albumsOperator.getAlbumNumber(genre);
+        int number = 0;
+        try {
+			number = Allocator.getAlbumHomeItf().getAlbumNumber(
+					genre).intValue();
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e.getMessage());
+		}
+		return number;
     }
     
     /**
@@ -587,9 +620,9 @@ public class OracleDAO implements OperableDAO {
         try {
 			number = Allocator.getLabelHomeItf().getLabelNumber();
 		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		}
 		return number;
     }
@@ -601,7 +634,16 @@ public class OracleDAO implements OperableDAO {
      */ 
     public Album getRandomAlbum() 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getRandomAlbum();
+        //return albumsOperator.getRandomAlbum();
+        Album album = null;
+        try {
+			album = Allocator.getAlbumHomeItf().getRandom();
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return album;
     }
     
     /**

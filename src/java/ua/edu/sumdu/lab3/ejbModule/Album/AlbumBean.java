@@ -197,6 +197,49 @@ public class AlbumBean implements EntityBean {
 		return new Integer(number);
 	}
 	
+	public Integer ejbHomeGetAlbumNumber(Date date) throws EJBException {
+		int number = 0;
+		try {
+			number = albumsOperator.getAlbumNumber(date);
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return new Integer(number);
+	}
+	
+	public Integer ejbHomeGetAlbumNumber(String genre) throws EJBException {
+		int number = 0;
+		try {
+			number = albumsOperator.getAlbumNumber(genre);
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return new Integer(number);
+	}
+	
+	public Album ejbHomeGetRandom() throws EJBException {
+		Album album = null;
+		try {
+			album = albumsOperator.getRandomAlbum();
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return album;	
+	}
+	
+	public Collection ejbFindByGenre(String genre, Integer firstRow, 
+			Integer lastRow)
+			throws FinderException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.getAlbums(genre, firstRow.intValue(),
+					lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return albums;
+	}
+	
 	private int id;
     private String name;
     private String type;
