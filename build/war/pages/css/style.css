@@ -1,0 +1,413 @@
+html, body {
+    margin:0px; 
+    padding:0px; 
+}
+
+.allpage {
+    min-height:100%;
+    height: 100%;
+    height: auto;
+    padding-bottom:50px;
+}
+
+.header {
+    position:relative;
+    min-height:150px;
+    width:100%;
+    display:table;
+    padding-bottom:4%;
+}
+
+.footer {
+    position:relative;
+    height: 50px;
+    margin-top: -50px;
+    clear:both;
+    padding-left:48%;
+    padding-right:48%;
+}
+
+.footer span {
+    position:absolute;
+    bottom: 4px;
+}
+
+.logotext {
+    color:#000000;
+    font-size: 43px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    position:relative;
+    float:left;
+}
+
+.logopic {
+    position:relative;
+    float:left;
+    padding-right:4%;
+    padding-left:2%;
+    padding-bottom:10%;
+}
+
+.menu {
+    font-size: 22px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    position:relative;
+    vertical-align:bottom;
+    letter-spacing:-1px;
+    display:table-cell;
+    text-align: left;
+    padding-right:1%;
+    padding-left:1%;
+}
+
+div.menu a:link { 
+    color: #CDB7B5;
+    text-decoration:underline; 
+}
+
+div.menu a:visited { 
+    color: #CDB7B5;
+}
+
+div.menu a:hover { 
+    color: #CD2626;
+    text-decoration:none;
+}
+
+div.menu span {
+    color: #CD2626;
+}
+
+a:link {
+    color:#8B7D7B;
+}
+
+a:visited {
+    color:#8B7D7B;
+}
+
+#date {
+    font-size: 26px;
+}
+
+.maincont {
+    color:#2F4F4F;
+    font-size: 13px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    height: auto;
+    min-height:230px;
+    border: 1px dashed lightgray;
+    margin-left: 12%;
+    margin-right: 12%;
+    padding: 1% 2% 1% 2%;
+    background-color:#F5F5F5;
+}
+
+.maincont p {
+    margin-right: 7px;
+}
+
+div.smallalbum a:hover {
+    color: black;
+}
+
+.latest {
+    margin-top:3%;
+    color:#2F4F4F;
+    font-size: 12px;
+    font-family: eneva, Arial, Helvetica, sans-serif;
+    border: 1px dashed lightgray;
+    height: 160px;
+    background-color:#F5F5F5;
+    margin-left: 12%;
+    margin-right: 12%;
+    text-align: left;
+}
+
+div.smallalbum {
+    position:relative;
+    float:left;
+    width: 20%;
+    text-align: center;
+    height:100%;
+}
+
+div.smallalbum:hover {
+    background-color: #E8E8E8;
+}
+
+#main {
+    width: 90%;
+    margin: 30px auto;
+    height: 400px;
+}
+
+#addalbum_main, #search_main, #addartist_main, #addlabel_main, #editlabel_main, #editartist_main, #editalbum_main {
+    width: 39%;
+    margin: 30px auto;
+    background-color: #F5F5F5;
+    border: 1px dashed lightgray;
+    min-width: 460px;
+}
+
+#logo {
+    text-align:left;
+    width: 120px;
+    height: auto;
+    
+}
+
+#left {
+    float:left;
+    width: 40%;
+    height: 100%;
+    text-align: right;
+}
+
+#right {
+    float:right;
+    width: 40%;
+    height: 100%;
+    text-align: left;
+}
+
+#genres {
+    width: 100%;
+    clear: both;
+    border: 1px solid black;
+    font-size: 36px;
+    color: green;
+    text-align: center;
+}
+
+p.title, p.lname{
+    font-family: Helvetica, sans-serif;
+    font-size: 48px;
+}
+
+p.item {
+    font-family: Helvetica, sans-serif;
+    font-size: 36px;
+    color: blue;
+}
+
+
+div#album {
+    border: 1px solid black;
+    width: 350px;
+    height: 400px;
+    margin-left: 15px;
+    margin-top: 15px;
+    padding: 5px 5px;
+}
+
+div#form {
+    width: 90%;
+    text-align: left;
+    font-family: Helvetica, sans-serif;
+    font-size: 22px;
+    color: gray;
+    padding:20px;
+}
+
+div#form sup{
+    font-size:26px;
+}
+form input[type="text"],select{
+    background-color: rgb(255, 255, 255);
+    padding-left: 18px;
+    width: 400px;
+    height: 30px;
+    border: 1px solid #e0e0e0;
+    font-family: Helvetica, sans-serif;
+    font-size: 18px;
+    color: #2F4F4F;
+}
+
+div.menu select{
+    padding-left: 0px;
+    width: 80px;
+    height: auto;
+    border: 1px solid #e0e0e0;
+    font-family: Helvetica, sans-serif;
+    font-size: 20px;
+    color: #CDB7B5;
+}
+
+form textarea{
+    background-color: rgb(255, 255, 255);
+    width: 400px;
+    height: 100px;
+    border: 1px solid #e0e0e0;
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+form input[type="submit"]{
+    background-color: #e0e0e0;
+    width: 100px;
+    height: 38px;
+    border: 1px solid lightgray;
+    font-family: Helvetica, sans-serif;
+    font-size: 24px;
+    color:gray;
+}
+
+span#exception {
+    color:#CD2626;
+    font-size: 24px;
+}
+
+label.error {
+    color: red;
+    font-style: italic;
+}
+
+input.error {
+    border: 1px dotted #f00;
+}
+
+div#album_full {
+    border: 1px solid black;
+    width: 600px;
+    heigth: auto;
+    margin-left: 15px;
+    margin-top: 15px;
+    padding: 5px 5px;
+}
+
+p#menu {
+    font-family: Helvetica, sans-serif;
+    font-size: 24px;
+    color: green;
+    padding: 5px 5px;
+}
+p.a_info {
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    color: green;
+    text-align: right;
+}
+
+p.a_info_review {
+    font-family: Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+div.artistfields {
+    height: auto;
+    width: 100%;
+    font-size: 18px;
+}
+
+div.labelfields {
+    height: auto;
+    width: 100%;
+    font-size: 18px;
+}
+
+p.selector {
+    font-family: Helvetica, sans-serif;
+    color: gray;
+}
+
+div.acceptmessage {
+    color: green;
+    font-size: 24px;
+    height: auto;
+}
+
+div.denymessage {
+    color: red;
+    font-size: 24px;
+    height: auto;
+}
+
+div.error {
+    margin: 150px auto;
+    width: 500px;
+    height: auto;
+    border: 2px solid red;
+}
+
+table {
+    font-size: 12px;
+    width: 100%;
+    border-collapse:collapse;
+}
+
+td {
+    border-style:solid;
+    border-width:2px;
+    border-color:#F5F5F5;
+    padding:5px;
+}
+
+div#selectlabel{
+    margin-top: 10px;
+    width: 100%;
+    background-color: green;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+    clear: both;
+}
+
+.pages {
+    color:#2F4F4F;
+    font-family: Helvetica;
+    font-size: 20px;
+    margin-top:1%;
+    margin-bottom: 3%;
+    margin-left: 12%;
+    
+}
+
+.unchoosed {
+    position:relative;
+    float:left;
+    margin-left: 6px;
+    margin-right:6px;
+
+}
+
+.choosed {
+    font-size: 22px;
+    color: #CD2626;
+    display:block; 
+    position:relative;
+    float:left;
+    margin-left: 6px;
+    margin-right:6px;
+    -webkit-transform: rotate(-90deg); 
+    -moz-transform: rotate(-90deg)
+}
+
+.yap {
+    position:relative;
+    float:left;
+    color: #E8E8E8;
+}
+
+tr {
+    background-color:#E8E8E8;
+}
+
+tr.overed:hover {
+    background-color: #DCDCDC;
+}
+
+p.edit_link {
+    padding-left: 20px;
+    font-size: 14px;
+}
+
+p.edit_link a:hover {
+    color: black;
+}
+
+p.edit_link:hover {
+    background-image: url('../images/edit.png'); 
+    background-position: left bottom; 
+    background-repeat: no-repeat; 
+}

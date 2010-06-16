@@ -1,0 +1,156 @@
+<%@ page import="java.util.*" %>
+<%@ page import="ua.edu.sumdu.lab3.model.*" %>
+<%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
+
+<jsp:useBean id="artist" scope="request" class="ua.edu.sumdu.lab3.model.Artist" />
+<jsp:useBean id="artists" scope="request" class="java.util.LinkedList" />
+<jsp:useBean id="number" scope="request" type="java.lang.Integer" />
+
+<html>
+    <head>
+        <title>ST | Artists</title>
+        <c:set var="stylepath" value="/pages/css/style.css" />
+        <c:set var="removepath" value="/remove?obj=artist&id="/>
+        <c:set var="artpath" value="/artist?id=" />
+        <c:set var="countrypath" value="/artist/all?country=" />
+        <c:set var="truepath" value="${pageContext.request.contextPath}${stylepath} "/>
+        <link rel="stylesheet" href=<c:out value="${truepath}" /> type="text/css" />
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery-latest.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.delegate.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.validate.js" type="text/javascript"></script>
+        <script src = "<c:out value="${pageContext.request.contextPath}" />/pages/js/jquery.field.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            function add (data, id){
+                window.opener.document.forms[0].selectedartistname.value = data.trim();
+                window.opener.document.forms[0].aid.value = id;
+                window.close();
+            }
+        </script>
+    </head>
+<body>    
+    <div class="allpage">
+        <c:if test="${empty param.select}">
+            <%@include file="menu.jsp" %>
+        </c:if>
+        <div class="maincont">
+            <h2>Artists</h2>
+            <table>
+            <tr>
+                <td>Artist name</td>
+                <td>Country</td>
+                <c:choose>
+                    <c:when test="${empty param.select}">
+                        <td></td>
+                        <td></td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>
+                            Select
+                        </td>
+                    </c:otherwise>
+                </c:choose>
+
+            </tr>
+            <c:set var="truepath" value="${pageContext.request.contextPath}${removepath}"/>
+            <c:forEach var="art" begin="0" items="${artists}">
+                <tr class = "overed">
+                    <c:choose>
+                        <c:when test="${empty param.select}">
+                            <td>
+                                <a href =<c:out value="${pageContext.request.contextPath}${artpath}${art.id}"/> ><c:out value="${art.name}" /></a>
+                            </td>
+                            <td>
+                                <a href =<c:out value="${pageContext.request.contextPath}${countrypath}${art.country}"/> ><c:out value="${art.country}" /></a>
+                            </td>
+                            <td>
+                                <a href =<c:out value="${pageContext.request.contextPath}${edit_artist}${art.id}" /> > Edit</a>
+                            </td>
+                            <c:choose>
+                                <c:when test="${param.page != null}">
+                                    <td><a href =<c:out value="${truepath}"/><c:out value="${art.id}"/>&page=<c:out value="${param.page}"/> >Remove</a></td>
+                                </c:when>
+                                <c:otherwise>
+                                    <td><a href =<c:out value="${truepath}"/><c:out value="${art.id}"/> >Remove</a></td>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                                <c:out value="${art.name}" />
+                            </td>
+                            <td>
+                                <c:out value="${art.country}" />
+                            </td>
+                            
+                        </c:otherwise>
+                    </c:choose>
+                        
+                    
+                    <c:if test="${not empty param.select}">
+                        <td>
+                            <input 
+                                type = "button" 
+                                name = "selectthis" 
+                                id = "selectthis"
+                                value = "select"
+                                onclick = "add('<c:out value="${art.name}" />', <c:out value="${art.id}" />)"
+                            />
+                        </td>
+                    </c:if>
+                </tr>
+            </c:forEach>
+            </table>
+    </div>
+    
+    <c:set var="pagepath" value="/artist/all" />
+    <c:set var="pagefirst" value="?page=" />
+    <c:set var="pagelast" value="&page=" />
+    <c:set var="countrypath" value="?country=" />
+    <c:set var="select" value="&select=true"/>
+        <c:if test="${number > 1}">
+            <div class = "pages">
+            <span class="yap">[</span>
+            <c:forEach var = "i" begin = "1" end="${number}" >
+                <c:choose>
+                    <c:when test="${i == param.page || (i == 1 && param.page == null)}">
+                        <span class="choosed"><c:out value="${i}" /></span>
+                        <c:if test = "${i != number}">
+                            <span class = "yap"> | </span>
+                        </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        <c:if test="${param.country == null}">
+                            <c:set var="truepath" value="${pageContext.request.contextPath}${pagepath}${pagefirst}"/>
+                        </c:if>
+                        <c:if test="${param.country != null}">
+                            <c:set var="truepath" value="${pageContext.request.contextPath}${pagepath}${countrypath}${param.country}${pagelast}"/>
+                        </c:if>
+                        <c:choose>
+                            <c:when test = "${param.select == true}">
+                                <span class = "unchoosed"><a href =<c:out value="${truepath}" /><c:out value="${i}" /><c:out value ="${select}" /> ><c:out value="${i}" /></a></span>
+                                <c:if test = "${i != number}">
+                                    <span class = "yap"> | </span>
+                                </c:if>
+                            </c:when>
+                            <c:otherwise>
+                                <span class = "unchoosed"><a href =<c:out value="${truepath}" /><c:out value="${i}" /> ><c:out value="${i}" /></a></span>
+                                <c:if test = "${i != number}">
+                                    <span class = "yap"> | </span>
+                                </c:if>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <span class="yap">]</span>
+            </div>
+        </c:if>
+    </div>
+    <c:if test="${empty param.select}">
+        <c:set var = "team3" value = "/pages/images/team3_logo.png" />
+        <div class = "footer">
+            <span><img border = "0" src = <c:out value="${pageContext.request.contextPath}${team3}" /> alt= "logo" /><span>
+        </div>
+    </c:if>
+</body>
+</html>
