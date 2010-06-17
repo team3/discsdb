@@ -54,4 +54,13 @@ public interface AlbumHome extends EJBHome {
 	public Collection getAll(Integer firstRow,
 			Integer lastRow)
 			throws EJBException, RemoteException;
+
+	public Collection getGenresByArtist(Integer aid) 
+			throws EJBException, RemoteException;
+	
+	public Collection getGenresByLabel(Integer lid) 
+			throws EJBException, RemoteException;
+	
+	public Collection getDates() 
+			throws EJBException, RemoteException;
 }

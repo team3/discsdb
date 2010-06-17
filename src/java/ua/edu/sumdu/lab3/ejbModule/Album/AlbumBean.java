@@ -308,6 +308,39 @@ public class AlbumBean implements EntityBean {
 		return albums;
 	}
 	
+	public Collection ejbHomeGetGenresByArtist(Integer aid)
+			throws EJBException {
+		Collection genres = null;
+		try {
+			genres = albumsOperator.getGenresByArtist(aid.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return genres;
+	}
+	
+	public Collection ejbHomeGetGenresByLabel(Integer lid)
+			throws EJBException {
+		Collection genres = null;
+		try {
+			genres = albumsOperator.getGenresByLabel(lid.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return genres;
+	}
+	
+	public Collection ejbHomeGetDates()
+			throws EJBException {
+		Collection dates = null;
+		try {
+			dates = albumsOperator.getDates();
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return dates;
+	}
+	
 	private int id;
     private String name;
     private String type;

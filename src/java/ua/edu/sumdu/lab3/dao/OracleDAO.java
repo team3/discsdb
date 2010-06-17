@@ -67,7 +67,19 @@ public class OracleDAO implements OperableDAO {
     */
     public List getGenres(Artist artist) 
             throws OracleDataAccessObjectException {
-       return mainOperator.getGenres(artist);
+		//return albumsOperator.getGenresByArtist(artist);
+		List genres = null;
+		try {
+			genres = (List)Allocator.getAlbumHomeItf().getGenresByArtist(
+					new Integer(artist.getId()));
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return genres;
     }
 
     /**
@@ -78,7 +90,19 @@ public class OracleDAO implements OperableDAO {
     */
     public List getGenres(Label label) 
             throws OracleDataAccessObjectException {
-        return mainOperator.getGenres(label);
+        //return albumsOperator.getGenresByLabel(label);
+        List genres = null;
+		try {
+			genres = (List)Allocator.getAlbumHomeItf().getGenresByLabel(
+					new Integer(label.getId()));
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return genres;
     }
 
     /**
@@ -88,7 +112,18 @@ public class OracleDAO implements OperableDAO {
     */
     public List getDates() 
             throws OracleDataAccessObjectException {
-        return mainOperator.getDates();
+        //return albumsOperator.getDates();
+        List dates = null;
+		try {
+			dates = (List)Allocator.getAlbumHomeItf().getDates();
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return dates;
     }
 
     /**
