@@ -227,12 +227,80 @@ public class AlbumBean implements EntityBean {
 		return album;	
 	}
 	
-	public Collection ejbFindByGenre(String genre, Integer firstRow, 
+	public Collection ejbHomeGetByGenre(String genre, Integer firstRow, 
 			Integer lastRow)
-			throws FinderException {
+			throws EJBException {
 		Collection albums = null;
 		try {
 			albums = albumsOperator.getAlbums(genre, firstRow.intValue(),
+					lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return albums;
+	}
+	
+	public Collection ejbHomeGetByName(String name, Integer firstRow,
+			Integer lastRow)
+			throws EJBException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.getAlbums(name, firstRow.intValue(),
+					lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return albums;
+	}
+	
+	public Collection ejbHomeGetByDate(Date date, Integer firstRow,
+			Integer lastRow)
+			throws EJBException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.getAlbums(date, firstRow.intValue(),
+					lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return albums;
+	}
+	
+	public Collection ejbHomeGetByArtist(Integer aid, Integer firstRow,
+			Integer lastRow)
+			throws EJBException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.getAlbumsByArtist(
+					aid.intValue(), 
+					firstRow.intValue(),
+					lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return albums;
+	}
+	
+	public Collection ejbHomeGetByLabel(Integer lid, Integer firstRow,
+			Integer lastRow)
+			throws EJBException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.getAlbumsByLabel(
+					lid.intValue(), 
+					firstRow.intValue(),
+					lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new EJBException(e.getMessage());
+		}
+		return albums;
+	}
+	
+	public Collection ejbHomeGetAll(Integer firstRow, Integer lastRow)
+			throws EJBException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.getAlbums(firstRow.intValue(),
 					lastRow.intValue());
 		} catch (OracleDataAccessObjectException e){
 			throw new EJBException(e.getMessage());

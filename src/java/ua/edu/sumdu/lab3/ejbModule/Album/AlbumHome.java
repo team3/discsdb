@@ -31,7 +31,27 @@ public interface AlbumHome extends EJBHome {
 	public Album getRandom() 
 			throws EJBException, RemoteException;
 			
-	public Collection findByGenre(String genre, Integer firstRow, 
+	public Collection getByGenre(String genre, Integer firstRow, 
 			Integer lastRow)
-			throws FinderException, RemoteException;
+			throws EJBException, RemoteException;
+			
+	public Collection getByName(String name, Integer firstRow, 
+			Integer lastRow)
+			throws EJBException, RemoteException;
+	
+	public Collection getByDate(Date date, Integer firstRow, 
+			Integer lastRow)
+			throws EJBException, RemoteException;
+			
+	public Collection getByArtist(Integer aid, Integer firstRow, 
+			Integer lastRow)
+			throws EJBException, RemoteException;
+	
+	public Collection getByLabel(Integer lid, Integer firstRow, 
+			Integer lastRow)
+			throws EJBException, RemoteException;
+			
+	public Collection getAll(Integer firstRow,
+			Integer lastRow)
+			throws EJBException, RemoteException;
 }

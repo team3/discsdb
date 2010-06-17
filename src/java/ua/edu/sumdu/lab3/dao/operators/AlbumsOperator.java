@@ -179,8 +179,9 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                currAlbum = fillAlbumBean(set,FULL_MODE);
-                albums.add(currAlbum);
+                //currAlbum = fillAlbumBean(set, FULL_MODE);
+                //albums.add(currAlbum);
+                albums.add(new Integer(set.getInt(1)));
             }
             set.close();
         } catch (SQLException e){
@@ -214,8 +215,9 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                currAlbum = fillAlbumBean(set,FULL_MODE);
-                albums.add(currAlbum);
+                //currAlbum = fillAlbumBean(set,FULL_MODE);
+                //albums.add(currAlbum);
+                albums.add(new Integer(set.getInt(1)));
             }
             set.close();
         } catch (SQLException e){
@@ -252,8 +254,9 @@ public class AlbumsOperator extends MainOperator {
             ResultSet set = this.statement.executeQuery();
 
             while(set.next()){
-                currAlbum = fillAlbumBean(set, FULL_MODE);
-                albums.add(currAlbum);
+                //currAlbum = fillAlbumBean(set, FULL_MODE);
+                //albums.add(currAlbum);
+                albums.add(new Integer(set.getInt(1)));
             }
             set.close();
         } catch (SQLException e){
@@ -270,7 +273,7 @@ public class AlbumsOperator extends MainOperator {
      * @return list of albums of the specified artist.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */
-    public List getAlbums(Artist artist, int firstRow, int lastRow)
+    public List getAlbumsByArtist(int aid, int firstRow, int lastRow)
             throws OracleDataAccessObjectException {
         List albums = null;
         try {
@@ -281,9 +284,9 @@ public class AlbumsOperator extends MainOperator {
             statement = connection.prepareStatement(
                     SELECT_ALBUMS_BY_ARTIST);
 
-            statement.setInt(1, artist.getId());
-            statement.setInt(2,lastRow);
-            statement.setInt(3,firstRow);
+            statement.setInt(1, aid);
+            statement.setInt(2, lastRow);
+            statement.setInt(3, firstRow);
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
@@ -305,7 +308,7 @@ public class AlbumsOperator extends MainOperator {
     * @return list of albums of the specified label.
     * @throws OracleDataAccessObjectException if problems while getting data.
     */
-    public List getAlbums(Label label, int firstRow, int lastRow)
+    public List getAlbumsByLabel(int lid, int firstRow, int lastRow)
             throws OracleDataAccessObjectException {
         List albums = null;
         try {
@@ -316,15 +319,15 @@ public class AlbumsOperator extends MainOperator {
             statement = connection.prepareStatement(
                     SELECT_ALBUMS_BY_LABEL);
 
-            statement.setInt(1, label.getId());
-            statement.setInt(2,lastRow);
-            statement.setInt(3,firstRow);
+            statement.setInt(1, lid);
+            statement.setInt(2, lastRow);
+            statement.setInt(3, firstRow);
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
                 currAlbum = fillAlbumBean(set,FULL_MODE);
-                albums.add(currAlbum);
-            }
+                albums.add(currAlbum);          
+			}
             set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
@@ -457,10 +460,18 @@ public class AlbumsOperator extends MainOperator {
                     new java.sql.Date(release.getTime()));
             statement.setString(5, genre);
             statement.setString(6, cover);
-            statement.setInt(7, artist);
+            if (artist == 0){
+				statement.setNull(7, artist);
+			} else {
+				statement.setInt(7, artist);
+			}
+
             statement.setString(8, review);
-            
-            statement.setInt(9, label);
+			if (label == 0){
+				statement.setNull(9, label);
+			} else {
+				statement.setInt(9, label);
+			}
             statement.setInt(10, id);
             statement.executeUpdate();
 			System.out.println("Operator: eddited");

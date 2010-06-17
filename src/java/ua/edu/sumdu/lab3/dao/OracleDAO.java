@@ -167,6 +167,7 @@ public class OracleDAO implements OperableDAO {
 			album.setGenre(albumRemote.getGenre());
 			album.setCover(albumRemote.getCover());
 			album.setArtist(albumRemote.getArtist());
+			album.setLabel(albumRemote.getLabel());
 			album.setArtistName(albumRemote.getArtistName());
 			album.setLabelName(albumRemote.getLabelName());
 			album.setReview(albumRemote.getReview());
@@ -236,15 +237,16 @@ public class OracleDAO implements OperableDAO {
         //return albumsOperator.getAlbums(genre, firstRow, lastRow);
         List albums = null;
         try {
-			albums = (List)Allocator.getAlbumHomeItf().findByGenre(
-					genre, new Integer(firstRow), 
+			albums = (List)Allocator.getAlbumHomeItf().getByGenre(
+					genre,
+					new Integer(firstRow), 
 					new Integer(lastRow));
-		} catch (FinderException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
 		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		}
 		return albums;
     }
@@ -257,7 +259,21 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getAlbumsByName(String name, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbumsByName(name, firstRow, lastRow);
+        //return albumsOperator.getAlbumsByName(name, firstRow, lastRow);
+        List albums = null;
+        try {
+			albums = (List)Allocator.getAlbumHomeItf().getByName(
+					name,
+					new Integer(firstRow), 
+					new Integer(lastRow));
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return albums;
     }
     
     /**
@@ -268,7 +284,21 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getAlbums(Date date, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbums(date, firstRow, lastRow);
+        //return albumsOperator.getAlbums(date, firstRow, lastRow);
+        List albums = null;
+        try {
+			albums = (List)Allocator.getAlbumHomeItf().getByDate(
+					date,
+					new Integer(firstRow), 
+					new Integer(lastRow));
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return albums;
     }
     
      /**
@@ -279,7 +309,21 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getAlbums(Artist artist, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return  albumsOperator.getAlbums(artist, firstRow, lastRow);
+        //return  albumsOperator.getAlbums(artist, firstRow, lastRow);
+        List albums = null;
+        try {
+			albums = (List)Allocator.getAlbumHomeItf().getByArtist(
+					new Integer(artist.getId()), 
+					new Integer(firstRow), 
+					new Integer(lastRow));
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return albums;
     }
         
     
@@ -291,7 +335,21 @@ public class OracleDAO implements OperableDAO {
     */ 
     public List getAlbums(Label label, int firstRow, int lastRow)  
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbums(label, firstRow, lastRow);
+        //return albumsOperator.getAlbums(label, firstRow, lastRow);
+        List albums = null;
+        try {
+			albums = (List)Allocator.getAlbumHomeItf().getByLabel(
+					new Integer(label.getId()),
+					new Integer(firstRow), 
+					new Integer(lastRow));
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return albums;
     }
 
     /**
@@ -303,6 +361,7 @@ public class OracleDAO implements OperableDAO {
     public List getArtists(Label label) 
             throws OracleDataAccessObjectException {
         return artistsOperator.getArtists(label);
+        
     }
 
     /**
@@ -367,9 +426,9 @@ public class OracleDAO implements OperableDAO {
         try {
 			labels = (List)Allocator.getLabelHomeItf().getChildLabels(id);
 		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
+			throw new OracleDataAccessObjectException(e);
 		}
 		return labels;
     }
@@ -391,7 +450,21 @@ public class OracleDAO implements OperableDAO {
     */
     public List getAlbums(int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbums(firstRow, lastRow);
+        //return albumsOperator.getAlbums(firstRow, lastRow);
+        
+        List albums = null;
+        try {
+			albums = (List)Allocator.getAlbumHomeItf().getAll(
+					new Integer(firstRow), 
+					new Integer(lastRow));
+		} catch (EJBException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (RemoteException e){
+			throw new OracleDataAccessObjectException(e);
+		} catch (NamingException e){
+			throw new OracleDataAccessObjectException(e);
+		}
+		return albums;
     }
 
     /**
@@ -403,18 +476,8 @@ public class OracleDAO implements OperableDAO {
     
     public List findAlbums(Map params, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.findAlbums(params, firstRow, lastRow);
-        List albums = null;
-        try {
-			albums =  (List)Allocator.getAlbumHomeItf().searchAlbums(params,
-				new Integer(firstRow), new Integer(lastRow));
-		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
-		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
-		}
-		
-        return albums;
+        return albumsOperator.findAlbums(params, firstRow, lastRow);
+        
     }
    
    /**
