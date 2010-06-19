@@ -67,7 +67,8 @@ public class AlbumBean implements EntityBean {
 	
 	/**
 	 * Finds bean by primary key
-	 * 
+	 * @param id id of the album.
+	 * @return primary key of the album.
 	 */ 
 	
 	public Integer ejbFindByPrimaryKey(Integer id) 
@@ -82,7 +83,8 @@ public class AlbumBean implements EntityBean {
 	}
 	
 	/**
-	 * 
+	 * Sets entity context.
+	 * @param ectx entity context.
 	 * 
 	 */ 
 	
@@ -91,7 +93,7 @@ public class AlbumBean implements EntityBean {
 	}
 	
 	/**
-	 * 
+	 * Unsets entity context.
 	 * 
 	 */ 
 	
@@ -101,6 +103,8 @@ public class AlbumBean implements EntityBean {
 	
 	/**
 	 * Removes current instanse of the bean;
+	 * @throws RemoteException
+	 * @throws RemoveException
 	 * 
 	 */ 
 	
@@ -126,11 +130,12 @@ public class AlbumBean implements EntityBean {
 	 * 
 	 * 
 	 */ 
-	
 	public void ejbPassivate() {}
 	
 	/**
-	 * 
+	 * Realization of the loading the bean;
+	 * @throws EJBException
+	 * @throws RemoteException
 	 * 
 	 */
 	 public void ejbLoad() throws EJBException, RemoteException {
@@ -157,14 +162,15 @@ public class AlbumBean implements EntityBean {
 	} 
 	
 	/**
-	 * 
+	 * Realization of storing the bean.
+	 * @throws EJBException.
+	 * @throws RemoteException.
 	 * 
 	 */
 	public void ejbStore() throws EJBException, RemoteException {
 		if (!needToStore) return;
 		
 		try {
-			System.out.println("Storing");
 			albumsOperator.editAlbum(this.id, this.name, this.type,
 					this.release, this.genre, this.cover, this.artistName,
 					this.labelName, this.review, this.artist, this.label);
@@ -174,19 +180,53 @@ public class AlbumBean implements EntityBean {
 		}
 	} 
 	
-	public Collection ejbHomeSearchAlbums(Map params, Integer firstRow,
-			Integer lastRow) throws EJBException {
+	public Collection ejbFindAll(Integer firstRow, Integer lastRow) 
+			throws FinderException {
 		Collection albums = null;
-			
 		try {
-			albums = albumsOperator.findAlbums(params, firstRow.intValue(),
-					lastRow.intValue());
+			albums = albumsOperator.getAlbums(
+					firstRow.intValue(), lastRow.intValue());
 		} catch (OracleDataAccessObjectException e){
-			throw new EJBException(e.getMessage());
+			throw new FinderException(e.getMessage());
+		}
+		return albums;
+	}
+
+	public Collection ejbFindLatest(Integer number) 
+			throws FinderException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.getLatestAlbums(number.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new FinderException(e.getMessage());
+		}
+		return albums;
+	}
+
+	/**
+	 * Findes and returns list of albums by the specified params.
+	 * @param params parameters to find by.
+     * @return list of albums by the specified params.
+     * @throws EJBException.
+	 */ 	
+	public Collection ejbFindByParams(Map params, 
+			Integer firstRow, Integer lastRow) 
+			throws FinderException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.findAlbums(params,
+					firstRow.intValue(), lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new FinderException(e.getMessage());
 		}
 		return albums;
 	}
 	
+	/**
+	 * Returns maximal id of the album in storage.
+     * @return maximal id of the album in storage.
+     * @throws EJBException.
+     */ 
 	public Integer ejbHomeGetAlbumNumber() throws EJBException {
 		int number = 0;
 		try {
@@ -196,7 +236,12 @@ public class AlbumBean implements EntityBean {
 		}
 		return new Integer(number);
 	}
-	
+
+	/**
+	 * Returns maximal id of the album in storage by specified date.
+     * @return maximal id of the album in storage by specified date.
+     * @throws EJBException.
+     */ 
 	public Integer ejbHomeGetAlbumNumber(Date date) throws EJBException {
 		int number = 0;
 		try {
@@ -207,6 +252,11 @@ public class AlbumBean implements EntityBean {
 		return new Integer(number);
 	}
 	
+	/**
+	 * Returns maximal id of the album in storage by specified genre.
+     * @return maximal id of the album in storage by specified genre.
+     * @throws EJBException.
+     */ 
 	public Integer ejbHomeGetAlbumNumber(String genre) throws EJBException {
 		int number = 0;
 		try {
@@ -217,6 +267,11 @@ public class AlbumBean implements EntityBean {
 		return new Integer(number);
 	}
 	
+	/**
+     * Returns the random album from the storage.
+     * @return random album from the storage.
+     * @throws EJBException
+     */ 
 	public Album ejbHomeGetRandom() throws EJBException {
 		Album album = null;
 		try {
@@ -227,12 +282,43 @@ public class AlbumBean implements EntityBean {
 		return album;	
 	}
 	
-	public Collection ejbHomeGetByGenre(String genre, Integer firstRow, 
+	/**
+     * Returns list of albums of the specified genre.
+     * @param genre genre of the album.
+     * @param fisrtRow from.
+     * @param lastRow to.
+     * @return list of albums of the specified genre.
+     * @throws EJBException
+     */ 
+	public Collection ejbFindByGenre(String genre, Integer firstRow, 
 			Integer lastRow)
-			throws EJBException {
+			throws FinderException {
 		Collection albums = null;
 		try {
-			albums = albumsOperator.getAlbums(genre, firstRow.intValue(),
+			albums = albumsOperator.getAlbums(genre,
+					firstRow.intValue(), lastRow.intValue());
+		} catch (OracleDataAccessObjectException e){
+			throw new FinderException(e.getMessage());
+		}
+		return albums;
+	}
+	
+	/**
+     * Returns list of albums of the specified name.
+     * @param name name of the album.
+     * @param fisrtRow from.
+     * @param lastRow to.
+     * @return list of albums of the specified name.
+     * @throws EJBException
+     */
+	public Collection ejbFindByName(String name, Integer firstRow,
+			Integer lastRow)
+			throws FinderException {
+		Collection albums = null;
+		try {
+			albums = albumsOperator.getAlbums(
+					name, 
+					firstRow.intValue(),
 					lastRow.intValue());
 		} catch (OracleDataAccessObjectException e){
 			throw new EJBException(e.getMessage());
@@ -240,12 +326,22 @@ public class AlbumBean implements EntityBean {
 		return albums;
 	}
 	
-	public Collection ejbHomeGetByName(String name, Integer firstRow,
+	/**
+     * Returns list of albums of the specified date.
+     * @param date date of the album.
+     * @param fisrtRow from.
+     * @param lastRow to.
+     * @return list of albums of the specified date.
+     * @throws EJBException
+     */
+	public Collection ejbFindByDate(Date date, Integer firstRow,
 			Integer lastRow)
-			throws EJBException {
+			throws FinderException {
 		Collection albums = null;
 		try {
-			albums = albumsOperator.getAlbums(name, firstRow.intValue(),
+			albums = albumsOperator.getAlbums(
+					date, 
+					firstRow.intValue(),
 					lastRow.intValue());
 		} catch (OracleDataAccessObjectException e){
 			throw new EJBException(e.getMessage());
@@ -253,22 +349,17 @@ public class AlbumBean implements EntityBean {
 		return albums;
 	}
 	
-	public Collection ejbHomeGetByDate(Date date, Integer firstRow,
+	/**
+     * Returns list of albums of the specified artist id.
+     * @param aid artist of the album.
+     * @param fisrtRow from.
+     * @param lastRow to.
+     * @return list of albums of the specified artist id.
+     * @throws EJBException
+     */	
+    public Collection ejbFindByArtist(Integer aid, Integer firstRow,
 			Integer lastRow)
-			throws EJBException {
-		Collection albums = null;
-		try {
-			albums = albumsOperator.getAlbums(date, firstRow.intValue(),
-					lastRow.intValue());
-		} catch (OracleDataAccessObjectException e){
-			throw new EJBException(e.getMessage());
-		}
-		return albums;
-	}
-	
-	public Collection ejbHomeGetByArtist(Integer aid, Integer firstRow,
-			Integer lastRow)
-			throws EJBException {
+			throws FinderException {
 		Collection albums = null;
 		try {
 			albums = albumsOperator.getAlbumsByArtist(
@@ -280,10 +371,18 @@ public class AlbumBean implements EntityBean {
 		}
 		return albums;
 	}
-	
-	public Collection ejbHomeGetByLabel(Integer lid, Integer firstRow,
+
+	/**
+     * Returns list of albums of the specified label id.
+     * @param lid label of the album.
+     * @param fisrtRow from.
+     * @param lastRow to.
+     * @return list of albums of the specified label id.
+     * @throws EJBException
+     */	
+	public Collection ejbFindByLabel(Integer lid, Integer firstRow,
 			Integer lastRow)
-			throws EJBException {
+			throws FinderException {
 		Collection albums = null;
 		try {
 			albums = albumsOperator.getAlbumsByLabel(
@@ -295,19 +394,7 @@ public class AlbumBean implements EntityBean {
 		}
 		return albums;
 	}
-	
-	public Collection ejbHomeGetAll(Integer firstRow, Integer lastRow)
-			throws EJBException {
-		Collection albums = null;
-		try {
-			albums = albumsOperator.getAlbums(firstRow.intValue(),
-					lastRow.intValue());
-		} catch (OracleDataAccessObjectException e){
-			throw new EJBException(e.getMessage());
-		}
-		return albums;
-	}
-	
+		
 	public Collection ejbHomeGetGenresByArtist(Integer aid)
 			throws EJBException {
 		Collection genres = null;

@@ -16,8 +16,11 @@ public interface AlbumHome extends EJBHome {
 	public AlbumRemote findByPrimaryKey(Integer id) 
 			throws FinderException, RemoteException;
 	
-	public Collection searchAlbums(Map params, Integer firstRow, 
-			Integer lastRow) throws EJBException, RemoteException;
+	public Collection findAll(Integer firstRow, Integer lastRow) 
+			throws FinderException, RemoteException;
+	
+	public Collection findByParams(Map params, Integer firstRow, 
+			Integer lastRow) throws FinderException, RemoteException;
 
 	public Integer getAlbumNumber() 
 			throws EJBException, RemoteException;
@@ -31,29 +34,25 @@ public interface AlbumHome extends EJBHome {
 	public Album getRandom() 
 			throws EJBException, RemoteException;
 			
-	public Collection getByGenre(String genre, Integer firstRow, 
+	public Collection findByGenre(String genre, Integer firstRow, 
 			Integer lastRow)
-			throws EJBException, RemoteException;
-			
-	public Collection getByName(String name, Integer firstRow, 
-			Integer lastRow)
-			throws EJBException, RemoteException;
+			throws FinderException, RemoteException;
 	
-	public Collection getByDate(Date date, Integer firstRow, 
+	public Collection findByName(String name, Integer firstRow, 
 			Integer lastRow)
-			throws EJBException, RemoteException;
-			
-	public Collection getByArtist(Integer aid, Integer firstRow, 
-			Integer lastRow)
-			throws EJBException, RemoteException;
+			throws FinderException, RemoteException;
 	
-	public Collection getByLabel(Integer lid, Integer firstRow, 
+	public Collection findByDate(Date date, Integer firstRow, 
 			Integer lastRow)
-			throws EJBException, RemoteException;
+			throws FinderException, RemoteException;
 			
-	public Collection getAll(Integer firstRow,
+	public Collection findByArtist(Integer aid, Integer firstRow, 
 			Integer lastRow)
-			throws EJBException, RemoteException;
+			throws FinderException, RemoteException;
+	
+	public Collection findByLabel(Integer lid, Integer firstRow, 
+			Integer lastRow)
+			throws FinderException, RemoteException;
 
 	public Collection getGenresByArtist(Integer aid) 
 			throws EJBException, RemoteException;
@@ -63,4 +62,7 @@ public interface AlbumHome extends EJBHome {
 	
 	public Collection getDates() 
 			throws EJBException, RemoteException;
+			
+	public Collection findLatest(Integer number)
+			throws FinderException, RemoteException;
 }

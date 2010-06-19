@@ -187,8 +187,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                currAlbum = fillAlbumBean(set, FULL_MODE);
-                albums.add(currAlbum);
+				albums.add(new Integer(set.getInt(1)));
             }
             set.close();
         } catch (SQLException e){
@@ -222,8 +221,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                currAlbum = fillAlbumBean(set,FULL_MODE);
-                albums.add(currAlbum);
+                albums.add(new Integer(set.getInt(1)));
             }
             set.close();
         } catch (SQLException e){
@@ -260,8 +258,7 @@ public class AlbumsOperator extends MainOperator {
             ResultSet set = this.statement.executeQuery();
 
             while(set.next()){
-                currAlbum = fillAlbumBean(set, FULL_MODE);
-                albums.add(currAlbum);
+                albums.add(new Integer(set.getInt(1)));
             }
             set.close();
         } catch (SQLException e){
@@ -295,8 +292,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                currAlbum = fillAlbumBean(set,FULL_MODE);
-                albums.add(currAlbum);
+                albums.add(new Integer(set.getInt(1)));
             }
             set.close();
         } catch (SQLException e){
@@ -330,8 +326,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                currAlbum = fillAlbumBean(set,FULL_MODE);
-                albums.add(currAlbum);          
+                albums.add(new Integer(set.getInt(1)));         
 			}
             set.close();
         } catch (SQLException e){
@@ -347,7 +342,8 @@ public class AlbumsOperator extends MainOperator {
     * @return list of all albums.
     * @throws OracleDataAccessObjectException if problems while getting data.
     */
-    public List getAlbums(int firstRow, int lastRow) throws OracleDataAccessObjectException {
+    public List getAlbums(int firstRow, int lastRow) 
+			throws OracleDataAccessObjectException {
         List albums = null;
         try {
             albums = new LinkedList();
@@ -362,8 +358,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                currAlbum = fillAlbumBean(set,FULL_MODE);
-                albums.add(currAlbum);
+                albums.add(new Integer(set.getInt(1)));
             }
             set.close();
         } catch (SQLException e) {
@@ -508,9 +503,8 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                currAlbum = fillAlbumBean(set,FULL_MODE);
-                albums.add(currAlbum);
-            }
+				albums.add(new Integer(set.getInt(1)));
+			}
             set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
