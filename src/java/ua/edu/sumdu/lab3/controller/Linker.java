@@ -45,6 +45,8 @@ public class Linker extends HttpServlet {
         
         try {
             if ("".equals(spath)) {
+                Album al = dao.getRandomAlbum();
+                log.info("----->" + al.getId());
                 request.setAttribute("random",dao.getRandomAlbum());
                 request.setAttribute("latest",dao.getLatestAlbums(5));
                 

@@ -11,9 +11,6 @@ import javax.sql.*;
 import javax.naming.*;
 
 public class AlbumsOperator extends MainOperator {
-    
-    private static final String ADD_NEW_ALBUM =
-            "INSERT INTO ALBUM VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
     private static final String EDIT_ALBUM =
             "UPDATE ALBUM SET alid = ?, name = ?, type = ?, release = ?, genre = ?, cover = ?, art = ?,review = ?, lbl = ? WHERE alid = ?";
@@ -59,11 +56,14 @@ public class AlbumsOperator extends MainOperator {
             
     private static final String ALBUM_MAX_ROW =
             "SELECT MAX(ROWNUM) FROM album";
-    
-	private static final String RESERVE_NEW_ID = 
-			"SELECT SQ_ALBUM.nextval FROM dual";
             
-    private static final String SELECT_GENRES_BY_ARTIST =
+    private static final String ADD_NEW_ALBUM =
+            "INSERT INTO ALBUM VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    private static final String RESERVE_NEW_ID = 
+			"SELECT SQ_ALBUM.nextval FROM dual";
+	
+	private static final String SELECT_GENRES_BY_ARTIST =
             "SELECT DISTINCT genre FROM ALBUM WHERE art = ?";
 
     private static final String SELECT_GENRES_BY_LABEL =
@@ -71,7 +71,8 @@ public class AlbumsOperator extends MainOperator {
             
     private static final String SELECT_ALL_DATES =
             "SELECT DISTINCT TO_CHAR(release, 'YYYY') as year FROM album order by year";
-    /**
+	
+	/**
      * Returns the new value of the labels counter.
      * 
      * @return the new value of the labels counter.
@@ -92,7 +93,7 @@ public class AlbumsOperator extends MainOperator {
         }
         return id;
 	}
-    
+			        
     /**
      * Adds new album to the specified storage.
      * @param album new instanse of the Album that should be added.
@@ -122,9 +123,6 @@ public class AlbumsOperator extends MainOperator {
             statement.setString(7, review);
             statement.setInt(8, artist);
             statement.setInt(9, label);
-            
-
-            statement.executeUpdate();
 
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
@@ -132,6 +130,26 @@ public class AlbumsOperator extends MainOperator {
             closeConnection();;
         }
         return alid;
+    }
+    
+    /**
+     * Adds new album to the specified storage.
+     * @param album new instanse of the Album that should be added.
+     * @throws OracleDataAccessObjectException if problems while adding the data.
+     */
+    public int addAlbum(Album album)
+            throws OracleDataAccessObjectException {
+		return addAlbum(
+				album.getName(), 
+				album.getType(),
+				album.getRelease(),
+				album.getGenre(),
+				album.getCover(),
+				album.getArtistName(),
+				album.getLabelName(),
+				album.getReview(),
+				album.getArtist(),
+				album.getLabel());
     }
 
     /**
@@ -170,7 +188,7 @@ public class AlbumsOperator extends MainOperator {
      * @return list of albums of the specified genre.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */
-    public List getAlbums(String genre, int firstRow, int lastRow)
+    public List getAlbumsByGenre(String genre, int firstRow, int lastRow)
             throws OracleDataAccessObjectException {
         List albums = null;
         try {
@@ -187,7 +205,8 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-				albums.add(new Integer(set.getInt(1)));
+                currAlbum = fillAlbumBean(set,FULL_MODE);
+                albums.add(currAlbum);
             }
             set.close();
         } catch (SQLException e){
@@ -221,7 +240,8 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                albums.add(new Integer(set.getInt(1)));
+                currAlbum = fillAlbumBean(set,FULL_MODE);
+                albums.add(currAlbum);
             }
             set.close();
         } catch (SQLException e){
@@ -238,7 +258,7 @@ public class AlbumsOperator extends MainOperator {
      * @return list of albums of the specified date.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */
-    public List getAlbums(Date date, int firstRow, int lastRow)
+    public List getAlbumsByDate(Date date, int firstRow, int lastRow)
             throws OracleDataAccessObjectException {
         DateFormat df = new SimpleDateFormat("yyyy");
         List albums = null;
@@ -258,7 +278,8 @@ public class AlbumsOperator extends MainOperator {
             ResultSet set = this.statement.executeQuery();
 
             while(set.next()){
-                albums.add(new Integer(set.getInt(1)));
+                currAlbum = fillAlbumBean(set, FULL_MODE);
+                albums.add(currAlbum);
             }
             set.close();
         } catch (SQLException e){
@@ -292,7 +313,8 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                albums.add(new Integer(set.getInt(1)));
+                currAlbum = fillAlbumBean(set, FULL_MODE);
+                albums.add(currAlbum);
             }
             set.close();
         } catch (SQLException e){
@@ -326,8 +348,9 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                albums.add(new Integer(set.getInt(1)));         
-			}
+                currAlbum = fillAlbumBean(set,FULL_MODE);
+                albums.add(currAlbum);
+            }
             set.close();
         } catch (SQLException e){
             throw new OracleDataAccessObjectException(e);
@@ -342,8 +365,7 @@ public class AlbumsOperator extends MainOperator {
     * @return list of all albums.
     * @throws OracleDataAccessObjectException if problems while getting data.
     */
-    public List getAlbums(int firstRow, int lastRow) 
-			throws OracleDataAccessObjectException {
+    public List getAlbums(int firstRow, int lastRow) throws OracleDataAccessObjectException {
         List albums = null;
         try {
             albums = new LinkedList();
@@ -358,7 +380,8 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-                albums.add(new Integer(set.getInt(1)));
+                currAlbum = fillAlbumBean(set,FULL_MODE);
+                albums.add(currAlbum);
             }
             set.close();
         } catch (SQLException e) {
@@ -503,8 +526,9 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             while(set.next()){
-				albums.add(new Integer(set.getInt(1)));
-			}
+                currAlbum = fillAlbumBean(set,FULL_MODE);
+                albums.add(currAlbum);
+            }
             set.close();
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
@@ -615,7 +639,7 @@ public class AlbumsOperator extends MainOperator {
 
             ResultSet set = this.statement.executeQuery();
             if(set.next()) {
-                album = fillAlbumBean(set, FULL_MODE);
+                album = fillAlbumBean(set,FULL_MODE);
             }
             set.close();
         }   catch (SQLException e) {
@@ -635,20 +659,29 @@ public class AlbumsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
         try {
             getConnection();
-			System.out.println("id = " + id);
+
             statement = connection.prepareStatement(DELETE_ALBUM);
+
             statement.setInt(1, id);
-            statement.executeUpdate();
 
         }   catch (SQLException e) {
-            
+            try {
+                connection.rollback();
+            } catch (SQLException exc) {
+                throw new OracleDataAccessObjectException(exc);
+            }
             throw new OracleDataAccessObjectException(e);
         } finally {
-            closeConnection();
+            try {
+                connection.setAutoCommit(true);
+                closeConnection();
+            } catch (SQLException e) {
+                throw new OracleDataAccessObjectException(e);
+            } 
         }
     }
     
-        /**
+    /**
     * Returns list of genres of the specified artist.
     * @param artist artist of the genre.
     * @return list of genres of the specified artist.

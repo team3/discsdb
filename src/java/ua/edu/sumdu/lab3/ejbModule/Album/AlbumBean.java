@@ -22,28 +22,23 @@ public class AlbumBean implements EntityBean {
 	 * Creates album
 	 * @param name name of the album.
 	 */ 
-	public Integer ejbCreate(
-			String name, String type, Date release, String genre,
-			String cover, String artistName, String labelName,
-			String review, Integer artist, Integer label) 
+	public Integer ejbCreate(Album album)
 			throws CreateException, RemoteException {
 		int id = 0;
 		
 		try {
-			id = albumsOperator.addAlbum(name, type, release, genre, 
-					cover, artistName, labelName, review, 
-					artist.intValue(), label.intValue());
+			id = albumsOperator.addAlbum(album);
 			
-			this.name = name;
-			this.type = type;
-			this.release = release;
-			this.genre = genre;
-			this.cover = cover;
-			this.artistName = artistName;
-			this.labelName = labelName;
-			this.review = review;
-			this.artist = artist.intValue();
-			this.label = label.intValue();
+			this.name = album.getName();
+			this.type = album.getType();
+			this.release = album.getRelease();
+			this.genre = album.getGenre();
+			this.cover = album.getCover();
+			this.artistName = album.getArtistName();
+			this.labelName = album.getLabelName();
+			this.review = album.getReview();
+			this.artist = album.getArtist();
+			this.label = album.getLabel();
 			
 		} catch (OracleDataAccessObjectException e){
 			throw new CreateException(e.getMessage());
@@ -57,10 +52,7 @@ public class AlbumBean implements EntityBean {
 	 * 
 	 */
 	
-	public void ejbPostCreate(
-			String name, String type, Date release, String genre,
-			String cover, String artistName, String labelName,
-			String review, Integer artist, Integer label) 
+	public void ejbPostCreate(Album album) 
 			throws CreateException, RemoteException {
 		
 	}
@@ -183,24 +175,43 @@ public class AlbumBean implements EntityBean {
 	public Collection ejbFindAll(Integer firstRow, Integer lastRow) 
 			throws FinderException {
 		Collection albums = null;
+		Collection remotes = null;
 		try {
+			remotes = new ArrayList();
+			
 			albums = albumsOperator.getAlbums(
-					firstRow.intValue(), lastRow.intValue());
+					firstRow.intValue(), 
+					lastRow.intValue()
+					);
+			Iterator itr = albums.iterator();
+			while(itr.hasNext()){
+				Album album = (Album)itr.next();
+				remotes.add(new Integer(album.getId()));
+			}
 		} catch (OracleDataAccessObjectException e){
 			throw new FinderException(e.getMessage());
 		}
-		return albums;
+		return remotes;
 	}
 
 	public Collection ejbFindLatest(Integer number) 
 			throws FinderException {
 		Collection albums = null;
+		Collection remotes = null;
 		try {
+			remotes = new ArrayList();
+			
 			albums = albumsOperator.getLatestAlbums(number.intValue());
+			
+			Iterator itr = albums.iterator();
+			while(itr.hasNext()){
+				Album album = (Album)itr.next();
+				remotes.add(new Integer(album.getId()));
+			}
 		} catch (OracleDataAccessObjectException e){
 			throw new FinderException(e.getMessage());
 		}
-		return albums;
+		return remotes;
 	}
 
 	/**
@@ -212,14 +223,26 @@ public class AlbumBean implements EntityBean {
 	public Collection ejbFindByParams(Map params, 
 			Integer firstRow, Integer lastRow) 
 			throws FinderException {
+		
 		Collection albums = null;
+		Collection remotes = null;
+		
 		try {
-			albums = albumsOperator.findAlbums(params,
-					firstRow.intValue(), lastRow.intValue());
+			remotes = new ArrayList();
+			
+			albums = albumsOperator.findAlbums(
+					params,
+					firstRow.intValue(), 
+					lastRow.intValue());
+			Iterator itr = albums.iterator();
+			while(itr.hasNext()){
+				Album album = (Album)itr.next();
+				remotes.add(new Integer(album.getId()));
+			}
 		} catch (OracleDataAccessObjectException e){
 			throw new FinderException(e.getMessage());
 		}
-		return albums;
+		return remotes;
 	}
 	
 	/**
@@ -294,13 +317,23 @@ public class AlbumBean implements EntityBean {
 			Integer lastRow)
 			throws FinderException {
 		Collection albums = null;
+		Collection remotes = null;
+		
 		try {
-			albums = albumsOperator.getAlbums(genre,
-					firstRow.intValue(), lastRow.intValue());
+			remotes = new ArrayList();
+			albums = albumsOperator.getAlbumsByGenre(
+					genre,
+					firstRow.intValue(), 
+					lastRow.intValue());
+			Iterator itr = albums.iterator();
+			while(itr.hasNext()){
+				Album album = (Album)itr.next();
+				remotes.add(new Integer(album.getId()));
+			}
 		} catch (OracleDataAccessObjectException e){
 			throw new FinderException(e.getMessage());
 		}
-		return albums;
+		return remotes;
 	}
 	
 	/**
@@ -315,15 +348,24 @@ public class AlbumBean implements EntityBean {
 			Integer lastRow)
 			throws FinderException {
 		Collection albums = null;
+		Collection remotes = null;
+		
 		try {
-			albums = albumsOperator.getAlbums(
+			remotes = new ArrayList();
+			albums = albumsOperator.getAlbumsByName(
 					name, 
 					firstRow.intValue(),
 					lastRow.intValue());
+					
+			Iterator itr = albums.iterator();
+			while(itr.hasNext()){
+				Album album = (Album)itr.next();
+				remotes.add(new Integer(album.getId()));
+			}
 		} catch (OracleDataAccessObjectException e){
 			throw new EJBException(e.getMessage());
 		}
-		return albums;
+		return remotes;
 	}
 	
 	/**
@@ -338,15 +380,24 @@ public class AlbumBean implements EntityBean {
 			Integer lastRow)
 			throws FinderException {
 		Collection albums = null;
+		Collection remotes = null;
+		
 		try {
-			albums = albumsOperator.getAlbums(
+			remotes = new ArrayList();
+			albums = albumsOperator.getAlbumsByDate(
 					date, 
 					firstRow.intValue(),
 					lastRow.intValue());
+					
+			Iterator itr = albums.iterator();
+			while(itr.hasNext()){
+				Album album = (Album)itr.next();
+				remotes.add(new Integer(album.getId()));
+			}
 		} catch (OracleDataAccessObjectException e){
 			throw new EJBException(e.getMessage());
 		}
-		return albums;
+		return remotes;
 	}
 	
 	/**
@@ -361,15 +412,24 @@ public class AlbumBean implements EntityBean {
 			Integer lastRow)
 			throws FinderException {
 		Collection albums = null;
+		Collection remotes = null;
+		
 		try {
+			remotes = new ArrayList();
 			albums = albumsOperator.getAlbumsByArtist(
 					aid.intValue(), 
 					firstRow.intValue(),
 					lastRow.intValue());
+					
+			Iterator itr = albums.iterator();
+			while(itr.hasNext()){
+				Album album = (Album)itr.next();
+				remotes.add(new Integer(album.getId()));
+			}
 		} catch (OracleDataAccessObjectException e){
 			throw new EJBException(e.getMessage());
 		}
-		return albums;
+		return remotes;
 	}
 
 	/**
@@ -384,15 +444,24 @@ public class AlbumBean implements EntityBean {
 			Integer lastRow)
 			throws FinderException {
 		Collection albums = null;
+		Collection remotes = null;
+		
 		try {
+			remotes = new ArrayList();
 			albums = albumsOperator.getAlbumsByLabel(
 					lid.intValue(), 
 					firstRow.intValue(),
 					lastRow.intValue());
+					
+			Iterator itr = albums.iterator();
+			while(itr.hasNext()){
+				Album album = (Album)itr.next();
+				remotes.add(new Integer(album.getId()));
+			}		
 		} catch (OracleDataAccessObjectException e){
 			throw new EJBException(e.getMessage());
 		}
-		return albums;
+		return remotes;
 	}
 		
 	public Collection ejbHomeGetGenresByArtist(Integer aid)

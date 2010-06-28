@@ -135,10 +135,8 @@ public class OracleDAO implements OperableDAO {
             throws OracleDataAccessObjectException {
         try {
 			AlbumHome albumHome = Allocator.getAlbumHomeItf();
-			albumHome.create(album.getName(), album.getType(), album.getRelease(),
-					album.getGenre(), album.getCover(), album.getArtistName(),
-					album.getLabelName(), album.getReview(), 
-					new Integer(album.getArtist()), new Integer(album.getLabel()));
+			
+			albumHome.create(album);
 		} catch (CreateException e){
 			throw new OracleDataAccessObjectException(e);
 		} catch (RemoteException e){
