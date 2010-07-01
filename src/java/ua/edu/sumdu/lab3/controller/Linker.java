@@ -44,9 +44,8 @@ public class Linker extends HttpServlet {
         DateFormat df = new SimpleDateFormat("yyyy");
         
         try {
-            if ("".equals(spath)) {
-                Album al = dao.getRandomAlbum();
-                log.info("----->" + al.getId());
+            if ("".equals(spath) || "/".equals(spath)) {
+                log.info("random and 5 latest" );
                 request.setAttribute("random",dao.getRandomAlbum());
                 request.setAttribute("latest",dao.getLatestAlbums(5));
                 
