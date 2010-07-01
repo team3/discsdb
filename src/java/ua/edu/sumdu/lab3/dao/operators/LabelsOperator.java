@@ -101,17 +101,13 @@ public class LabelsOperator extends MainOperator {
             statement.setString(4, logo);
             statement.setString(5, info);
             
-            UserTransactionManager.transBegin();
             System.out.println("--- transaction started");
             statement.executeUpdate();
             System.out.println("--- query started");
-            UserTransactionManager.transCommit();
             System.out.println("--- transaction finished");
             
             result = id;
         } catch (SQLException e) {
-            UserTransactionManager.transRollback();
-            System.out.println("Rollback");
             throw new OracleDataAccessObjectException(e);
         } finally {
 			System.out.println("--- Closing connection");
@@ -257,7 +253,6 @@ public class LabelsOperator extends MainOperator {
             statement.executeUpdate();
        
         } catch (SQLException e) {
-            UserTransactionManager.transRollback();
             throw new OracleDataAccessObjectException(e);
         } finally {
             closeConnection();
