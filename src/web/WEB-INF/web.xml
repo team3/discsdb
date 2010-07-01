@@ -8,12 +8,8 @@
  
     <servlet-mapping>
         <servlet-name>Dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
-    
-     <welcome-file-list>
-        <welcome-file>/pages/index.jsp</welcome-file>
-    </welcome-file-list>
     
     <servlet-mapping>
         <servlet-name>default</servlet-name>
@@ -45,12 +41,12 @@
         <error-code>404</error-code>
         <location>/pages/404.jsp</location>
     </error-page> 
-	-->
+	
     <error-page>
         <error-code>500</error-code>
         <location>/pages/error.jsp</location>
     </error-page>
-
+-->
     <taglib>
         <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
         <taglib-location>/WEB-INF/tags/fmt.tld</taglib-location>

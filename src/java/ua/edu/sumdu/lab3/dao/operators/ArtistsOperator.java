@@ -13,7 +13,10 @@ import javax.naming.*;
 public class ArtistsOperator extends MainOperator {
     
     private static final String ADD_NEW_ARTIST = 
-            "INSERT INTO ARTIST VALUES (SQ_ARTIST.nextval, ?, ?, ?)";
+            "INSERT INTO ARTIST VALUES (?, ?, ?, ?)";
+    
+    private static final String ID_GEN =
+            "SELECT SQ_ARTIST.nextval FROM dual";
     
     private static final String EDIT_ARTIST = 
             "UPDATE ARTIST SET aid = ?, name = ?, country = ?, info = ? where aid = ?";
@@ -41,41 +44,55 @@ public class ArtistsOperator extends MainOperator {
                     
     private static final String SELECT_ALL_ARTISTS = 
             "SELECT c.aid,c.name,c.country,c.info FROM (SELECT a.*, rownum rnum FROM (SELECT * FROM artist ORDER BY aid) a WHERE rownum <= ?) c where rnum >= ?";
+            
+    private static final String SELECT_GENRES_BY_ARTIST =
+            "SELECT DISTINCT genre FROM ALBUM WHERE art = ?";
+    
+    private int getNewId() throws OracleDataAccessObjectException {
+        try {
+            
+            getConnection();
+            
+            statement = connection.prepareStatement(
+                    ID_GEN);
+            ResultSet set = statement.executeQuery();
+            int id = -1;
+            if(set.next()) {
+                id = set.getInt(1);
+            } else {
+                throw new OracleDataAccessObjectException("Id gen error");
+            }
+            return id;
+        } catch (SQLException e) {
+            throw new OracleDataAccessObjectException(e);
+        }
+    }
     
     /**
      * Adds new artist to the specified storage.
      * @param album new instanse of the Artist that should be added.
      * @throws OracleDataAccessObjectException if problems while adding the data.
      */ 
-    public void addArtist(Artist artist) 
+    public int addArtist(Artist artist) 
             throws OracleDataAccessObjectException {
         try {
+            
+            int id = getNewId();
+            
             getConnection();
         
             statement = connection.prepareStatement(
                     ADD_NEW_ARTIST);
-
-            statement.setString(1, artist.getName());
-            statement.setString(2, artist.getCountry());
-            statement.setString(3, artist.getInfo());
-            connection.setAutoCommit(false);
+            statement.setInt(1, id);
+            statement.setString(2, artist.getName());
+            statement.setString(3, artist.getCountry());
+            statement.setString(4, artist.getInfo());
             statement.executeUpdate();
-            connection.commit();
-            
+            return id;
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new OracleDataAccessObjectException(e);
-            }
             throw new OracleDataAccessObjectException(e);
         } finally {
-            try {
-                connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            }
+            closeConnection();
         }
     }
 
@@ -92,24 +109,12 @@ public class ArtistsOperator extends MainOperator {
             statement = connection.prepareStatement(DELETE_ARTIST);
             
             statement.setInt(1, id);
-            connection.setAutoCommit(false);
             statement.executeUpdate();
-            connection.commit();
             
         }   catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new OracleDataAccessObjectException(exc);
-            }
             throw new OracleDataAccessObjectException(e);
         } finally {
-            try {
-                connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            }
+            closeConnection();
         }
         
     }
@@ -139,24 +144,12 @@ public class ArtistsOperator extends MainOperator {
             statement.setString(3, artist.getCountry());
             statement.setString(4, artist.getInfo());
             statement.setInt(5, artist.getId());
-            connection.setAutoCommit(false);
             statement.executeUpdate();
-            connection.commit();
             
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new OracleDataAccessObjectException(exc);
-            }
             throw new OracleDataAccessObjectException(e);
         } finally {
-            try {
-                connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            }
+            closeConnection();
         }
     }
 
@@ -374,5 +367,31 @@ public class ArtistsOperator extends MainOperator {
              closeConnection();
         }
         return artists; 
+    }
+    
+    public List getGenres(Artist artist) 
+            throws OracleDataAccessObjectException {
+        List genres = null;
+        try {
+            genres = new LinkedList();
+
+            this.getConnection();
+
+            this.statement = this.connection.prepareStatement(
+                    SELECT_GENRES_BY_ARTIST);
+
+            this.statement.setInt(1, artist.getId());
+
+            ResultSet set = this.statement.executeQuery();;
+            while(set.next()){
+                genres.add(set.getString(1));
+            }
+            set.close();
+        } catch (SQLException e){
+            throw new OracleDataAccessObjectException(e);
+        } finally {
+            closeConnection();
+        }
+        return genres;
     }
 }

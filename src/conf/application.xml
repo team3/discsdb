@@ -10,8 +10,8 @@
     </module>
     
     <module>
-		<ejb>ejbModule.jar</ejb>
-	</module>
+        <ejb>ejbModule.jar</ejb>
+    </module>
     
     <module>
         <java>oracle-ds.xml</java>

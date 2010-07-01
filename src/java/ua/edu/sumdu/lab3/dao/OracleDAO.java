@@ -11,6 +11,7 @@ package ua.edu.sumdu.lab3.dao;
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.ejbModule.label.*;
 import ua.edu.sumdu.lab3.ejbModule.album.*;
+import ua.edu.sumdu.lab3.ejbModule.artist.*;
 import ua.edu.sumdu.lab3.ejbModule.Allocator;
 import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.model.*;
@@ -67,19 +68,14 @@ public class OracleDAO implements OperableDAO {
     */
     public List getGenres(Artist artist) 
             throws OracleDataAccessObjectException {
-		//return albumsOperator.getGenresByArtist(artist);
-		List genres = null;
-		try {
-			genres = (List)Allocator.getAlbumHomeItf().getGenresByArtist(
-					new Integer(artist.getId()));
-		} catch (EJBException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e);
-		}
-		return genres;
+        try {
+            List genres = (List)Allocator.getArtistHomeItf().getGenres(artist);
+            return genres;
+        }catch (NamingException e) {
+            throw new OracleDataAccessObjectException(e);
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        }
     }
 
     /**
@@ -175,7 +171,16 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void addArtist(Artist artist) 
             throws OracleDataAccessObjectException {
-        artistsOperator.addArtist(artist);
+                try {
+            ArtistHome artHome = Allocator.getArtistHomeItf();
+            artHome.create(artist.getName(), artist.getCountry(), artist.getInfo());
+        } catch (CreateException e) {
+            throw new OracleDataAccessObjectException(e);
+        } catch (RemoteException e) {
+            throw new OracleDataAccessObjectException(e);
+        }catch (NamingException e) {
+            throw new OracleDataAccessObjectException(e);
+        }
     }
 
     /**
@@ -256,7 +261,22 @@ public class OracleDAO implements OperableDAO {
      */ 
     public Artist getArtist(int id) 
             throws OracleDataAccessObjectException {
-        return artistsOperator.getArtist(id);
+        Artist artist = new Artist();
+        try {
+            ArtistHome artHome = Allocator.getArtistHomeItf();
+            ArtistRemote artRemote = artHome.findByPrimaryKey(new Integer(id));
+            artist.setId(artRemote.getId().intValue());
+            artist.setName(artRemote.getName());
+            artist.setCountry(artRemote.getCountry());
+            artist.setInfo(artRemote.getInfo());
+        } catch (FinderException e) {
+            throw new OracleDataAccessObjectException(e);
+        } catch (RemoteException e) {
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e) {
+            throw new OracleDataAccessObjectException(e);
+        }
+        return artist;
     }
 
     /**
@@ -419,7 +439,23 @@ public class OracleDAO implements OperableDAO {
     */
     public List getArtists(Label label) 
             throws OracleDataAccessObjectException {
-        return artistsOperator.getArtists(label);
+        List artists = null;
+        Artist currArtist = null;
+        try {
+            artists = new LinkedList();
+            Iterator iter = Allocator.getArtistHomeItf().findArtistsByLabel(label).iterator();
+            while(iter.hasNext()) {
+                currArtist = artistTranslate((ArtistRemote)iter.next());
+                artists.add(currArtist);
+            }
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (FinderException e) {
+            throw new OracleDataAccessObjectException(e);
+        }
+        return artists;
         
     }
 
@@ -431,7 +467,25 @@ public class OracleDAO implements OperableDAO {
     */
     public List getArtists(String country, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return artistsOperator.getArtists(country, firstRow, lastRow);
+        List artists = null;
+        Artist currArtist = null;
+        try {
+            artists = new LinkedList();
+            Iterator iter = Allocator.getArtistHomeItf().findArtistsByCountry(country,
+                    new Integer(firstRow), new Integer(lastRow)).iterator();
+            while(iter.hasNext()) {
+                currArtist = artistTranslate((ArtistRemote)iter.next());
+                artists.add(currArtist);
+            }
+            
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (FinderException e) {
+            throw new OracleDataAccessObjectException(e);
+        }
+        return artists;
     }
 
     /**
@@ -499,7 +553,23 @@ public class OracleDAO implements OperableDAO {
     */
     public List getArtists(int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return artistsOperator.getArtists(firstRow, lastRow);
+        List artists = null;
+        Artist currArtist = null;
+        try {
+            artists = new LinkedList();
+            Iterator iter = Allocator.getArtistHomeItf().findArtists(new Integer(firstRow), new Integer(lastRow)).iterator();
+            while(iter.hasNext()) {
+                currArtist = artistTranslate((ArtistRemote)iter.next());
+                artists.add(currArtist);
+            }
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (FinderException e) {
+            throw new OracleDataAccessObjectException(e);
+        }
+        return artists;
     }
     
     /**
@@ -605,7 +675,19 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void editArtist(Artist artist) 
             throws OracleDataAccessObjectException {
-        artistsOperator.editArtist(artist);
+        try {
+            ArtistHome artHome = Allocator.getArtistHomeItf();
+            ArtistRemote artRemote = artHome.findByPrimaryKey(new Integer(artist.getId()));
+            artRemote.setName(artist.getName());
+            artRemote.setCountry(artist.getCountry());
+            artRemote.setInfo(artist.getInfo());
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (FinderException e){
+            throw new OracleDataAccessObjectException(e);
+        }
     }
 
     /**
@@ -652,13 +734,8 @@ public class OracleDAO implements OperableDAO {
             throws OracleDataAccessObjectException {
         List albums = null;
         try {
-			albums = new LinkedList();
-			List aids = (List)Allocator.getAlbumHomeItf().findLatest(
+			albums = (List)Allocator.getAlbumHomeItf().findLatest(
 					new Integer(number));
-			Iterator itr = aids.iterator();
-			while(itr.hasNext()){
-				albums.add(getAlbum(((AlbumRemote)itr.next()).getId()));
-			}
 		} catch (FinderException e){
 			throw new OracleDataAccessObjectException(e);
 		} catch (RemoteException e){
@@ -677,7 +754,8 @@ public class OracleDAO implements OperableDAO {
      */ 
     public int findArtist(String name) 
             throws OracleDataAccessObjectException {
-        return artistsOperator.findArtist(name);
+        //return artistsOperator.findArtist(name);
+        return 1;
     }
     
     /**
@@ -698,7 +776,15 @@ public class OracleDAO implements OperableDAO {
      */
     public int getArtistNumber() 
             throws OracleDataAccessObjectException {
-        return artistsOperator.getArtistNumber();
+        int number = 0;
+        try {
+            number = Allocator.getArtistHomeItf().getArtistNumber().intValue();
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e.getMessage());
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e.getMessage());
+        }
+        return number;
     }
     
     /**
@@ -708,7 +794,15 @@ public class OracleDAO implements OperableDAO {
      */
     public int getArtistNumber(String country) 
             throws OracleDataAccessObjectException {
-        return artistsOperator.getArtistNumber(country);
+        int number = 0;
+        try {
+            number = Allocator.getArtistHomeItf().getArtistNumber(country).intValue();
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e.getMessage());
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e.getMessage());
+        }
+        return number;
     }
     
     /**
@@ -837,7 +931,16 @@ public class OracleDAO implements OperableDAO {
      */
     public void deleteArtist(int id) 
             throws OracleDataAccessObjectException {
-        artistsOperator.deleteArtist(id);        
+        try {
+            ArtistHome artHome = Allocator.getArtistHomeItf();
+            artHome.remove(new Integer(id));
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (EJBException e) {
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        }    
     }
     
     /**
@@ -879,5 +982,14 @@ public class OracleDAO implements OperableDAO {
 			throw new OracleDataAccessObjectException(e.getMessage());
 		}
 		return labels;
-    }       
+    }
+
+    private Artist artistTranslate(ArtistRemote aRemote) throws RemoteException {
+        Artist art = new Artist();
+        art.setId(aRemote.getId().intValue());
+        art.setName(aRemote.getName());
+        art.setCountry(aRemote.getCountry());
+        art.setInfo(aRemote.getInfo());
+        return art;
+    }
 }

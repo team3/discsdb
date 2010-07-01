@@ -22,7 +22,18 @@
       <persistence-type>Bean</persistence-type>
       <prim-key-class>java.lang.Integer</prim-key-class>
       <reentrant>false</reentrant>
-   </entity>  
+   </entity>
+   
+   <entity>
+      <display-name>ArtistBean</display-name>
+      <ejb-name>Artist</ejb-name>
+      <home>ua.edu.sumdu.lab3.ejbModule.artist.ArtistHome</home>
+      <remote>ua.edu.sumdu.lab3.ejbModule.artist.ArtistRemote</remote>
+      <ejb-class>ua.edu.sumdu.lab3.ejbModule.artist.ArtistBean</ejb-class>
+      <persistence-type>Bean</persistence-type>
+      <prim-key-class>java.lang.Integer</prim-key-class>
+      <reentrant>false</reentrant>
+   </entity>
    
 </enterprise-beans>
 

@@ -11,6 +11,10 @@
          <ejb-name>Album</ejb-name>
          <jndi-name>Album</jndi-name>
       </entity>
+      <entity>
+         <ejb-name>Artist</ejb-name>
+         <jndi-name>Artist</jndi-name>
+      </entity>
    </enterprise-beans>   
    <resource-managers>
    </resource-managers>

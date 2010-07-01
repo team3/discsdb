@@ -1,10 +1,9 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="java.text.SimpleDateFormat"%>
-<%@ page import="java.text.DateFormat"%>
 <%@ page import="ua.edu.sumdu.lab3.model.Album"%>
 
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>
+<%@ taglib uri="/WEB-INF/tags/fmt.tld" prefix="fmt" %>
 
 
 <jsp:useBean id="random" scope="request" class="ua.edu.sumdu.lab3.model.Album" />
@@ -38,14 +37,12 @@
             </c:otherwise>
         </c:choose>
         </h1>
-        <%
-            DateFormat dfone = new SimpleDateFormat("dd.MM.yyyy");
-            DateFormat dftwo = new SimpleDateFormat("yyyy");
-            String formatedYears = dftwo.format(random.getRelease());
-            String formatedMonthsYears = dfone.format(random.getRelease());
-            String countryPath = "/album/all?year="+formatedYears;
-        %>
-        <p><b>Release:</b> <a href=<%=request.getContextPath() %><%=countryPath %>><%=formatedMonthsYears %></a></p>
+        <p><b>Release:</b> 
+            <a 
+                href =<c:out value="${pageContext.request.contextPath}" />/album/all?year=<fmt:formatDate pattern="yyyy" value="${random.release}" /> >
+                <fmt:formatDate pattern="dd.MM.yyyy" value="${random.release}" /> 
+            </a>
+        </p>
         <p><b>Label:</b>
         <c:choose>
             <c:when test = "${random.label >= 0}">

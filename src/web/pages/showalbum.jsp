@@ -1,6 +1,5 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Iterator"%>
-<%@ page import="java.util.Iterator"%>
 <%@ page import="ua.edu.sumdu.lab3.model.Album"%>
 
 <%@taglib uri="/WEB-INF/tags/c.tld" prefix="c" %>

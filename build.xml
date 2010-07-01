@@ -1,167 +1,192 @@
 <?xml version = "1.0" ?>
 <project name = "AlbumsStorage" basedir = "." default = "deploy">    
-	
-	<property environment = "env" />
-	
-	<property name = "dir_build" location = "build" />
-	<property name = "dir_dist" location = "build/dist" />
-	
-	<property name = "dir_jar" location = "build/jar" />
-	<property name = "dir_war" location = "build/war" />
-	<property name = "dir_ear" location = "build/ear" />
-	
-	<property name = "dir_classes" location = "build/classes" />
-	
-	<property name = "dir_src" location = "src" />
-	<property name = "dir_conf" location = "src/conf" />
-	<property name = "dir_lib" location = "src/web/WEB-INF/lib" />
-	
-	<property name = "dir_jar_classes" location = "${dir_jar}/classes" />
-	<property name = "dir_jar_metainf" location = "${dir_jar}/META-INF" />
-	
-	<property name = "dir_ear_metainf" location = "${dir_ear}/META-INF" />
-	
-	<!-- CLEARING THE DIRRECTORIES-->
-	
-	<target name = "clear">
-		<echo message = "Clearing the temperary files ... " />
+
+    <property environment = "env" />
+    
+    <property name = "dir_build" location = "build" />
+    <property name = "dir_dist" location = "build/dist" />
+    
+    <property name = "dir_jar" location = "build/jar" />
+    <property name = "dir_war" location = "build/war" />
+    <property name = "dir_ear" location = "build/ear" />
+    <property name = "mod_jar" location = "build/model" />
+    
+    <property name = "dir_classes" location = "build/classes" />
+    
+    <property name = "dir_src" location = "src" />
+    <property name = "dir_conf" location = "src/conf" />
+    <property name = "dir_lib" location = "src/web/WEB-INF/lib" />
+    
+    <property name = "dir_jar_classes" location = "${dir_jar}/classes" />
+    <property name = "dir_jar_metainf" location = "${dir_jar}/META-INF" />
+    
+    <property name = "dir_ear_metainf" location = "${dir_ear}/META-INF" />
+    
+    <!-- CLEARING THE DIRRECTORIES-->
+    
+    <target name = "clear">
+        <echo message = "Clearing the temperary files ... " />
         <delete quiet = "true" includeemptydirs = "true">
             <fileset dir = "${dir_build}" />
         </delete>
-	</target>
-	
-	<!-- CREATING THE DIRRECTORIES-->
-	
-	<target name = "create_dirs" depends = "clear">
-	
-		<mkdir dir = "${dir_build}" />
-		<mkdir dir = "${dir_dist}" />
-		
-		<mkdir dir = "${dir_jar}" />
-		<mkdir dir = "${dir_war}" />
-		<mkdir dir = "${dir_ear}" />
-		
-		<mkdir dir = "${dir_classes}" />
+    </target>
+    
+    <!-- CREATING THE DIRRECTORIES-->
+    
+    <target name = "create_dirs" depends = "clear">
+    
+        <mkdir dir = "${dir_build}" />
+        <mkdir dir = "${dir_dist}" />
+        
+        <mkdir dir = "${dir_jar}" />
+        <mkdir dir = "${dir_war}" />
+        <mkdir dir = "${dir_ear}" />
+        
+        <mkdir dir = "${dir_classes}" />
 
-		<mkdir dir = "${dir_jar_classes}" />
-		<mkdir dir = "${dir_jar_metainf}" />
-		
-		<mkdir dir = "${dir_ear_metainf}" />
-	</target>
-	
-	
-	<path id="classpath">
-		<fileset dir="${dir_lib}">
-			<include name = "*.jar" />
+        <mkdir dir = "${dir_jar_classes}" />
+        <mkdir dir = "${dir_jar_metainf}" />
+        
+        <mkdir dir = "${dir_ear_metainf}" />
+        <mkdir dir = "${mod_jar}" />
+        <mkdir dir = "${mod_jar}/META-INF" />
+        <mkdir dir = "${mod_jar}/classes" />
+    </target>
+    
+    
+    <path id="classpath">
+        <fileset dir="${dir_lib}">
+            <include name = "*.jar" />
         </fileset>
         <fileset dir = "${env.JBOSS_HOME}/server/default/lib/" >
-			<include name="*.jar" />
+            <include name="*.jar" />
         </fileset>
         
     </path>
     
-	
-	<target name = "compile" depends = "create_dirs">
-		<javac 
-			srcdir = "${dir_src}/java" 
-			classpathref="classpath" 
-			destdir = "${dir_classes}" 
-			source="1.4" 
-			target="1.4">
+    
+    <target name = "compile" depends = "create_dirs">
+        <javac 
+            srcdir = "${dir_src}/java" 
+            classpathref="classpath" 
+            destdir = "${dir_classes}" 
+            source="1.4" 
+            target="1.4"
+            includeantruntime="false">
         </javac>
-	</target>
-	
-	<!-- CREATING JAR PACKAGE -->
-	<target name = "pack_jar" depends = "compile">
-		<copy todir = "${dir_jar_classes}">
-			<fileset dir = "${dir_classes}" >
-				<include name = "ua/edu/sumdu/lab3/ejbModule/label/*.*" />
-				<include name = "ua/edu/sumdu/lab3/ejbModule/album/*.*" />
-				<include name = "ua/edu/sumdu/lab3/exceptions/*.class" />
-				<include name = "ua/edu/sumdu/lab3/model/Label.class" />
-				<include name = "ua/edu/sumdu/lab3/model/Artist.class" />
-				<include name = "ua/edu/sumdu/lab3/model/Album.class" />
-				<include name = "ua/edu/sumdu/lab3/dao/operators/*.class" />
-				<include name = "ua/edu/sumdu/lab3/dao/UserTransactionManager.class" />
+    </target>
+    
+    <!-- CREATING JAR PACKAGE -->
+    <target name = "pack_jar" depends = "compile">
+        <copy todir = "${dir_jar_classes}">
+            <fileset dir = "${dir_classes}" >
+                <include name = "ua/edu/sumdu/lab3/ejbModule/label/*.*" />
+                <include name = "ua/edu/sumdu/lab3/ejbModule/album/*.*" />
+                <include name = "ua/edu/sumdu/lab3/ejbModule/artist/*.*" />
+                <include name = "ua/edu/sumdu/lab3/exceptions/*.class" />
+                <include name = "ua/edu/sumdu/lab3/dao/operators/*.class" />
             </fileset>
-		</copy>
-		
-		<copy todir = "${dir_jar_metainf}">
-			<fileset dir = "${dir_conf}" >
-				<include name = "jboss.xml" />
-				<include name = "ejb-jar.xml" />
+        </copy>
+        
+        <copy todir = "${dir_jar_metainf}">
+            <fileset dir = "${dir_conf}" >
+                <include name = "jboss.xml" />
+                <include name = "ejb-jar.xml" />
             </fileset>
-		</copy>
-		
-		<jar destfile = "${dir_jar}/ejbModule.jar">
+        </copy>
+        
+        <copy todir ="${mod_jar}/classes">
+            <fileset dir = "${dir_classes}">
+                <include name = "ua/edu/sumdu/lab3/model/Label.class" />
+                <include name = "ua/edu/sumdu/lab3/model/Artist.class" />
+                <include name = "ua/edu/sumdu/lab3/model/Album.class" />
+            </fileset>
+        </copy>
+
+        <manifest file="MANIFEST.MF">
+            <attribute name="Class-Path" value="model.jar"/>
+            <attribute name="Built-By" value="4boss and akel"/>
+        </manifest>
+
+        <jar destfile = "${dir_jar}/ejbModule.jar" manifest = "MANIFEST.MF">
             <fileset dir = "${dir_jar}" >
-				<include name = "META-INF/*.*" />
+                   <include name = "META-INF/*.*" />
             </fileset>
             <fileset dir = "${dir_jar_classes}" />
         </jar>
+
+        <jar destfile = "${mod_jar}/model.jar">
+            <fileset dir = "${mod_jar}" >
+                   <include name = "META-INF" />
+            </fileset>
+            <fileset dir = "${mod_jar}/classes" />
+        </jar>
         
-	</target>
-	
-	<!-- CREATING JAR PACKAGE -->
-	
-	<target name = "pack_war" depends = "pack_jar">
-		<copy todir = "${dir_war}">
-			<fileset dir = "${dir_src}/web" />
-		</copy>
-		
-		<copy todir = "${dir_war}/WEB-INF/classes">
-			<fileset dir = "${dir_classes}">
-				<include name = "ua/edu/sumdu/lab3/model/*.*" />
-				<include name = "ua/edu/sumdu/lab3/exceptions/*.*" />
-				<include name = "ua/edu/sumdu/lab3/dao/*.*" />
-				<include name = "ua/edu/sumdu/lab3/dao/operators/*.*" />
-				<include name = "ua/edu/sumdu/lab3/controller/*.*" />
-				<include name = "ua/edu/sumdu/lab3/javabeans/*.*" />
-				<include name = "ua/edu/sumdu/lab3/ejbModule/Allocator.class" />
-			</fileset>
-		</copy>
-		<!--
-		<copy 
-			file = "${dir_jar}/ejbModule.jar" 
-			todir = "${dir_war}/WEB-INF/lib" 
-		/>
-		-->
-		<jar destfile = "${dir_war}/discsdb.war">
+    </target>
+    
+    <!-- CREATING WAR PACKAGE -->
+    
+    <target name = "pack_war" depends = "pack_jar">
+        <copy todir = "${dir_war}">
+            <fileset dir = "${dir_src}/web" />
+        </copy>
+        
+        <copy todir = "${dir_war}/WEB-INF/classes">
+            <fileset dir = "${dir_classes}">
+                <include name = "ua/edu/sumdu/lab3/model/DaoFactory.class" />
+                <include name = "ua/edu/sumdu/lab3/model/OperableDAO.class" />
+                <include name = "ua/edu/sumdu/lab3/dao/*.*" />
+                <include name = "ua/edu/sumdu/lab3/controller/*.*" />
+                <include name = "ua/edu/sumdu/lab3/javabeans/*.*" />
+                <include name = "ua/edu/sumdu/lab3/ejbModule/Allocator.class" />
+            </fileset>
+        </copy>
+        <!--
+        <copy 
+            file = "${dir_jar}/ejbModule.jar" 
+            todir = "${dir_war}/WEB-INF/lib" 
+        />
+        -->
+        <jar destfile = "${dir_war}/discsdb.war">
             <fileset dir = "${dir_war}" />
         </jar>
-	</target>
-	
-	
-	<target name = "pack_ear" depends = "pack_war">
-		<copy 
-			file = "${dir_conf}/application.xml" 
-			todir = "${dir_ear_metainf}" 
-		/>
-		<copy 
-			file = "${dir_conf}/jboss-web.xml" 
-			todir = "${dir_ear_metainf}" 
-		/>
-		<copy 
-			file = "${dir_conf}/oracle-ds.xml" 
-			todir = "${dir_ear}" 
-		/>
-		<copy 
-			file = "${dir_jar}/ejbModule.jar" 
-			todir = "${dir_ear}" 
-		/>
-		<copy 
-			file = "${dir_war}/discsdb.war" 
-			todir = "${dir_ear}" 
-		/>
-		<jar destfile = "${dir_dist}/discsdb.ear">
+    </target>
+    <target name = "pack_ear" depends = "pack_war">
+        <copy 
+            file = "${dir_conf}/application.xml" 
+            todir = "${dir_ear_metainf}" 
+        />
+        <copy 
+            file = "${dir_conf}/jboss-web.xml" 
+            todir = "${dir_ear_metainf}" 
+        />
+        <copy 
+            file = "${dir_conf}/oracle-ds.xml" 
+            todir = "${dir_ear}" 
+        />
+        <copy 
+            file = "${dir_jar}/ejbModule.jar" 
+            todir = "${dir_ear}" 
+        />
+        
+        <copy 
+            file = "${mod_jar}/model.jar" 
+            todir = "${dir_ear}" 
+        />
+        
+        <copy 
+            file = "${dir_war}/discsdb.war" 
+            todir = "${dir_ear}" 
+        />
+        <jar destfile = "${dir_dist}/discsdb.ear">
             <fileset dir = "${dir_ear}" />
         </jar>
-	</target>
-	
-	<target name = "deploy" depends = "pack_ear">
-		<copy 
-			file = "${dir_dist}/discsdb.ear" 
-			todir = "${env.JBOSS_HOME}/server/default/deploy"
-		/>
-	</target>
+    </target>
+    
+    <target name = "deploy" depends = "pack_ear">
+        <copy 
+            file = "${dir_dist}/discsdb.ear" 
+            todir = "${env.JBOSS_HOME}/server/default/deploy"
+        />
+    </target>
 </project>
