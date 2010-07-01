@@ -5,8 +5,8 @@
         <jndi-name>jdbc/DiscsDB</jndi-name>  
         <connection-url>jdbc:oracle:thin:@127.0.0.1:1521:xe</connection-url>  
         <driver-class>oracle.jdbc.OracleDriver</driver-class>  
-        <user-name>4boss</user-name>  
-        <password>1377</password>  
+        <user-name>student</user-name>  
+        <password>student</password>  
         <min-pool-size>2</min-pool-size>  
         <max-pool-size>20</max-pool-size>  
         <idle-timeout-minutes>10</idle-timeout-minutes>  
