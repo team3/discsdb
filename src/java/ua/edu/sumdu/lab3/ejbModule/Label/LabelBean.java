@@ -29,7 +29,6 @@ public class LabelBean implements EntityBean {
 			String info, String logo, String majorName) 
 			throws CreateException, RemoteException {
 		int id = 0;
-		System.out.println("ejbCreate create");
 		try {
 			id = labelsOperator.addLabel(
 				major, name, info, logo, majorName
@@ -93,7 +92,7 @@ public class LabelBean implements EntityBean {
 	
 	public void ejbPassivate() {}
 	
-	/*
+	/**
 	 * Realization of the ejb-load method for loading data from the database.
 	 * @throws EJBException if an ejb-error arose.
 	 * @threws RemoteException if an connection exception arose;
@@ -194,7 +193,6 @@ public class LabelBean implements EntityBean {
 	public void ejbStore() {
 		
 		if (this.needToStore) {
-			System.out.println("STORING");
 			try {
 				labelsOperator.editLabel(
 						this.id, this.major, this.name, this.info,

@@ -26,7 +26,6 @@ public class ArtistBean implements EntityBean {
     public Integer ejbCreate(String name, String country, String info)
             throws CreateException {
             int id = -1;
-            System.out.println("ejbCreate() ");
             try {
                 Artist art = new Artist();
                 art.setName(name);
@@ -64,18 +63,15 @@ public class ArtistBean implements EntityBean {
     }
     
     public void setEntityContext(EntityContext ectx) {
-        System.out.println("setEntityContext()");
         this.context = ectx;
     }
     
     public void unsetEntityContext() {
-        System.out.println("unsetEntityContext()");
         this.context = null;
     }
     
     public void ejbRemove() 
             throws RemoveException {
-        System.out.println("ejbRemove() ");
         try {
             aOperator.deleteArtist(getId().intValue());
             
@@ -85,16 +81,13 @@ public class ArtistBean implements EntityBean {
     }
     
     public void ejbActivate() throws EJBException {
-        System.out.println("ejbActivate() ");
         this.id = (Integer) context.getPrimaryKey();
     }
     
     public void ejbPassivate() throws EJBException {
-        System.out.println("ejbPasivate() ");
     }
     
     public void ejbLoad() throws EJBException {
-        System.out.println("ejbLoad() ");
         try {
             Artist art = aOperator.getArtist(getId().intValue());
             setName(art.getName());
@@ -151,7 +144,7 @@ public class ArtistBean implements EntityBean {
                 artists.add(new Integer(((Artist)iter.next()).getId()));
             }
             if(artists.size() == 0) {
-                throw new FinderException("not found!");
+                throw new FinderException("Artist not found!");
             }
             
             return artists;
@@ -171,7 +164,7 @@ public class ArtistBean implements EntityBean {
                 artists.add(new Integer(((Artist)iter.next()).getId()));
             }
             if(artists.size() == 0) {
-                throw new FinderException("not found!");
+                throw new FinderException("Artists not found!");
             }
             
             return artists;
@@ -217,11 +210,6 @@ public class ArtistBean implements EntityBean {
         List genres = null;
         try {
             genres = aOperator.getGenres(art);
-            Iterator iter = genres.iterator();
-            System.out.println("Genres:");
-            while(iter.hasNext()) {
-                System.out.println(iter.next());
-            }
         } catch (OracleDataAccessObjectException e) {
             throw new EJBException(e.getMessage());
         }

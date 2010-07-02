@@ -86,7 +86,6 @@ public class OracleDAO implements OperableDAO {
     */
     public List getGenres(Label label) 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.getGenresByLabel(label);
         List genres = null;
 		try {
 			genres = (List)Allocator.getAlbumHomeItf().getGenresByLabel(
@@ -108,7 +107,6 @@ public class OracleDAO implements OperableDAO {
     */
     public List getDates() 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.getDates();
         List dates = null;
 		try {
 			dates = (List)Allocator.getAlbumHomeItf().getDates();
@@ -287,7 +285,6 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getAlbums(String genre, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.getAlbums(genre, firstRow, lastRow);
                 List albums = null;
         try {
 			albums = new LinkedList();
@@ -579,7 +576,6 @@ public class OracleDAO implements OperableDAO {
     */
     public List getAlbums(int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.getAlbums(firstRow, lastRow);
         
         List albums = null;
         try {
@@ -633,7 +629,7 @@ public class OracleDAO implements OperableDAO {
     }
    
    /**
-    * 
+    * Edites specified album.
     * 
     */ 
    public void editAlbum(int id, String name, String type, Date release,
@@ -644,7 +640,6 @@ public class OracleDAO implements OperableDAO {
 		
 			AlbumHome albumHome = Allocator.getAlbumHomeItf();
 			AlbumRemote albumRemote = albumHome.findByPrimaryKey(new Integer(id));
-			System.out.println("DAO id = " + id);
 			albumRemote.setId(new Integer(id));
 			albumRemote.setName(name);
 			albumRemote.setType(type);
@@ -754,7 +749,6 @@ public class OracleDAO implements OperableDAO {
      */ 
     public int findArtist(String name) 
             throws OracleDataAccessObjectException {
-        //return artistsOperator.findArtist(name);
         return 1;
     }
     
@@ -812,7 +806,6 @@ public class OracleDAO implements OperableDAO {
      */
     public int getAlbumNumber() 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.getAlbumNumber();
         int number = 0;
         try {
 			number = Allocator.getAlbumHomeItf().getAlbumNumber().intValue();
@@ -831,7 +824,6 @@ public class OracleDAO implements OperableDAO {
      */
     public int getAlbumNumber(Date date) 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.getAlbumNumber(date);
         int number = 0;
         try {
 			number = Allocator.getAlbumHomeItf().getAlbumNumber(
@@ -851,7 +843,6 @@ public class OracleDAO implements OperableDAO {
      */
     public int getAlbumNumber(String genre) 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.getAlbumNumber(genre);
         int number = 0;
         try {
 			number = Allocator.getAlbumHomeItf().getAlbumNumber(
