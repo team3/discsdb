@@ -177,7 +177,7 @@ public class AlbumBean implements EntityBean {
         Collection albums = null;
         Collection remotes = null;
         try {
-            remotes = new ArrayList();
+            remotes = new LinkedList();
             
             albums = albumsOperator.getAlbums(
                     firstRow.intValue(), 
@@ -199,7 +199,7 @@ public class AlbumBean implements EntityBean {
         Collection albums = null;
         Collection remotes = null;
         try {
-            remotes = new ArrayList();
+            remotes = new LinkedList();
             
             albums = albumsOperator.getLatestAlbums(number.intValue());
             
@@ -230,7 +230,7 @@ public class AlbumBean implements EntityBean {
         Collection remotes = null;
         
         try {
-            remotes = new ArrayList();
+            remotes = new LinkedList();
             
             albums = albumsOperator.findAlbums(
                     params,
@@ -322,7 +322,7 @@ public class AlbumBean implements EntityBean {
         Collection remotes = null;
         
         try {
-            remotes = new ArrayList();
+            remotes = new LinkedList();
             albums = albumsOperator.getAlbumsByGenre(
                     genre,
                     firstRow.intValue(), 
@@ -353,7 +353,7 @@ public class AlbumBean implements EntityBean {
         Collection remotes = null;
         
         try {
-            remotes = new ArrayList();
+            remotes = new LinkedList();
             albums = albumsOperator.getAlbumsByName(
                     name, 
                     firstRow.intValue(),
@@ -385,7 +385,7 @@ public class AlbumBean implements EntityBean {
         Collection remotes = null;
         
         try {
-            remotes = new ArrayList();
+            remotes = new LinkedList();
             albums = albumsOperator.getAlbumsByDate(
                     date, 
                     firstRow.intValue(),
@@ -416,7 +416,7 @@ public class AlbumBean implements EntityBean {
         Collection remotes = null;
         
         try {
-            remotes = new ArrayList();
+            remotes = new LinkedList();
             albums = albumsOperator.getAlbumsByArtist(
                     aid.intValue(), 
                     firstRow.intValue(),
@@ -448,7 +448,7 @@ public class AlbumBean implements EntityBean {
         Collection remotes = null;
         
         try {
-            remotes = new ArrayList();
+            remotes = new LinkedList();
             albums = albumsOperator.getAlbumsByLabel(
                     lid.intValue(), 
                     firstRow.intValue(),

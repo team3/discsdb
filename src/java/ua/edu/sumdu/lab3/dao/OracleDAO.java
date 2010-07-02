@@ -699,30 +699,30 @@ public class OracleDAO implements OperableDAO {
     public void editLabel(Label label) 
             throws OracleDataAccessObjectException {
         editLabel(label.getId(), label.getMajor(), label.getName(), 
-				label.getInfo(), label.getLogo(), label.getMajorName());
+                label.getInfo(), label.getLogo(), label.getMajorName());
     }
     
     public void editLabel(
-			int id, int major, String name, 
-			String info, String logo, String majorName) 
-			throws OracleDataAccessObjectException {
-		try {
-			LabelHome labelHome = Allocator.getLabelHomeItf();
-			LabelRemote labelRemote = labelHome.findByPrimaryKey(new Integer(id));
-			labelRemote.setId(new Integer(id));
-			labelRemote.setMajor(new Integer(major));
-			labelRemote.setName(name);
-			labelRemote.setInfo(info);
-			labelRemote.setLogo(logo);
-			labelRemote.setMajorName(majorName);
-		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
-		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
-		} catch (FinderException e){
-			throw new OracleDataAccessObjectException(e.getMessage());
-		}
-	}
+            int id, int major, String name, 
+            String info, String logo, String majorName) 
+            throws OracleDataAccessObjectException {
+        try {
+            LabelHome labelHome = Allocator.getLabelHomeItf();
+            LabelRemote labelRemote = labelHome.findByPrimaryKey(new Integer(id));
+            labelRemote.setId(new Integer(id));
+            labelRemote.setMajor(new Integer(major));
+            labelRemote.setName(name);
+            labelRemote.setInfo(info);
+            labelRemote.setLogo(logo);
+            labelRemote.setMajorName(majorName);
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e.getMessage());
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e.getMessage());
+        } catch (FinderException e){
+            throw new OracleDataAccessObjectException(e.getMessage());
+        }
+    }
     
     /**
      * Returns list of the <code>number</code> lastest albums.
@@ -734,16 +734,16 @@ public class OracleDAO implements OperableDAO {
             throws OracleDataAccessObjectException {
         List albums = null;
         try {
-			albums = (List)Allocator.getAlbumHomeItf().findLatest(
-					new Integer(number));
-		} catch (FinderException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e);
-		}
-		return albums;
+            albums = (List)Allocator.getAlbumHomeItf().findLatest(
+                    new Integer(number));
+        } catch (FinderException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        }
+        return albums;
     }
     
     /**
@@ -889,16 +889,15 @@ public class OracleDAO implements OperableDAO {
      */ 
     public Album getRandomAlbum() 
             throws OracleDataAccessObjectException {
-        //return albumsOperator.getRandomAlbum();
         Album album = null;
         try {
-			album = Allocator.getAlbumHomeItf().getRandom();
-		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e);
-		}
-		return album;
+            album = Allocator.getAlbumHomeItf().getRandom();
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        }
+        return album;
     }
     
     /**

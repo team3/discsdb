@@ -7,7 +7,7 @@
 
 
 <jsp:useBean id="random" scope="request" class="ua.edu.sumdu.lab3.model.Album" />
-<jsp:useBean id="latest" scope="request" class="java.util.LinkedList" />
+<jsp:useBean id="latest" scope="request" class="java.util.ArrayList" />
 
 <html>
 <head>
@@ -62,7 +62,7 @@
     <div class="latest">
     <c:choose>
         <c:when test="${latest != null}">
-            <c:forEach var="lalbum" begin="0" items="${latest}">
+            <c:forEach var="lalbum" items="${latest}">
                 <div class = "smallalbum">
                     <br />
                     <a href=<c:out value="${pageContext.request.contextPath}${albpath}${lalbum.id}"/> >

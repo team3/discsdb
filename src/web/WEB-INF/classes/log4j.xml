@@ -6,7 +6,7 @@
 
 <appender name="logfile" class="org.apache.log4j.RollingFileAppender">
 
-<param name="File" value="/home/andrey/trace.log" />
+<param name="File" value="d:\\my\\log\\trace.log" />
 
 <param name="Append" value="true" />
 

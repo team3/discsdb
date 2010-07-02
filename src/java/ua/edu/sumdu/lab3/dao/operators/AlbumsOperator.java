@@ -7,7 +7,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.*;
-import javax.sql.*;
 import javax.naming.*;
 
 public class AlbumsOperator extends MainOperator {
