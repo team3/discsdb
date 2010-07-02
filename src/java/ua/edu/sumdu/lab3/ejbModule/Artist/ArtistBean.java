@@ -208,8 +208,10 @@ public class ArtistBean implements EntityBean {
     
     public Collection ejbHomeGetGenres(Artist art) throws EJBException {
         List genres = null;
+        AlbumsOperator albumsOperator = null;
         try {
-            genres = aOperator.getGenres(art);
+			albumsOperator = new AlbumsOperator();
+            genres = albumsOperator.getGenresByArtist(art.getId());
         } catch (OracleDataAccessObjectException e) {
             throw new EJBException(e.getMessage());
         }

@@ -369,29 +369,4 @@ public class ArtistsOperator extends MainOperator {
         return artists; 
     }
     
-    public List getGenres(Artist artist) 
-            throws OracleDataAccessObjectException {
-        List genres = null;
-        try {
-            genres = new LinkedList();
-
-            this.getConnection();
-
-            this.statement = this.connection.prepareStatement(
-                    SELECT_GENRES_BY_ARTIST);
-
-            this.statement.setInt(1, artist.getId());
-
-            ResultSet set = this.statement.executeQuery();;
-            while(set.next()){
-                genres.add(set.getString(1));
-            }
-            set.close();
-        } catch (SQLException e){
-            throw new OracleDataAccessObjectException(e);
-        } finally {
-            closeConnection();
-        }
-        return genres;
-    }
 }
