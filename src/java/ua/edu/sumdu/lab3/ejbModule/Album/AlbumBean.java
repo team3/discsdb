@@ -102,11 +102,7 @@ public class AlbumBean implements EntityBean {
     
     public void ejbRemove() 
             throws RemoveException, RemoteException {
-        try {
-            albumsOperator.deleteAlbum(this.id);
-        } catch (OracleDataAccessObjectException e){
-            throw new RemoveException(e.getMessage());
-        }
+        ejbHomeRemove(new Integer(this.id));
     }
 
     /**
@@ -496,6 +492,14 @@ public class AlbumBean implements EntityBean {
             throw new EJBException(e.getMessage());
         }
         return dates;
+    }
+    
+    public void ejbHomeRemove(Integer id) throws EJBException {
+        try {
+            albumsOperator.deleteAlbum(id.intValue());
+        } catch (OracleDataAccessObjectException e){
+            throw new EJBException(e.getMessage());
+        }
     }
     
     private int id;

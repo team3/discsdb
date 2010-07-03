@@ -693,8 +693,21 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void editLabel(Label label) 
             throws OracleDataAccessObjectException {
-        editLabel(label.getId(), label.getMajor(), label.getName(), 
-                label.getInfo(), label.getLogo(), label.getMajorName());
+        try {
+            LabelHome lblHome = Allocator.getLabelHomeItf();
+            LabelRemote lblRemote = lblHome.findByPrimaryKey(new Integer(label.getId()));
+            lblRemote.setMajor(new Integer(label.getMajor()));
+            lblRemote.setName(label.getName());
+            lblRemote.setInfo(label.getInfo());
+            lblRemote.setLogo(label.getLogo());
+            lblRemote.setMajorName(label.getMajorName());
+        } catch(RemoteException e) {
+             throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (FinderException e){
+            throw new OracleDataAccessObjectException(e);
+        }
     }
     
     public void editLabel(
@@ -704,7 +717,6 @@ public class OracleDAO implements OperableDAO {
         try {
             LabelHome labelHome = Allocator.getLabelHomeItf();
             LabelRemote labelRemote = labelHome.findByPrimaryKey(new Integer(id));
-            labelRemote.setId(new Integer(id));
             labelRemote.setMajor(new Integer(major));
             labelRemote.setName(name);
             labelRemote.setInfo(info);
@@ -899,18 +911,13 @@ public class OracleDAO implements OperableDAO {
     public void deleteAlbum(int id) 
             throws OracleDataAccessObjectException {
         try {
-			AlbumHome albumHome = Allocator.getAlbumHomeItf();
-			AlbumRemote remote = albumHome.findByPrimaryKey(new Integer(id));
-			remote.remove();
-		} catch (FinderException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (RemoveException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e);
-		}
+            AlbumHome albumHome = Allocator.getAlbumHomeItf();
+            albumHome.remove(new Integer(id));
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        }
 
     }
     
@@ -926,8 +933,6 @@ public class OracleDAO implements OperableDAO {
             artHome.remove(new Integer(id));
         } catch (RemoteException e){
             throw new OracleDataAccessObjectException(e);
-        } catch (EJBException e) {
-            throw new OracleDataAccessObjectException(e);
         } catch (NamingException e){
             throw new OracleDataAccessObjectException(e);
         }    
@@ -941,18 +946,13 @@ public class OracleDAO implements OperableDAO {
     public void deleteLabel(int id) 
             throws OracleDataAccessObjectException {
         try {
-			LabelHome labelHome = Allocator.getLabelHomeItf();
-			LabelRemote remote = labelHome.findByPrimaryKey(new Integer(id));
-			remote.remove();
-		} catch (FinderException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (RemoveException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (RemoteException e){
-			throw new OracleDataAccessObjectException(e);
-		} catch (NamingException e){
-			throw new OracleDataAccessObjectException(e);
-		}
+            LabelHome labelHome = Allocator.getLabelHomeItf();
+            labelHome.remove(new Integer(id));
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        }
     }
 
     /**

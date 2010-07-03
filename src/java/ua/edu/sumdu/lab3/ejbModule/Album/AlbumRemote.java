@@ -5,8 +5,8 @@ import java.util.Date;
 import java.rmi.RemoteException;
 
 public interface AlbumRemote extends EJBObject {
-	
-	public int getId() throws RemoteException;
+
+    public int getId() throws RemoteException;
  
     public String getName() throws RemoteException;
 
@@ -33,8 +33,8 @@ public interface AlbumRemote extends EJBObject {
     public void setName(String name) throws RemoteException;
 
     public void setType(String type) throws RemoteException;
-	
-	public void setRelease(Date release)  throws RemoteException;
+
+    public void setRelease(Date release)  throws RemoteException;
 
     public void setGenre(String genre)  throws RemoteException;
 

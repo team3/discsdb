@@ -60,9 +60,9 @@ public class AlbumsOperator extends MainOperator {
             "INSERT INTO ALBUM VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     private static final String RESERVE_NEW_ID = 
-			"SELECT SQ_ALBUM.nextval FROM dual";
-	
-	private static final String SELECT_GENRES_BY_ARTIST =
+            "SELECT SQ_ALBUM.nextval FROM dual";
+    
+    private static final String SELECT_GENRES_BY_ARTIST =
             "SELECT DISTINCT genre FROM ALBUM WHERE art = ?";
 
     private static final String SELECT_GENRES_BY_LABEL =
@@ -70,37 +70,37 @@ public class AlbumsOperator extends MainOperator {
             
     private static final String SELECT_ALL_DATES =
             "SELECT DISTINCT TO_CHAR(release, 'YYYY') as year FROM album order by year";
-	
-	/**
+    
+    /**
      * Returns the new value of the labels counter.
      * 
      * @return the new value of the labels counter.
      */ 
     public int getNewId() throws OracleDataAccessObjectException {
-		int id = 0;
-		try {
-			getConnection();
-			statement = connection.prepareStatement(RESERVE_NEW_ID);
-			ResultSet set = statement.executeQuery();
-			if(set.next()){
-				id = set.getInt(1);
-			}
-		} catch (java.sql.SQLException e) {
+        int id = 0;
+        try {
+            getConnection();
+            statement = connection.prepareStatement(RESERVE_NEW_ID);
+            ResultSet set = statement.executeQuery();
+            if(set.next()){
+                id = set.getInt(1);
+            }
+        } catch (java.sql.SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
             closeConnection();
         }
         return id;
-	}
-			        
+    }
+
     /**
      * Adds new album to the specified storage.
      * @param album new instanse of the Album that should be added.
      * @throws OracleDataAccessObjectException if problems while adding the data.
      */
     public int addAlbum(String name, String type, java.util.Date release, 
-			String genre, String cover, String artistName, String labelName,
-			String review, int artist, int label)
+            String genre, String cover, String artistName, String labelName,
+            String review, int artist, int label)
             throws OracleDataAccessObjectException {
         
         int alid = -1;
@@ -122,7 +122,8 @@ public class AlbumsOperator extends MainOperator {
             statement.setString(7, review);
             statement.setInt(8, artist);
             statement.setInt(9, label);
-
+            statement.executeUpdate();
+            
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
@@ -138,17 +139,17 @@ public class AlbumsOperator extends MainOperator {
      */
     public int addAlbum(Album album)
             throws OracleDataAccessObjectException {
-		return addAlbum(
-				album.getName(), 
-				album.getType(),
-				album.getRelease(),
-				album.getGenre(),
-				album.getCover(),
-				album.getArtistName(),
-				album.getLabelName(),
-				album.getReview(),
-				album.getArtist(),
-				album.getLabel());
+        return addAlbum(
+                album.getName(), 
+                album.getType(),
+                album.getRelease(),
+                album.getGenre(),
+                album.getCover(),
+                album.getArtistName(),
+                album.getLabelName(),
+                album.getReview(),
+                album.getArtist(),
+                album.getLabel());
     }
 
     /**
@@ -447,24 +448,11 @@ public class AlbumsOperator extends MainOperator {
      * @throws OracleDataAccessObjectException if problems while editting data.
      */
     public void editAlbum(int id, String name, String type, Date release,
-			String genre, String cover, String artistName, 
-			String labelName, String review, int artist, int label) 
+            String genre, String cover, String artistName, 
+            String labelName, String review, int artist, int label) 
             throws OracleDataAccessObjectException {
         try {
             Album alb = getAlbum(id);
-            
-			System.out.println(id);
-            System.out.println(name);
-            System.out.println(cover);
-            System.out.println(type);
-            System.out.println(release);
-            System.out.println(genre);
-            System.out.println(cover);
-            System.out.println(artistName);
-            System.out.println(labelName);
-            System.out.println(review);
-            System.out.println(artist);
-            System.out.println(label);
             
             getConnection();
 
@@ -483,25 +471,23 @@ public class AlbumsOperator extends MainOperator {
             statement.setString(5, genre);
             statement.setString(6, cover);
             if (artist == 0){
-				statement.setNull(7, artist);
-			} else {
-				statement.setInt(7, artist);
-			}
+                statement.setNull(7, artist);
+            } else {
+                statement.setInt(7, artist);
+            }
 
             statement.setString(8, review);
-			if (label == 0){
-				statement.setNull(9, label);
-			} else {
-				statement.setInt(9, label);
-			}
+            if (label == 0){
+                statement.setNull(9, label);
+            } else {
+                statement.setInt(9, label);
+            }
             statement.setInt(10, id);
             statement.executeUpdate();
-			System.out.println("Operator: eddited");
-
         } catch (SQLException e) {
             throw new OracleDataAccessObjectException(e);
         } finally {
-			closeConnection();
+            closeConnection();
         }
     }
 
@@ -658,25 +644,13 @@ public class AlbumsOperator extends MainOperator {
             throws OracleDataAccessObjectException {
         try {
             getConnection();
-
             statement = connection.prepareStatement(DELETE_ALBUM);
-
             statement.setInt(1, id);
-
+            statement.executeUpdate();
         }   catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new OracleDataAccessObjectException(exc);
-            }
             throw new OracleDataAccessObjectException(e);
         } finally {
-            try {
-                connection.setAutoCommit(true);
-                closeConnection();
-            } catch (SQLException e) {
-                throw new OracleDataAccessObjectException(e);
-            } 
+            closeConnection(); 
         }
     }
     

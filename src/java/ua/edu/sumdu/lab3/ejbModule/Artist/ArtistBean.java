@@ -210,7 +210,7 @@ public class ArtistBean implements EntityBean {
         List genres = null;
         AlbumsOperator albumsOperator = null;
         try {
-			albumsOperator = new AlbumsOperator();
+            albumsOperator = new AlbumsOperator();
             genres = albumsOperator.getGenresByArtist(art.getId());
         } catch (OracleDataAccessObjectException e) {
             throw new EJBException(e.getMessage());

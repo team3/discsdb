@@ -4,8 +4,8 @@ import javax.ejb.*;
 import java.rmi.RemoteException;
 
 public interface LabelRemote extends EJBObject {
-	
-	public Integer getId() throws RemoteException; 
+    
+    public Integer getId() throws RemoteException; 
 
     public Integer getMajor() throws RemoteException; 
 

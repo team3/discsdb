@@ -68,4 +68,6 @@ public interface AlbumHome extends EJBHome {
             
     public Collection findLatest(Integer number)
             throws FinderException, RemoteException;
+            
+    public void remove(Integer id) throws EJBException, RemoteException;
 }
