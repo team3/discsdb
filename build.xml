@@ -84,7 +84,8 @@
                 <include name = "ua/edu/sumdu/lab3/ejbModule/album/*.*" />
                 <include name = "ua/edu/sumdu/lab3/ejbModule/artist/*.*" />
                 <include name = "ua/edu/sumdu/lab3/exceptions/*.class" />
-                <include name = "ua/edu/sumdu/lab3/dao/operators/*.class" />
+                <include name = "ua/edu/sumdu/lab3/dao/ejbdao/operators/*.class" />
+                <include name = "ua/edu/sumdu/lab3/dao/oradao/operators/*.class" />
             </fileset>
         </copy>
         
@@ -135,7 +136,8 @@
             <fileset dir = "${dir_classes}">
                 <include name = "ua/edu/sumdu/lab3/model/DaoFactory.class" />
                 <include name = "ua/edu/sumdu/lab3/model/OperableDAO.class" />
-                <include name = "ua/edu/sumdu/lab3/dao/*.*" />
+                <include name = "ua/edu/sumdu/lab3/dao/ejbdao/*.*" />
+                <include name = "ua/edu/sumdu/lab3/dao/oradao/*.*" />
                 <include name = "ua/edu/sumdu/lab3/controller/*.*" />
                 <include name = "ua/edu/sumdu/lab3/javabeans/*.*" />
                 <include name = "ua/edu/sumdu/lab3/ejbModule/Allocator.class" />

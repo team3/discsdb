@@ -4,7 +4,7 @@ import javax.ejb.*;
 import java.util.*;
 import java.rmi.RemoteException;
 
-import ua.edu.sumdu.lab3.dao.operators.*;
+import ua.edu.sumdu.lab3.dao.ejbdao.operators.*;
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
 
@@ -200,10 +200,9 @@ public class AlbumBean implements EntityBean {
             albums = albumsOperator.getLatestAlbums(number.intValue());
             
             Iterator itr = albums.iterator();
-            System.out.println("Latest");
+
             while(itr.hasNext()){
                 Album album = (Album)itr.next();
-                System.out.println(album.getId());
                 remotes.add(new Integer(album.getId()));
             }
         } catch (OracleDataAccessObjectException e){

@@ -1,14 +1,23 @@
 package ua.edu.sumdu.lab3.model;
 
 import java.util.Map;
-import ua.edu.sumdu.lab3.dao.OracleDAO;
+import ua.edu.sumdu.lab3.dao.oradao.OracleDAO;
+import ua.edu.sumdu.lab3.dao.ejbdao.EjbDAO;
+
 public class DaoFactory {
 
-    public static OperableDAO getDao(String name) {
+    public static final int TYPE_ORA = 0;
+    public static final int TYPE_EJB = 1;
+
+    public static OperableDAO getDao(int type) {
         
-        if("oracle".equals(name)) {
+        if(type == TYPE_ORA) {
             OracleDAO oracledao = OracleDAO.getInstance();
             return oracledao;
+        } else 
+        if(type == TYPE_EJB) {
+            EjbDAO ejbdao = EjbDAO.getInstance();
+            return ejbdao;
         }
         
         return null;
