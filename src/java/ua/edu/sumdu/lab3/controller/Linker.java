@@ -1,7 +1,8 @@
 package ua.edu.sumdu.lab3.controller;
 
 import ua.edu.sumdu.lab3.model.*;
-import ua.edu.sumdu.lab3.dao.*;
+import ua.edu.sumdu.lab3.dao.ejbdao.*;
+import ua.edu.sumdu.lab3.dao.oradao.*;
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.javabeans.CollectionBean;
 
@@ -30,7 +31,18 @@ public class Linker extends HttpServlet {
         log = Logger.getLogger(Linker.class);
         Locale.setDefault(Locale.ENGLISH);
         ServletContext context = getServletContext();
-        dao = DaoFactory.getDao(DaoFactory.TYPE_EJB);
+        String daoclass = getServletConfig().getInitParameter("daorealization");
+        System.out.println(daoclass);
+        try {
+            dao = (ua.edu.sumdu.lab3.model.OperableDAO)this.getClass().getClassLoader().loadClass(daoclass).newInstance();
+            //dao = DaoFactory.getDao(DaoFactory.TYPE_EJB);
+        } catch (ClassNotFoundException e){
+            throw new ServletException(e);
+        } catch (InstantiationException e){
+            throw new ServletException(e);
+        } catch (IllegalAccessException e){
+            throw new ServletException(e);
+        }
     }
     
     /**

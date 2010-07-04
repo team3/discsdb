@@ -4,6 +4,10 @@
     <servlet>
         <servlet-name>Dispatcher</servlet-name>
         <servlet-class>ua.edu.sumdu.lab3.controller.Linker</servlet-class>
+        <init-param>
+            <param-name>daorealization</param-name>
+            <param-value>ua.edu.sumdu.lab3.dao.ejbdao.EjbDAO</param-value>
+        </init-param>
     </servlet>
  
     <servlet-mapping>

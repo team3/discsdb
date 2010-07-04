@@ -42,7 +42,7 @@ public class EjbDAO implements OperableDAO {
     private LabelsOperator labelsOperator = null;
     private MainOperator mainOperator = null;
     
-    protected EjbDAO() {
+    public EjbDAO() {
         log = Logger.getLogger(EjbDAO.class);
         
         albumsOperator = new AlbumsOperator();
