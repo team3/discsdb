@@ -4,17 +4,21 @@
 <jboss>
    <enterprise-beans>
       <entity>
-         <ejb-name>Label</ejb-name>
-         <jndi-name>Label</jndi-name>
+            <ejb-name>Label</ejb-name>
+            <jndi-name>Label</jndi-name>
       </entity>
       <entity>
-         <ejb-name>Album</ejb-name>
-         <jndi-name>Album</jndi-name>
+            <ejb-name>Album</ejb-name>
+            <jndi-name>Album</jndi-name>
       </entity>
       <entity>
-         <ejb-name>Artist</ejb-name>
-         <jndi-name>Artist</jndi-name>
+            <ejb-name>Artist</ejb-name>
+            <jndi-name>Artist</jndi-name>
       </entity>
+      <session>
+            <ejb-name>Stuff</ejb-name>
+            <jndi-name>Stuff</jndi-name>
+      </session>
    </enterprise-beans>   
    <resource-managers>
    </resource-managers>

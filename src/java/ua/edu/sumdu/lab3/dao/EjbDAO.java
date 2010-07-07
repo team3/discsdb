@@ -12,6 +12,7 @@ import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.ejbModule.label.*;
 import ua.edu.sumdu.lab3.ejbModule.album.*;
 import ua.edu.sumdu.lab3.ejbModule.artist.*;
+import ua.edu.sumdu.lab3.ejbModule.stuff.*;
 import ua.edu.sumdu.lab3.ejbModule.Allocator;
 import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.model.*;
@@ -27,6 +28,8 @@ import javax.ejb.EJBException;
 import javax.ejb.RemoveException;
 import java.rmi.RemoteException;
 import javax.naming.NamingException;
+
+
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
@@ -70,8 +73,16 @@ public class EjbDAO implements OperableDAO {
     */
     public List getGenres(Artist artist) 
             throws OracleDataAccessObjectException {
-            List genres = mainOperator.getGenresByArtist(artist.getId());
-            return genres;
+        List genres = null;
+        try {
+            StuffHome shome = Allocator.getStuffHomeItf(); 
+            StuffRemote stuff = shome.create();
+            genres = (List)stuff.getGenresByArtist(
+                    new Integer(artist.getId()));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return genres;
     }
 
     /**
@@ -82,7 +93,15 @@ public class EjbDAO implements OperableDAO {
     */
     public List getGenres(Label label) 
             throws OracleDataAccessObjectException {
-        List genres = mainOperator.getGenresByLabel(label.getId());
+        List genres = null;
+        try {
+            StuffHome shome = Allocator.getStuffHomeItf(); 
+            StuffRemote stuff = shome.create();
+            genres = (List)stuff.getGenresByLabel(
+                    new Integer(label.getId()));
+        } catch(Exception e) {
+            throw new OracleDataAccessObjectException(e);
+        }
         return genres;
     }
 
@@ -93,7 +112,14 @@ public class EjbDAO implements OperableDAO {
     */
     public List getDates() 
             throws OracleDataAccessObjectException {
-        List dates = mainOperator.getDates();
+        List dates = null;
+        try {
+            StuffHome shome = Allocator.getStuffHomeItf(); 
+            StuffRemote stuff = shome.create();
+            dates = (List)stuff.getDates();
+        } catch(Exception e) {
+            throw new OracleDataAccessObjectException(e);
+        }
         return dates;
     }
 
@@ -141,6 +167,7 @@ public class EjbDAO implements OperableDAO {
 
     /**
      * Adds new artist to the specified storage.
+     * 
      * @param album new instanse of the Artist that should be added.
      * @throws OracleDataAccessObjectException if problems while adding the data.
      */ 
@@ -375,7 +402,6 @@ public class EjbDAO implements OperableDAO {
 
     }
         
-    
     /**
     * Returns list of albums of the specified label.
     * @param label label of the album.
@@ -607,8 +633,10 @@ public class EjbDAO implements OperableDAO {
 
    
    /**
-    * Edites specified album.
+    * Edits specified album. Replaces found (by id) album by specified.
     * 
+    * @param album album to edit.
+    * @throws OracleDataAccessObjectException if problems while getting data.
     */ 
    public void editAlbum(Album album) 
             throws OracleDataAccessObjectException {

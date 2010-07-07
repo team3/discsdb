@@ -83,6 +83,7 @@
                 <include name = "ua/edu/sumdu/lab3/ejbModule/label/*.*" />
                 <include name = "ua/edu/sumdu/lab3/ejbModule/album/*.*" />
                 <include name = "ua/edu/sumdu/lab3/ejbModule/artist/*.*" />
+                <include name = "ua/edu/sumdu/lab3/ejbModule/stuff/*.*" />
                 <include name = "ua/edu/sumdu/lab3/exceptions/*.class" />
                 <include name = "ua/edu/sumdu/lab3/dao/operators/*.class" />
             </fileset>

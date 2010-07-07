@@ -49,6 +49,7 @@ public class MainOperator {
     
     /**
      * Closes connection with database. 
+     * @throws  OracleDataAccessObjectException 
      */
     protected void closeConnection() 
             throws OracleDataAccessObjectException {
