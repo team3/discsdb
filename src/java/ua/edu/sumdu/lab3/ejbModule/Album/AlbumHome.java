@@ -51,15 +51,6 @@ public interface AlbumHome extends EJBHome {
             Integer lastRow)
             throws FinderException, RemoteException;
 
-    public Collection getGenresByArtist(Integer aid) 
-            throws EJBException, RemoteException;
-    
-    public Collection getGenresByLabel(Integer lid) 
-            throws EJBException, RemoteException;
-    
-    public Collection getDates() 
-            throws EJBException, RemoteException;
-            
     public Collection findLatest(Integer number)
             throws FinderException, RemoteException;
             

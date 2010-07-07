@@ -1,4 +1,4 @@
-package ua.edu.sumdu.lab3.dao.ejbdao.operators;
+package ua.edu.sumdu.lab3.dao.operators;
 
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
@@ -45,9 +45,6 @@ public class ArtistsOperator extends MainOperator {
     private static final String SELECT_ALL_ARTISTS = 
             "SELECT c.aid,c.name,c.country,c.info FROM (SELECT a.*, rownum rnum FROM (SELECT * FROM artist ORDER BY aid) a WHERE rownum <= ?) c where rnum >= ?";
             
-    private static final String SELECT_GENRES_BY_ARTIST =
-            "SELECT DISTINCT genre FROM ALBUM WHERE art = ?";
-    
     private int getNewId() throws OracleDataAccessObjectException {
         try {
             

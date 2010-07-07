@@ -1,8 +1,6 @@
 package ua.edu.sumdu.lab3.controller;
 
 import ua.edu.sumdu.lab3.model.*;
-import ua.edu.sumdu.lab3.dao.ejbdao.*;
-import ua.edu.sumdu.lab3.dao.oradao.*;
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.javabeans.CollectionBean;
 
@@ -32,11 +30,12 @@ public class Linker extends HttpServlet {
         Locale.setDefault(Locale.ENGLISH);
         ServletContext context = getServletContext();
         String daoclass = getServletConfig().getInitParameter("daorealization");
-        System.out.println(daoclass);
         try {
             dao = (ua.edu.sumdu.lab3.model.OperableDAO)this.getClass().getClassLoader().loadClass(daoclass).newInstance();
+            log.info(daoclass + " are used for working with db");
             //dao = DaoFactory.getDao(DaoFactory.TYPE_EJB);
         } catch (ClassNotFoundException e){
+            log.error("Class for working with database was not defined. Check your config. web.xml -> daorealization");
             throw new ServletException(e);
         } catch (InstantiationException e){
             throw new ServletException(e);
@@ -313,6 +312,7 @@ public class Linker extends HttpServlet {
         } catch (ParseException e) {
             throw new ServletException(e);
         } catch (OracleDataAccessObjectException e) {
+            log.error("DATABASE IS DOWN WITH :" + e.getMessage());
             throw new ServletException(e);
         }
     }
@@ -527,6 +527,7 @@ public class Linker extends HttpServlet {
         } catch (ParseException e) {
             throw new ServletException(e);
         } catch (OracleDataAccessObjectException e) {
+            log.error("DATABASE IS DOWN WITH :" + e.getMessage());
             throw new ServletException(e);
         }
     }

@@ -6,7 +6,7 @@
         <servlet-class>ua.edu.sumdu.lab3.controller.Linker</servlet-class>
         <init-param>
             <param-name>daorealization</param-name>
-            <param-value>ua.edu.sumdu.lab3.dao.ejbdao.EjbDAO</param-value>
+            <param-value>ua.edu.sumdu.lab3.dao.EjbDAO</param-value>
         </init-param>
     </servlet>
  
@@ -40,16 +40,18 @@
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
     
+    <!--
     <error-page>
         <error-code>404</error-code>
         <location>/pages/404.jsp</location>
     </error-page> 
 
+
     <error-page>
         <error-code>500</error-code>
         <location>/pages/error.jsp</location>
     </error-page>
-
+    -->
     <taglib>
         <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
         <taglib-location>/WEB-INF/tags/fmt.tld</taglib-location>

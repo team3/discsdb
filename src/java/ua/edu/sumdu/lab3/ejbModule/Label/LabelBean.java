@@ -4,7 +4,7 @@ import javax.ejb.*;
 import java.util.*;
 import java.rmi.RemoteException;
 
-import ua.edu.sumdu.lab3.dao.ejbdao.operators.*;
+import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
 

@@ -28,7 +28,4 @@ public interface ArtistHome extends EJBHome {
     
     public void remove(Integer id) throws EJBException, 
             RemoteException;
-    
-    public Collection getGenres(Artist art) throws EJBException, RemoteException;
-    
 }

@@ -6,14 +6,14 @@
 * @date 11.06.2010
 */
 
-package ua.edu.sumdu.lab3.dao.ejbdao;
+package ua.edu.sumdu.lab3.dao;
 
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.ejbModule.label.*;
 import ua.edu.sumdu.lab3.ejbModule.album.*;
 import ua.edu.sumdu.lab3.ejbModule.artist.*;
 import ua.edu.sumdu.lab3.ejbModule.Allocator;
-import ua.edu.sumdu.lab3.dao.ejbdao.operators.*;
+import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.model.*;
 import java.util.Date;
 import java.text.DateFormat;
@@ -70,14 +70,8 @@ public class EjbDAO implements OperableDAO {
     */
     public List getGenres(Artist artist) 
             throws OracleDataAccessObjectException {
-        try {
-            List genres = (List)Allocator.getArtistHomeItf().getGenres(artist);
+            List genres = mainOperator.getGenresByArtist(artist.getId());
             return genres;
-        }catch (NamingException e) {
-            throw new OracleDataAccessObjectException(e);
-        } catch (RemoteException e){
-            throw new OracleDataAccessObjectException(e);
-        }
     }
 
     /**
@@ -88,17 +82,7 @@ public class EjbDAO implements OperableDAO {
     */
     public List getGenres(Label label) 
             throws OracleDataAccessObjectException {
-        List genres = null;
-        try {
-            genres = (List)Allocator.getAlbumHomeItf().getGenresByLabel(
-                    new Integer(label.getId()));
-        } catch (EJBException e){
-            throw new OracleDataAccessObjectException(e);
-        } catch (RemoteException e){
-            throw new OracleDataAccessObjectException(e);
-        } catch (NamingException e){
-            throw new OracleDataAccessObjectException(e);
-        }
+        List genres = mainOperator.getGenresByLabel(label.getId());
         return genres;
     }
 
@@ -109,16 +93,7 @@ public class EjbDAO implements OperableDAO {
     */
     public List getDates() 
             throws OracleDataAccessObjectException {
-        List dates = null;
-        try {
-            dates = (List)Allocator.getAlbumHomeItf().getDates();
-        } catch (EJBException e){
-            throw new OracleDataAccessObjectException(e);
-        } catch (RemoteException e){
-            throw new OracleDataAccessObjectException(e);
-        } catch (NamingException e){
-            throw new OracleDataAccessObjectException(e);
-        }
+        List dates = mainOperator.getDates();
         return dates;
     }
 
@@ -762,7 +737,7 @@ public class EjbDAO implements OperableDAO {
      */ 
     public int findArtist(String name) 
             throws OracleDataAccessObjectException {
-        return 1;
+        return artistsOperator.findArtist(name);
     }
     
     /**

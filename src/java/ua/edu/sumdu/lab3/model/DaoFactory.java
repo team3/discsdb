@@ -1,8 +1,7 @@
 package ua.edu.sumdu.lab3.model;
 
 import java.util.Map;
-import ua.edu.sumdu.lab3.dao.oradao.OracleDAO;
-import ua.edu.sumdu.lab3.dao.ejbdao.EjbDAO;
+import ua.edu.sumdu.lab3.dao.*;
 
 public class DaoFactory {
 

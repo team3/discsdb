@@ -4,7 +4,7 @@ import javax.ejb.*;
 import java.util.*;
 import java.rmi.RemoteException;
 
-import ua.edu.sumdu.lab3.dao.ejbdao.operators.*;
+import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
 
@@ -459,40 +459,7 @@ public class AlbumBean implements EntityBean {
         }
         return remotes;
     }
-        
-    public Collection ejbHomeGetGenresByArtist(Integer aid)
-            throws EJBException {
-        Collection genres = null;
-        try {
-            genres = albumsOperator.getGenresByArtist(aid.intValue());
-        } catch (OracleDataAccessObjectException e){
-            throw new EJBException(e.getMessage());
-        }
-        return genres;
-    }
-    
-    public Collection ejbHomeGetGenresByLabel(Integer lid)
-            throws EJBException {
-        Collection genres = null;
-        try {
-            genres = albumsOperator.getGenresByLabel(lid.intValue());
-        } catch (OracleDataAccessObjectException e){
-            throw new EJBException(e.getMessage());
-        }
-        return genres;
-    }
-    
-    public Collection ejbHomeGetDates()
-            throws EJBException {
-        Collection dates = null;
-        try {
-            dates = albumsOperator.getDates();
-        } catch (OracleDataAccessObjectException e){
-            throw new EJBException(e.getMessage());
-        }
-        return dates;
-    }
-    
+
     public void ejbHomeRemove(Integer id) throws EJBException {
         try {
             albumsOperator.deleteAlbum(id.intValue());

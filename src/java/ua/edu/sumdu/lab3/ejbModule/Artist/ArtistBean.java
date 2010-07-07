@@ -4,7 +4,7 @@ import javax.ejb.*;
 import java.util.*;
 import java.rmi.RemoteException;
 
-import ua.edu.sumdu.lab3.dao.ejbdao.operators.*;
+import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.Label;
 import ua.edu.sumdu.lab3.model.Artist;
@@ -44,13 +44,11 @@ public class ArtistBean implements EntityBean {
     
     public void ejbPostCreate(String name, String country, String info)
             throws CreateException {
-            System.out.println("ejbPostCreate() ");
     }
     
     public Integer ejbFindByPrimaryKey(Integer id) 
             throws FinderException {
             Artist art = null;
-            System.out.println("ejbFindByPrimaryKey() ");
             try {
                 art = aOperator.getArtist(id.intValue());
             } catch (OracleDataAccessObjectException e) {
@@ -100,7 +98,6 @@ public class ArtistBean implements EntityBean {
     }
     
     public void ejbStore() throws EJBException {
-        System.out.println("ejbStore() ");
         try {
             Artist art = new Artist();
             art.setId(getId().intValue());
@@ -204,18 +201,6 @@ public class ArtistBean implements EntityBean {
         } catch (OracleDataAccessObjectException e) {
             throw new EJBException(e.getMessage());
         }
-    }
-    
-    public Collection ejbHomeGetGenres(Artist art) throws EJBException {
-        List genres = null;
-        AlbumsOperator albumsOperator = null;
-        try {
-            albumsOperator = new AlbumsOperator();
-            genres = albumsOperator.getGenresByArtist(art.getId());
-        } catch (OracleDataAccessObjectException e) {
-            throw new EJBException(e.getMessage());
-        }
-        return genres;
     }
     
     public Integer getId() {

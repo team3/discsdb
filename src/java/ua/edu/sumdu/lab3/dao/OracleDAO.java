@@ -6,10 +6,10 @@
 * @date 18.05.2010
 */
 
-package ua.edu.sumdu.lab3.dao.oradao;
+package ua.edu.sumdu.lab3.dao;
 
 import ua.edu.sumdu.lab3.exceptions.*;
-import ua.edu.sumdu.lab3.dao.oradao.operators.*;
+import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.model.*;
 import java.util.Date;
 import java.text.DateFormat;
@@ -59,7 +59,7 @@ public class OracleDAO implements OperableDAO {
     */
     public List getGenres(Artist artist) 
             throws OracleDataAccessObjectException {
-       return mainOperator.getGenres(artist);
+       return mainOperator.getGenresByArtist(artist.getId());
     }
 
     /**
@@ -70,7 +70,7 @@ public class OracleDAO implements OperableDAO {
     */
     public List getGenres(Label label) 
             throws OracleDataAccessObjectException {
-        return mainOperator.getGenres(label);
+        return mainOperator.getGenresByLabel(label.getId());
     }
 
     /**
@@ -100,7 +100,8 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void addLabel(Label label) 
             throws OracleDataAccessObjectException {
-        labelsOperator.addLabel(label);
+        labelsOperator.addLabel(label.getMajor(),label.getName(), label.getInfo(),
+                label.getLogo(), label.getMajorName());
     }
 
     /**
@@ -157,7 +158,7 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getAlbums(String genre, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbums(genre, firstRow, lastRow);
+        return albumsOperator.getAlbumsByGenre(genre, firstRow, lastRow);
     }
 
     /**
@@ -179,7 +180,7 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getAlbums(Date date, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbums(date, firstRow, lastRow);
+        return albumsOperator.getAlbumsByDate(date, firstRow, lastRow);
     }
     
      /**
@@ -190,7 +191,7 @@ public class OracleDAO implements OperableDAO {
      */ 
     public List getAlbums(Artist artist, int firstRow, int lastRow) 
             throws OracleDataAccessObjectException {
-        return  albumsOperator.getAlbums(artist, firstRow, lastRow);
+        return  albumsOperator.getAlbumsByArtist(artist.getId(), firstRow, lastRow);
     }
         
     
@@ -202,7 +203,7 @@ public class OracleDAO implements OperableDAO {
     */ 
     public List getAlbums(Label label, int firstRow, int lastRow)  
             throws OracleDataAccessObjectException {
-        return albumsOperator.getAlbums(label, firstRow, lastRow);
+        return albumsOperator.getAlbumsByLabel(label.getId(), firstRow, lastRow);
     }
 
     /**
@@ -301,7 +302,9 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void editAlbum(Album album) 
             throws OracleDataAccessObjectException {
-        albumsOperator.editAlbum(album);
+        albumsOperator.editAlbum(album.getId(), album.getName(), album.getType(),
+                album.getRelease(), album.getGenre(), album.getCover(), album.getArtistName(),
+                album.getLabelName(), album.getReview(), album.getArtist(), album.getLabel());
     }
     
     /**
@@ -323,7 +326,8 @@ public class OracleDAO implements OperableDAO {
      */ 
     public void editLabel(Label label) 
             throws OracleDataAccessObjectException {
-        labelsOperator.editLabel(label);
+        labelsOperator.editLabel(label.getId(), label.getMajor(), label.getName(),
+                label.getInfo(), label.getLogo(), label.getMajorName());
     }
     
     /**

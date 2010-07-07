@@ -1,4 +1,4 @@
-package ua.edu.sumdu.lab3.dao.ejbdao.operators;
+package ua.edu.sumdu.lab3.dao.operators;
 
 import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.*;
@@ -61,16 +61,7 @@ public class AlbumsOperator extends MainOperator {
     
     private static final String RESERVE_NEW_ID = 
             "SELECT SQ_ALBUM.nextval FROM dual";
-    
-    private static final String SELECT_GENRES_BY_ARTIST =
-            "SELECT DISTINCT genre FROM ALBUM WHERE art = ?";
 
-    private static final String SELECT_GENRES_BY_LABEL =
-            "SELECT DISTINCT genre FROM ALBUM WHERE lbl = ?";
-            
-    private static final String SELECT_ALL_DATES =
-            "SELECT DISTINCT TO_CHAR(release, 'YYYY') as year FROM album order by year";
-    
     /**
      * Returns the new value of the labels counter.
      * 
@@ -653,98 +644,4 @@ public class AlbumsOperator extends MainOperator {
             closeConnection(); 
         }
     }
-    
-    /**
-    * Returns list of genres of the specified artist.
-    * @param artist artist of the genre.
-    * @return list of genres of the specified artist.
-    * @throws OracleDataAccessObjectException if problems while getting data.
-    */
-    public List getGenresByArtist(int aid) 
-            throws OracleDataAccessObjectException {
-        List genres = null;
-        try {
-            genres = new LinkedList();
-
-            this.getConnection();
-
-            this.statement = this.connection.prepareStatement(
-                    SELECT_GENRES_BY_ARTIST);
-
-            this.statement.setInt(1, aid);
-
-            ResultSet set = this.statement.executeQuery();;
-            while(set.next()){
-                genres.add(set.getString(1));
-            }
-            set.close();
-        } catch (SQLException e){
-            throw new OracleDataAccessObjectException(e);
-        } finally {
-            closeConnection();
-        }
-        return genres;
-    }
-
-    /**
-    * Returns list of genres of the specified label.
-    * @param label label of the genre.
-    * @return list of genres of the specified label.
-    * @throws OracleDataAccessObjectException if problems while getting data.
-    */
-    public List getGenresByLabel(int lid) 
-            throws OracleDataAccessObjectException {
-        List genres = null;
-        try {
-            genres = new LinkedList();
-
-            this.getConnection();
-
-            this.statement = this.connection.prepareStatement(
-                    SELECT_GENRES_BY_LABEL);
-
-            this.statement.setInt(1, lid);
-
-            ResultSet set = this.statement.executeQuery();
-            while(set.next()){
-                genres.add(set.getString(1));
-            }
-            set.close();
-        } catch (SQLException e){
-            throw new OracleDataAccessObjectException(e);
-        } finally {
-            closeConnection();
-        }
-        return genres;
-    }
-
-    /**
-    * Returns list of all dates.
-    * @return list of all dates.
-    * @throws OracleDataAccessObjectException if problems while getting data.
-    */
-    public List getDates() 
-            throws OracleDataAccessObjectException {
-        List dates = null;
-        try {
-            dates = new LinkedList();
-
-            getConnection();
-
-            this.statement = this.connection.prepareStatement(
-                    SELECT_ALL_DATES);
-
-            ResultSet set = this.statement.executeQuery();
-            while(set.next()){
-                dates.add(set.getString(1));
-            }
-            set.close();
-        } catch (SQLException e) {
-            throw new OracleDataAccessObjectException(e);
-        } finally {
-            closeConnection();
-        }
-        return dates;
-    }
-
 }
