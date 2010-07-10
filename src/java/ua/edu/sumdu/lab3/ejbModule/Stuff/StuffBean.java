@@ -66,7 +66,7 @@ public class StuffBean implements SessionBean {
             mainOperator = new MainOperator();
             dates = mainOperator.getDates();
         } catch (OracleDataAccessObjectException e){
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
         return dates;
     }
@@ -83,7 +83,7 @@ public class StuffBean implements SessionBean {
             mainOperator = new MainOperator();
             genres = mainOperator.getGenresByArtist(aid.intValue());
         } catch (OracleDataAccessObjectException e){
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
         return genres;
     }
@@ -100,7 +100,7 @@ public class StuffBean implements SessionBean {
             mainOperator = new MainOperator();
             genres = mainOperator.getGenresByLabel(lid.intValue());
         } catch (OracleDataAccessObjectException e){
-            System.out.println(e.getMessage());
+            logger.info(e.getMessage());
         }
         return genres;
     }
