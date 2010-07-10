@@ -19,8 +19,10 @@ public class AlbumBean implements EntityBean {
     }
     
     /**
-    * Creates album
-    * @param name name of the album.
+    * Creates new instance of the album-bean.
+    * @param album album to create.
+    * @throws CreateException.
+    * @throws RemoteException.
     */ 
     public Integer ejbCreate(Album album)
             throws CreateException, RemoteException {
@@ -47,11 +49,11 @@ public class AlbumBean implements EntityBean {
     }
     
     /**
-    * 
-    * 
-    * 
+    * Post-create method.
+    * @param album album to create.
+    * @throws CreateException.
+    * @throws RemoteException.
     */
-    
     public void ejbPostCreate(Album album) 
             throws CreateException, RemoteException {
         
@@ -62,7 +64,6 @@ public class AlbumBean implements EntityBean {
     * @param id id of the album.
     * @return primary key of the album.
     */ 
-    
     public Integer ejbFindByPrimaryKey(Integer id) 
             throws FinderException, RemoteException {
         Album album = null;
@@ -79,7 +80,6 @@ public class AlbumBean implements EntityBean {
     * @param ectx entity context.
     * 
     */ 
-    
     public void setEntityContext(EntityContext ectx){
         this.context = ectx;
     }
@@ -88,7 +88,6 @@ public class AlbumBean implements EntityBean {
     * Unsets entity context.
     * 
     */ 
-    
     public void unsetEntityContext(){
         this.context = null;
     }
@@ -99,23 +98,21 @@ public class AlbumBean implements EntityBean {
     * @throws RemoveException
     * 
     */ 
-    
     public void ejbRemove() 
             throws RemoveException, RemoteException {
         ejbHomeRemove(new Integer(this.id));
     }
 
     /**
-    * 
+    * Activates current instance of the bean.
     * 
     */ 
-    
     public void ejbActivate(){
         this.id = ((Integer) context.getPrimaryKey()).intValue();
     }
     
     /**
-    * 
+    * Passivates current instance of the bean.
     * 
     */ 
     public void ejbPassivate() {}
@@ -153,7 +150,6 @@ public class AlbumBean implements EntityBean {
     * Realization of storing the bean.
     * @throws EJBException.
     * @throws RemoteException.
-    * 
     */
     public void ejbStore() throws EJBException, RemoteException {
         if (!needToStore) return;
@@ -168,6 +164,12 @@ public class AlbumBean implements EntityBean {
         }
     } 
     
+    /**
+     * Returnes collection of all albums from firstRow to lastRow.
+     * @param firstRow from.
+     * @param lastRow to.
+     * @throws FinderException. 
+     */ 
     public Collection ejbFindAll(Integer firstRow, Integer lastRow) 
             throws FinderException {
         Collection albums = null;
@@ -190,6 +192,12 @@ public class AlbumBean implements EntityBean {
         return remotes;
     }
 
+    /**
+     * Returns list of the <code>number</code> lastest albums.
+     * @param number number of albums to return.
+     * @return list of the <code>number</code> lastest albums.
+     * @throws FinderException if problems while getting data.
+     */ 
     public Collection ejbFindLatest(Integer number) 
             throws FinderException {
         Collection albums = null;
@@ -214,8 +222,8 @@ public class AlbumBean implements EntityBean {
     /**
     * Findes and returns list of albums by the specified params.
     * @param params parameters to find by.
-     * @return list of albums by the specified params.
-     * @throws EJBException.
+    * @return list of albums by the specified params.
+    * @throws EJBException.
     */ 
     public Collection ejbFindByParams(Map params, 
             Integer firstRow, Integer lastRow) 
@@ -244,9 +252,9 @@ public class AlbumBean implements EntityBean {
     
     /**
     * Returns maximal id of the album in storage.
-     * @return maximal id of the album in storage.
-     * @throws EJBException.
-     */ 
+    * @return maximal id of the album in storage.
+    * @throws EJBException.
+    */ 
     public Integer ejbHomeGetAlbumNumber() throws EJBException {
         int number = 0;
         try {
@@ -259,9 +267,9 @@ public class AlbumBean implements EntityBean {
 
     /**
     * Returns maximal id of the album in storage by specified date.
-     * @return maximal id of the album in storage by specified date.
-     * @throws EJBException.
-     */ 
+    * @return maximal id of the album in storage by specified date.
+    * @throws EJBException.
+    */ 
     public Integer ejbHomeGetAlbumNumber(Date date) throws EJBException {
         int number = 0;
         try {
@@ -274,9 +282,9 @@ public class AlbumBean implements EntityBean {
     
     /**
     * Returns maximal id of the album in storage by specified genre.
-     * @return maximal id of the album in storage by specified genre.
-     * @throws EJBException.
-     */ 
+    * @return maximal id of the album in storage by specified genre.
+    * @throws EJBException.
+    */ 
     public Integer ejbHomeGetAlbumNumber(String genre) throws EJBException {
         int number = 0;
         try {
@@ -460,6 +468,11 @@ public class AlbumBean implements EntityBean {
         return remotes;
     }
 
+    /**
+     * Removes instance by specified id.
+     * @param id id of the instance need to be deleted.
+     * @throws EJBException
+     */ 
     public void ejbHomeRemove(Integer id) throws EJBException {
         try {
             albumsOperator.deleteAlbum(id.intValue());

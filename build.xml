@@ -22,12 +22,15 @@
     
     <property name = "dir_ear_metainf" location = "${dir_ear}/META-INF" />
     
+    <property name = "dir_javadoc" location = "doc" />
+    
     <!-- CLEARING THE DIRRECTORIES-->
     
     <target name = "clear">
         <echo message = "Clearing the temperary files ... " />
         <delete quiet = "true" includeemptydirs = "true">
             <fileset dir = "${dir_build}" />
+            <fileset dir = "${dir_javadoc}" />
         </delete>
     </target>
     
@@ -190,5 +193,20 @@
             file = "${dir_dist}/discsdb.ear" 
             todir = "${env.JBOSS_HOME}/server/default/deploy"
         />
+    </target>
+    
+    <target name="javadoc">
+        <javadoc
+              access="public"
+               destdir="${dir_javadoc}"
+               author="true"
+               version="true"
+               use="true"
+           >
+
+            <fileset dir="${dir_src}" defaultexcludes="yes">
+                <include name="**/*.java"/>
+            </fileset>
+        </javadoc>
     </target>
 </project>

@@ -22,14 +22,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.*;
 import javax.sql.*;
+
 import javax.ejb.FinderException;
 import javax.ejb.CreateException;
 import javax.ejb.EJBException;
 import javax.ejb.RemoveException;
+
 import java.rmi.RemoteException;
 import javax.naming.NamingException;
-
-
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
@@ -665,7 +665,6 @@ public class EjbDAO implements OperableDAO {
         }
     }
     
-    
     /**
      * Edits specified artist. Replaces found (by id) label by specified.
      * 
@@ -978,7 +977,8 @@ public class EjbDAO implements OperableDAO {
         return labels;
     }
 
-    private Artist artistTranslate(ArtistRemote aRemote) throws RemoteException {
+    private Artist artistTranslate(ArtistRemote aRemote) 
+            throws RemoteException {
         Artist art = new Artist();
         art.setId(aRemote.getId().intValue());
         art.setName(aRemote.getName());

@@ -10,25 +10,49 @@ import java.util.Properties;
 
 public class Allocator {
 
-    public static LabelHome getLabelHomeItf() throws NamingException{
+    /**
+     * Returnes home intefrace of the label bean.
+     * @return home intefrace of the label bean.
+     * @throws NamingException.
+     */ 
+    public static LabelHome getLabelHomeItf() 
+            throws NamingException {
         Context iContext = new InitialContext();
         Object obj = iContext.lookup("Label");      
         return (LabelHome)PortableRemoteObject.narrow(obj, LabelHome.class);
     }
     
-    public static ArtistHome getArtistHomeItf() throws NamingException{
+    /**
+     * Returnes home intefrace of the artist bean.
+     * @return home intefrace of the artist bean.
+     * @throws NamingException.
+     */
+    public static ArtistHome getArtistHomeItf() 
+            throws NamingException {
         Context iContext = new InitialContext();
         Object obj = iContext.lookup("Artist");
         return (ArtistHome)PortableRemoteObject.narrow(obj, ArtistHome.class);
     }
-
-    public static AlbumHome getAlbumHomeItf() throws NamingException{
+    
+    /**
+     * Returnes home intefrace of the album bean.
+     * @return home intefrace of the album bean.
+     * @throws NamingException.
+     */
+    public static AlbumHome getAlbumHomeItf() 
+            throws NamingException {
         Context iContext = new InitialContext();
         Object obj = iContext.lookup("Album");      
         return (AlbumHome)PortableRemoteObject.narrow(obj, AlbumHome.class);
     }
     
-    public static StuffHome getStuffHomeItf() throws NamingException {
+    /**
+     * Returnes home intefrace of the stuff session bean.
+     * @return home intefrace of the stuff session bean.
+     * @throws NamingException.
+     */
+    public static StuffHome getStuffHomeItf() 
+            throws NamingException {
         Context ctx = new InitialContext();
         Object obj  = ctx.lookup("Stuff");
         return (StuffHome) PortableRemoteObject.narrow(obj, StuffHome.class);

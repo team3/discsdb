@@ -66,8 +66,10 @@ public class AlbumsOperator extends MainOperator {
      * Returns the new value of the labels counter.
      * 
      * @return the new value of the labels counter.
+     * @throws OracleDataAccessObjectException
      */ 
-    public int getNewId() throws OracleDataAccessObjectException {
+    public int getNewId() 
+            throws OracleDataAccessObjectException {
         int id = 0;
         try {
             getConnection();
@@ -86,12 +88,22 @@ public class AlbumsOperator extends MainOperator {
 
     /**
      * Adds new album to the specified storage.
-     * @param album new instanse of the Album that should be added.
+     * @param name name of the album
+     * @param type type of the album
+     * @param release date of the realese of the album
+     * @param genre genre of the album.
+     * @param cover cover of the album.
+     * @param artistName name of the artist of the album.
+     * @param labelName name of the label of the album.
+     * @param review album's review.
+     * @param artist id of the artist of the album.
+     * @param label id of the label of the album.
+     * 
      * @throws OracleDataAccessObjectException if problems while adding the data.
      */
     public int addAlbum(String name, String type, java.util.Date release, 
-            String genre, String cover, String artistName, String labelName,
-            String review, int artist, int label)
+            String genre, String cover, String artistName, 
+            String labelName, String review, int artist, int label)
             throws OracleDataAccessObjectException {
         
         int alid = -1;
@@ -176,6 +188,8 @@ public class AlbumsOperator extends MainOperator {
     /**
      * Returns list of albums of the specified genre.
      * @param genre genre of the album.
+     * @param firstRow from.
+     * @param lastRow to.
      * @return list of albums of the specified genre.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */
@@ -211,6 +225,8 @@ public class AlbumsOperator extends MainOperator {
     /**
      * Returns list of albums of the specified name.
      * @param name name of the album.
+     * @param firstRow from.
+     * @param lastRow to.
      * @return list of albums of the specified name.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */
@@ -246,6 +262,8 @@ public class AlbumsOperator extends MainOperator {
     /**
      * Returns list of albums of the specified date.
      * @param date date of the album.
+     * @param firstRow from.
+     * @param lastRow to.
      * @return list of albums of the specified date.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */
@@ -284,6 +302,8 @@ public class AlbumsOperator extends MainOperator {
      /**
      * Returns list of albums of the specified artist.
      * @param artist artist of the album.
+     * @param firstRow from.
+     * @param lastRow to.
      * @return list of albums of the specified artist.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */
@@ -319,6 +339,8 @@ public class AlbumsOperator extends MainOperator {
     /**
     * Returns list of albums of the specified label.
     * @param label label of the album.
+    * @param firstRow from.
+    * @param lastRow to.
     * @return list of albums of the specified label.
     * @throws OracleDataAccessObjectException if problems while getting data.
     */
@@ -353,6 +375,8 @@ public class AlbumsOperator extends MainOperator {
 
     /**
     * Returns list of all albums.
+    * @param firstRow from.
+    * @param lastRow to.
     * @return list of all albums.
     * @throws OracleDataAccessObjectException if problems while getting data.
     */
@@ -383,14 +407,14 @@ public class AlbumsOperator extends MainOperator {
         return albums;
     }
 
-    
     /**
-     * Findes and returns list of albums by the specified params.
-     * @param params parameters to find by.
-     * @return list of albums by the specified params.
-     * @throws OracleDataAccessObjectException if problems while getting data.
-     */
-    
+    * Findes and returns list of albums by the specified params.
+    * @param params parameters to find by.
+    * @param firstRow from.
+    * @param lastRow to.
+    * @return list of albums by the specified params.
+    * @throws OracleDataAccessObjectException if problems while getting data.
+    */
     public List findAlbums(Map params, int firstRow, int lastRow)
             throws OracleDataAccessObjectException {
         List albums = null;
@@ -433,11 +457,21 @@ public class AlbumsOperator extends MainOperator {
     }
 
     /**
-     * Edits specified album. Replaces found (by id) album by specified.
-     *
-     * @param album to edit/change.
-     * @throws OracleDataAccessObjectException if problems while editting data.
-     */
+    * Edits specified album. Replaces found (by id) album by specified.
+    * @param id id of the album to edit.
+    * @param name name of the album
+    * @param type type of the album
+    * @param release date of the realese of the album
+    * @param genre genre of the album.
+    * @param cover cover of the album.
+    * @param artistName name of the artist of the album.
+    * @param labelName name of the label of the album.
+    * @param review album's review.
+    * @param artist id of the artist of the album.
+    * @param label id of the label of the album.
+    *
+    * @throws OracleDataAccessObjectException if problems while editting data.
+    */
     public void editAlbum(int id, String name, String type, Date release,
             String genre, String cover, String artistName, 
             String labelName, String review, int artist, int label) 

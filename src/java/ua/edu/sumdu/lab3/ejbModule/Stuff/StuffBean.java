@@ -7,6 +7,13 @@ import java.util.Collection;
 import ua.edu.sumdu.lab3.dao.operators.*;
 import ua.edu.sumdu.lab3.exceptions.*;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.BasicConfigurator;
+
+/**
+ * This class designed to contain methods that not connected with any of
+ * the entities, such as "Album", "Artist", "Label".
+ */ 
 public class StuffBean implements SessionBean {
     private Logger log = null;
         

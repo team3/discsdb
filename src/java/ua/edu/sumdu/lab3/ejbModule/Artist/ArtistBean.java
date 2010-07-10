@@ -9,6 +9,9 @@ import ua.edu.sumdu.lab3.exceptions.*;
 import ua.edu.sumdu.lab3.model.Label;
 import ua.edu.sumdu.lab3.model.Artist;
 
+/**
+ * This class provides realization of the artist bean.
+ */ 
 public class ArtistBean implements EntityBean {
     
     private Integer id;
@@ -23,6 +26,13 @@ public class ArtistBean implements EntityBean {
         aOperator = new ArtistsOperator();
     }
     
+    /**
+     * Creates the new instance.
+     * @param name name of the artist.
+     * @param country country of the artist.
+     * @param info info of the artist.
+     * @throws CreateException.
+     */ 
     public Integer ejbCreate(String name, String country, String info)
             throws CreateException {
             int id = -1;
@@ -42,10 +52,23 @@ public class ArtistBean implements EntityBean {
         return getId();
     }
     
+    /**
+     * All thing after createion the new instance.
+     * @param name name of the artist.
+     * @param country country of the artist.
+     * @param info info of the artist.
+     * @throws CreateException.
+     */ 
     public void ejbPostCreate(String name, String country, String info)
             throws CreateException {
     }
     
+    /**
+     * Finds instance by primary key.
+     * @param id key.
+     * @return primary key of the album.
+     * @throws FinderException.
+     */ 
     public Integer ejbFindByPrimaryKey(Integer id) 
             throws FinderException {
             Artist art = null;
@@ -60,14 +83,25 @@ public class ArtistBean implements EntityBean {
             return new Integer(art.getId());
     }
     
+    /**
+     * Sets entity context.
+     * @param ectx entity context.
+     */ 
     public void setEntityContext(EntityContext ectx) {
         this.context = ectx;
     }
     
+    /**
+     * Unsets entity context.
+     */
     public void unsetEntityContext() {
         this.context = null;
     }
     
+    /**
+     * Removes current instance of the bean.
+     * @throws RemoveException.
+     */  
     public void ejbRemove() 
             throws RemoveException {
         try {
@@ -78,13 +112,25 @@ public class ArtistBean implements EntityBean {
         }
     }
     
+    /**
+     * Activates instance.
+     * @throws EJBException.
+     */ 
     public void ejbActivate() throws EJBException {
         this.id = (Integer) context.getPrimaryKey();
     }
     
+    /**
+     * Passivates instance.
+     * @throws EJBException.
+     */ 
     public void ejbPassivate() throws EJBException {
     }
     
+    /**
+     * Load intance of the artist-bean.
+     * @throws EJBException.
+     */ 
     public void ejbLoad() throws EJBException {
         try {
             Artist art = aOperator.getArtist(getId().intValue());
@@ -97,6 +143,10 @@ public class ArtistBean implements EntityBean {
         }
     }
     
+    /**
+     * Stores intance of the artist-bean.
+     * @throws EJBException.
+     */ 
     public void ejbStore() throws EJBException {
         try {
             Artist art = new Artist();
@@ -110,6 +160,13 @@ public class ArtistBean implements EntityBean {
         }
     }
     
+    /**
+     * Return collection of all artists.
+     * @param firstRow from.
+     * @param lastRow to.
+     * @return collection of all artists.
+     * @throws FinderException. 
+     */ 
     public Collection ejbFindArtists(Integer firstrow, Integer lastRow) 
             throws FinderException {
         Collection artists = new LinkedList();
@@ -131,7 +188,14 @@ public class ArtistBean implements EntityBean {
         }
     }
     
-    public Collection ejbFindArtistsByLabel(Label lbl) throws FinderException {
+    /**
+     * Returnes collection of artists by specified label.
+     * @param lbl label.
+     * @return collection of artists by specified label.
+     * @throws FinderException. 
+     */ 
+    public Collection ejbFindArtistsByLabel(Label lbl) 
+            throws FinderException {
         Collection artists = new LinkedList();
         List list = null;
         try {
@@ -150,7 +214,16 @@ public class ArtistBean implements EntityBean {
         }
     }
     
-    public Collection ejbFindArtistsByCountry(String country, Integer firstrow, Integer lastrow) 
+    /**
+     * Returnes collection of artists by specified county.
+     * @param country country of the artist.
+     * @param firstRow from.
+     * @param lastRow to.
+     * @return collection of artist by specified county.
+     * @throws FinderException. 
+     */ 
+    public Collection ejbFindArtistsByCountry(String country, 
+            Integer firstrow, Integer lastrow) 
             throws FinderException {
         Collection artists = new LinkedList();
         List list = null;
@@ -170,7 +243,13 @@ public class ArtistBean implements EntityBean {
         }
     } 
     
-    public Integer ejbHomeGetArtistNumber() throws EJBException {
+    /**
+     * Returnes maximal number of all the artists.
+     * @return maximal number of all the artists.
+     * @throws EJBException.
+     */ 
+    public Integer ejbHomeGetArtistNumber() 
+            throws EJBException {
         int number = 0;
         try {
             number = aOperator.getArtistNumber();
@@ -182,7 +261,14 @@ public class ArtistBean implements EntityBean {
         }
     }
     
-    public Integer ejbHomeGetArtistNumber(String country) throws EJBException {
+    /**
+     * Returnes maximal number of all the artists by specified country.
+     * @param country country of the artist.
+     * @return maximal number of all the artists by specified country.
+     * @throws EJBException.
+     */ 
+    public Integer ejbHomeGetArtistNumber(String country) 
+            throws EJBException {
         int number = 0;
         try {
             number = aOperator.getArtistNumber(country);
@@ -194,7 +280,13 @@ public class ArtistBean implements EntityBean {
         }
     }
     
-    public void ejbHomeRemove(Integer id) throws EJBException {
+    /**
+     * Removes instance of the bean with the specified id.
+     * @param id id if the instance.
+     * @throws EJBException.
+     */ 
+    public void ejbHomeRemove(Integer id) 
+            throws EJBException {
         try {
             aOperator.deleteArtist(id.intValue());
             
@@ -203,34 +295,66 @@ public class ArtistBean implements EntityBean {
         }
     }
     
+    /**
+     * Returnes artist id.
+     * @return artist id.
+     */ 
     public Integer getId() {
         return this.id;
     }
-    
+
+    /**
+     * Returnes artist name.
+     * @return artist name.
+     */ 
     public String getName() {
         return this.name;
     }
-    
-    public String getCountry() {
+
+    /**
+     * Returnes artist country.
+     * @return artist country.
+     */ 
+    public String getCountry(){
         return this.country;
     }
-    
-    public String getInfo() {
+
+    /**
+     * Returnes artist info.
+     * @return artist info.
+     */ 
+    public String getInfo(){
         return this.info;
     }
-    
+
+    /**
+     * Sets artist id.
+     * @param artist id.
+     */ 
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
+    /**
+     * Sets artist name.
+     * @param artist name.
+     */ 
     public void setName(String name) {
         this.name = name;
     }
-    
+
+    /**
+     * Sets artist country.
+     * @param artist country.
+     */ 
     public void setCountry(String country) {
         this.country = country;
     }
-    
+
+    /**
+     * Sets artist info.
+     * @param artist info.
+     */ 
     public void setInfo(String info) {
         this.info = info;
     }
