@@ -18,7 +18,7 @@
     <div class="maincont">
         <c:set var = "picpath" value = "/pages/images/sinatra.png" />
         <img border = "0" src = <c:out value="${pageContext.request.contextPath}${picpath}" /> align = "right" alt= "sinatra" />
-        <h1>Sorry, but service is down. </h1>
+        <h1>Sorry</h1>
         <b> ERROR </b> :<BR>
         
         <span id = "exception"><%= exception.getMessage() %></span>

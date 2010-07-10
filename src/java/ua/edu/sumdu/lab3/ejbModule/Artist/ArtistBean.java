@@ -296,6 +296,22 @@ public class ArtistBean implements EntityBean {
     }
     
     /**
+    * Find Artist by name
+    * @param artist name
+    * @return id number of artist
+    * @throws FinderException throws when search was failed
+    */
+    public Integer ejbHomeGetIdByName(String name) throws EJBException {
+        int result = 0;
+        try {
+            result = aOperator.findArtist(name);
+        } catch (OracleDataAccessObjectException e) {
+            throw new EJBException(e.getMessage());
+        }
+        return new Integer(result);
+    }
+    
+    /**
      * Returnes artist id.
      * @return artist id.
      */ 

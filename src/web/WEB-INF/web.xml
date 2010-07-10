@@ -40,7 +40,6 @@
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
     
-
     <error-page>
         <error-code>404</error-code>
         <location>/pages/404.jsp</location>
@@ -51,7 +50,7 @@
         <error-code>500</error-code>
         <location>/pages/error.jsp</location>
     </error-page>
-    
+
     <taglib>
         <taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
         <taglib-location>/WEB-INF/tags/fmt.tld</taglib-location>

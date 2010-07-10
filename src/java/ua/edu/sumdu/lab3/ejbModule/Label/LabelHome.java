@@ -20,7 +20,7 @@ public interface LabelHome extends EJBHome {
      * @throws CreateException.
      * @throws RemoteException.
      */
-    public LabelRemote create(int major, String name, 
+    public LabelRemote create(Integer major, String name, 
             String info, String logo, String majorName) 
             throws CreateException, RemoteException;
 
@@ -41,18 +41,18 @@ public interface LabelHome extends EJBHome {
     * @throws EJBException if problems while getting data.
     * @throws RemoteException.
     */
-    public Collection getMajorLabels(int firstRow, int lastRow)
+    public Collection getMajorLabels(Integer firstRow, Integer lastRow)
             throws RemoteException, EJBException;
     
     /**
      * Returns the label by the specified name.
      * 
      * @param name name of the label that should be return.
-     * @return label by the specified name.
+     * @return id.
      * @throws EJBException if problems while getting data.
      * @throws RemoteException.
      */
-    public LabelRemote getByName(String name) 
+    public Integer getIdByName(String name) 
             throws RemoteException, EJBException;
     
     /**
@@ -70,7 +70,7 @@ public interface LabelHome extends EJBHome {
      * @throws RemoteException.
      * @throws EJBException if problems while getting data.
      */
-    public int getLabelNumber()
+    public Integer getLabelNumber()
            throws RemoteException, EJBException;
     
     /**
@@ -80,7 +80,7 @@ public interface LabelHome extends EJBHome {
      * @throws RemoteException.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */ 
-    public Collection getLabelPath(int id)
+    public Collection getLabelPath(Integer id)
             throws RemoteException, EJBException;
     
     /**
@@ -99,6 +99,6 @@ public interface LabelHome extends EJBHome {
     * @throws RemoteException.
     * @throws OracleDataAccessObjectException if problems while getting data.
     */
-    public Collection getChildLabels(int id)
+    public Collection getChildLabels(Integer id)
             throws RemoteException, EJBException;
 }

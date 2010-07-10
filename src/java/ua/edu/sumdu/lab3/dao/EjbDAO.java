@@ -153,7 +153,7 @@ public class EjbDAO implements OperableDAO {
         try {
             LabelHome labelHome = Allocator.getLabelHomeItf();
             labelHome.create(
-                label.getMajor(), label.getName(), label.getInfo(),
+                new Integer(label.getMajor()), label.getName(), label.getInfo(),
                 label.getLogo(), label.getMajorName()
             );
         } catch (CreateException e){
@@ -518,7 +518,7 @@ public class EjbDAO implements OperableDAO {
         List labels = null;
         try {
             labels = (List)Allocator.getLabelHomeItf().getMajorLabels(
-                    firstRow, lastRow);
+                    new Integer(firstRow), new Integer(lastRow));
         } catch (RemoteException e){
             throw new OracleDataAccessObjectException(e);
         } catch (NamingException e){
@@ -537,7 +537,7 @@ public class EjbDAO implements OperableDAO {
             throws OracleDataAccessObjectException {
         List labels = null;
         try {
-            labels = (List)Allocator.getLabelHomeItf().getChildLabels(id);
+            labels = (List)Allocator.getLabelHomeItf().getChildLabels(new Integer(id));
         } catch (RemoteException e){
             throw new OracleDataAccessObjectException(e);
         } catch (NamingException e){
@@ -764,7 +764,17 @@ public class EjbDAO implements OperableDAO {
      */ 
     public int findArtist(String name) 
             throws OracleDataAccessObjectException {
-        return artistsOperator.findArtist(name);
+        int id = 0;
+        try {
+            id = Allocator.getArtistHomeItf().getIdByName(name).intValue();
+        } catch (EJBException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        }
+        return id;
     }
     
     /**
@@ -775,7 +785,17 @@ public class EjbDAO implements OperableDAO {
      */
     public int findLabel(String name) 
             throws OracleDataAccessObjectException {
-        return labelsOperator.findLabel(name);
+        int id = 0;
+        try {
+            id = Allocator.getLabelHomeItf().getIdByName(name).intValue();
+        } catch (EJBException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (RemoteException e){
+            throw new OracleDataAccessObjectException(e);
+        } catch (NamingException e){
+            throw new OracleDataAccessObjectException(e);
+        }
+        return id;
     }
     
     /**
@@ -879,7 +899,7 @@ public class EjbDAO implements OperableDAO {
             throws OracleDataAccessObjectException {
         int number = 0;
         try {
-            number = Allocator.getLabelHomeItf().getLabelNumber();
+            number = Allocator.getLabelHomeItf().getLabelNumber().intValue();
         } catch (RemoteException e){
             throw new OracleDataAccessObjectException(e);
         } catch (NamingException e){
@@ -968,7 +988,7 @@ public class EjbDAO implements OperableDAO {
             throws OracleDataAccessObjectException {
         List labels = null;
         try {
-            labels = (List)Allocator.getLabelHomeItf().getLabelPath(id);
+            labels = (List)Allocator.getLabelHomeItf().getLabelPath(new Integer(id));
         } catch (RemoteException e){
             throw new OracleDataAccessObjectException(e);
         } catch (NamingException e){

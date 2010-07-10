@@ -40,16 +40,16 @@ public class LabelBean implements EntityBean {
      * @throws CreateException.
      * @throws RemoteException.
      */
-    public Integer ejbCreate(int major, String name, 
+    public Integer ejbCreate(Integer major, String name, 
             String info, String logo, String majorName) 
             throws CreateException, RemoteException {
         int id = 0;
         try {
             id = labelsOperator.addLabel(
-                major, name, info, logo, majorName
+                major.intValue(), name, info, logo, majorName
             );
             this.id = id;
-            this.major = major;
+            this.major = major.intValue();
             this.name = name;
             this.info = info;
             this.logo = logo;
@@ -71,7 +71,7 @@ public class LabelBean implements EntityBean {
      * @throws CreateException.
      * @throws RemoteException.
      */
-    public void ejbPostCreate(int major, String name, 
+    public void ejbPostCreate(Integer major, String name, 
             String info, String logo, String majorName) 
             throws CreateException, RemoteException {
     }
@@ -91,6 +91,10 @@ public class LabelBean implements EntityBean {
         } catch (OracleDataAccessObjectException e){
             throw new FinderException(e.getMessage());
         }
+        if(label == null) {
+            throw new FinderException("No label found for this id");
+        }
+        
         return new Integer(label.getId());
     }
     
@@ -172,11 +176,11 @@ public class LabelBean implements EntityBean {
     * @return collection of all labels in specified restrictions.
     * @throws EJBException if problems while getting data.
     */
-    public Collection ejbHomeGetMajorLabels(int firstRow, int lastRow) 
+    public Collection ejbHomeGetMajorLabels(Integer firstRow, Integer lastRow) 
             throws EJBException {
         Collection labels = null;
         try {
-            labels = labelsOperator.getMajorLabels(firstRow, lastRow);
+            labels = labelsOperator.getMajorLabels(firstRow.intValue(), lastRow.intValue());
         } catch (OracleDataAccessObjectException e){
             throw new EJBException(e.getMessage());
         }
@@ -190,7 +194,7 @@ public class LabelBean implements EntityBean {
      * @return label by the specified name.
      * @throws EJBException if problems while getting data.
      */ 
-    public int ejbHomeGetByName(String name) 
+    public Integer ejbHomeGetIdByName(String name) 
             throws EJBException{
         int id = 0;
         try {
@@ -198,7 +202,7 @@ public class LabelBean implements EntityBean {
         } catch (OracleDataAccessObjectException e){
             throw new EJBException(e.getMessage());
         }
-        return id;
+        return new Integer(id);
     }
     
     /**
@@ -206,7 +210,7 @@ public class LabelBean implements EntityBean {
      * @return maximal id of the label in storage.
      * @throws EJBException if problems while getting data.
      */
-    public int ejbHomeGetLabelNumber() 
+    public Integer ejbHomeGetLabelNumber() 
             throws EJBException {
         int id = 0;
         try {
@@ -214,7 +218,7 @@ public class LabelBean implements EntityBean {
         } catch (OracleDataAccessObjectException e){
             throw new EJBException(e.getMessage());
         }
-        return id;
+        return new Integer(id);
     }
     
     /**
@@ -223,11 +227,11 @@ public class LabelBean implements EntityBean {
      * @return path to the specified label in the hierarchy of labels.
      * @throws OracleDataAccessObjectException if problems while getting data.
      */ 
-    public Collection ejbHomeGetLabelPath(int id)
+    public Collection ejbHomeGetLabelPath(Integer id)
             throws EJBException {
         Collection labels = null;
         try {
-            labels = labelsOperator.getLabelPath(id);
+            labels = labelsOperator.getLabelPath(id.intValue());
         } catch (OracleDataAccessObjectException e){
             throw new EJBException(e.getMessage());
         }
@@ -256,11 +260,11 @@ public class LabelBean implements EntityBean {
     * @return list of child labels od the lable with specified id.
     * @throws OracleDataAccessObjectException if problems while getting data.
     */
-    public Collection ejbHomeGetChildLabels(int id)
+    public Collection ejbHomeGetChildLabels(Integer id)
             throws EJBException {
         Collection labels = null;
         try {
-            labels = labelsOperator.getChildLabels(id);
+            labels = labelsOperator.getChildLabels(id.intValue());
         } catch (OracleDataAccessObjectException e){
             throw new EJBException(e.getMessage());
         }

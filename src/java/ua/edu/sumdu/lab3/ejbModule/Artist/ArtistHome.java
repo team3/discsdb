@@ -89,4 +89,14 @@ public interface ArtistHome extends EJBHome {
      */ 
     public void remove(Integer id) 
             throws EJBException, RemoteException;
+    
+    /**
+    * Find Artist by name
+    * @param artist name
+    * @return all anformation about artist with specified name
+    * @throws FinderException throws when search was failed
+    * @throws RemoteException
+    */
+    public Integer getIdByName(String name) throws EJBException,
+            RemoteException;
 }
